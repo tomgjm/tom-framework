@@ -10,7 +10,7 @@ if (typeof (system_cfg.log4js_category) && (system_cfg.log4js_category.length > 
 class AppListener extends BaseListener {
     //函数名就是具体事件名称
     error({ ctx, error } = {}) {
-        appLog.info(new Date(), ":", error, " IP:", ctx.ip);
+        appLog.info(new Date(), ":", error, " IP:", ctx.ip, "originalUrl:", ctx.originalUrl);
     }
 }
 module.exports = AppListener;

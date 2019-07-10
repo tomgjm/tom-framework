@@ -5,6 +5,6 @@
     <title>{{ __(title) }}</title>
 </head>
 <body>
-    {{ __(content) }}
+    {{ __(content) }}<br/>[IP: {{ ctx.ip}}]
 </body>
 </html>

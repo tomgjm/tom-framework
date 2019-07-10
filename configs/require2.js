@@ -90,6 +90,7 @@ module.exports = {
         "tomjs/middleware/auth_user": "tomjs/middleware/auth_user",
         "tomjs/middleware/options": "tomjs/middleware/options",
         "tomjs/middleware/ratelimit": "tomjs/middleware/ratelimit",
+        "tomjs/middleware/render": "tomjs/middleware/render",
         "tomjs/middleware/response-formatter": "tomjs/middleware/response-formatter",
         "tomjs/middleware/setuplang": "tomjs/middleware/setuplang",
         "tomjs/models/mongoose_middleware/deep_populate": "tomjs/models/mongoose_middleware/deep_populate",
