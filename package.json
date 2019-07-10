@@ -1,7 +1,7 @@
 {
-  "name": "tom-framework",
+  "name": "tomjs-framework",
   "version": "0.1.3",
-  "description": "tom-framework for Node.js",
+  "description": "tomjs-framework for Node.js",
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
