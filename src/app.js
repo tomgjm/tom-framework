@@ -4,8 +4,11 @@ const SystemConfig = require2('tomjs/configs')().system;
 const startRun = require2('tomjs/app');
 
 startRun().then(app => {
-    let server = app.listen(SystemConfig.api_server_port, SystemConfig.api_server_bind_ip);
-    server.timeout = SystemConfig.api_server_timeout;
-
-    console.log('Now start API server on IP:' + SystemConfig.api_server_bind_ip + ':' + SystemConfig.api_server_port + '...');
+    if (SystemConfig.server_run_type_https) {
+        console.log('Now start https server on IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_https_port + '...');
+    }
+    if (SystemConfig.server_run_type_http) {
+        console.log('Now start http server on IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_http_port
+            + (SystemConfig.server_run_type_force_https ? (' force to https IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_https_port) : '...'));
+    }
 }).catch(error => { console.error(error, error.stack); });

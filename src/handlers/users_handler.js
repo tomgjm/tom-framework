@@ -14,7 +14,7 @@ class UsersHandler {
         let avatar_filename = path.resolve(AppDir, users_cfg.avatar_path, filename);
         try { await renameFile(request_files_avatar_path, avatar_filename); }
         catch (e) { throw new ApiError(ApiError.MOVE_USER_AVATAR_ERROR, { id: id }); }
-        let avatar_url = SystemConfig.api_server_type + SystemConfig.api_server_host + ':' + SystemConfig.api_server_port + '/avatar/' + filename;
+        let avatar_url = SystemConfig.server_url_type + SystemConfig.server_host + ':' + (SystemConfig.server_url_type.trimLeft().toLowerCase().startsWith('https')? SystemConfig.server_https_port : SystemConfig.server_http_port) + '/avatar/' + filename;
         emitter.emit('update_avatar', { user_id, avatar_filename, avatar_url });
         return avatar_url;
     }

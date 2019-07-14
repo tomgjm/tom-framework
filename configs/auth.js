@@ -9,12 +9,12 @@ module.exports = {
 
     jwt_work_path: '/api',
     jwt_auth_all_path: toBool(process.env.JWT_AUTH_ALL_PATH || false),//所有jwt_work_path路径下是否都要预先经过JWT验证
-    jwt_secret: process.env.JWT_SECRET || path.join(app_dir, '../keys/publicKey.pub'), // jwt需要的Key文件名
+    jwt_secret: (process.env.JWT_SECRET ? path.join(app_dir, '../keys/', process.env.JWT_SECRET) : undefined) || path.join(app_dir, '../keys/publicKey.pub'), // jwt需要的Key文件名
     jwt_expiresin: process.env.JWT_EXPIRESIN || '2h', // jwt有效时间
     jwt_expiresin_long: process.env.JWT_EXPIRESIN_LONG || '3d',
     jwt_notBefore: process.env.JWT_NOTBEFORE,
     jwt_audience: process.env.JWT_AUDIENCE,
-    jwt_issuer: process.env.JWT_ISSUER || (system_cfg.api_server_type + system_cfg.api_server_host),
+    jwt_issuer: process.env.JWT_ISSUER || ( system_cfg.server_url_type + system_cfg.server_host),
     jwt_key: 'user',
     jwt_key_id: 'id',
     jwt_key_token_version: 'token_version',
