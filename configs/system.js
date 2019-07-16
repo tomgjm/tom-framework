@@ -17,6 +17,10 @@ module.exports = {
         cert_file: process.env.SERVER_HTTPS_CRT_FILE || 'https.crt'
     },
 
+    websocket_open: toBool(process.env.WEBSOCKET_OPEN) || false,
+    websocket_options:{
+    },
+
     country: process.env.SYSTEM_COUNTRY || 'zh-cn', // 所在国家的国家代码
     plugin_path: process.env.SYSTEM_PLUGIN_PATH || path.join(__dirname, './plugins'), // 插件路径
     session_key: process.env.SYSTEM_SESSION_KEY || 'RESTfulAPI', // 生产环境务必随机设置一个值
