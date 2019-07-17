@@ -1,5 +1,6 @@
 module.exports = {
-    path: 'public',
+    source_path: 'public',
+    target_path: '/',
     options: {
         maxage: 0,
         hidden: false,
