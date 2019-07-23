@@ -15,7 +15,7 @@ class UserModel extends model {
                 type: Sequelize.STRING(255),
                 validate: {
                     notEmpty: true,
-                    notNull: true,
+                    allowNull:false,
                     len: [3, 255],
                 },
                 index: true,
@@ -25,7 +25,7 @@ class UserModel extends model {
                 type: Sequelize.STRING(255),
                 validate: {
                     notEmpty: true,
-                    notNull: true,
+                    allowNull:false,
                     len: [6, 255],
                 },
             },
@@ -36,7 +36,7 @@ class UserModel extends model {
             required: configs.auth.register_email,
             validate: {
                 notEmpty: configs.auth.register_email,
-                notNull: configs.auth.register_email,
+                allowNull: (!configs.auth.register_email),
                 isEmail: true,
             },
             index: true,
