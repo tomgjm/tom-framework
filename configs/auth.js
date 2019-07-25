@@ -14,18 +14,20 @@ module.exports = {
     jwt_expiresin_long: process.env.JWT_EXPIRESIN_LONG || '3d',
     jwt_notBefore: process.env.JWT_NOTBEFORE,
     jwt_audience: process.env.JWT_AUDIENCE,
-    jwt_issuer: process.env.JWT_ISSUER || ( system_cfg.server_url_type + system_cfg.server_host),
+    jwt_issuer: process.env.JWT_ISSUER || (system_cfg.server_url_type + system_cfg.server_host),
     jwt_key: 'user',
     jwt_key_id: 'id',
     jwt_key_token_version: 'token_version',
     jwt_key_check_token_version: true,
     jwt_key_exp_is_long: 'exp_is_long',
     jwt_tokenkey: 'tokenkey',
-    jwt_cookie:process.env.JWT_COOKIE || '__tomjs_tokenkey__',
-    jwt_rewirte_cookie : toBool(process.env.JWT_REWIRTE_COOKIE || false),
-    jwt_rewirte_cookie_remaining : process.env.JWT_REWIRTE_COOKIE_REMAINING || '30m',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
-    jwt_rewirte_cookie_remaining_long : process.env.JWT_REWIRTE_COOKIE_REMAINING_LONG || '1d',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
-    
+    jwt_cookie: process.env.JWT_COOKIE || '__tomjs_tokenkey__',
+    jwt_rewirte_cookie: toBool(process.env.JWT_REWIRTE_COOKIE || false),
+    jwt_rewirte_cookie_remaining: process.env.JWT_REWIRTE_COOKIE_REMAINING || '30m',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
+    jwt_rewirte_cookie_remaining_long: process.env.JWT_REWIRTE_COOKIE_REMAINING_LONG || '1d',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
+
+    auth_routes_use_ratelimit: toBool(process.env.AUTH_ROUTES_USE_RATELIMIT || false),
+
     password_tpye: 'pbkdf2',// 可以是 pbkdf2 或 bcrypt,需要npm 安装 bcrypt ,切换密码加密方式不会影响解密，密码解密会自动判断解密方式
     password_salt_length: 8,
     password_digest: 'sha512',
