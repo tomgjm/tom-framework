@@ -34,5 +34,5 @@ module.exports = {
     log4js_category: process.env.APP_LOG_CATEGORY ||"app",
 
     log4js_error_category: process.env.ERROR_LOG_CATEGORY || "error",
-    all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW) || true,
+    all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW) || false,
 }
