@@ -26,7 +26,7 @@ module.exports = {
     jwt_rewirte_cookie_remaining: process.env.JWT_REWIRTE_COOKIE_REMAINING || '30m',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
     jwt_rewirte_cookie_remaining_long: process.env.JWT_REWIRTE_COOKIE_REMAINING_LONG || '1d',// 表示当过期时间还剩时间此时间，那么将重新产生新的token并写入cookie
 
-    auth_routes_use_ratelimit: toBool(process.env.AUTH_ROUTES_USE_RATELIMIT || false),
+    auth_routes_use_ratelimit: toBool(process.env.AUTH_ROUTES_USE_RATELIMIT || true),
 
     password_tpye: 'pbkdf2',// 可以是 pbkdf2 或 bcrypt,需要npm 安装 bcrypt ,切换密码加密方式不会影响解密，密码解密会自动判断解密方式
     password_salt_length: 8,

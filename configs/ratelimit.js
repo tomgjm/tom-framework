@@ -23,8 +23,9 @@ module.exports = {
             max: process.env.RATELIMIT_DEFAULT_MAX || 10,
             disableHeader: false,
             show_api_error: true,
+            clear_interval: '1m',//仅仅针对本机内存情况下生效
         },
-        whitelist: ["::1", "127.0.0.1"],//白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
+        whitelist: ["127.0.0.1","192.168.*.*"],//白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
         blacklist: [],//黑名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数（黑名单优先于白名单）
         blackMessage: 'This is forbidden area for you.',
     },
@@ -41,8 +42,9 @@ module.exports = {
             max: process.env.RATELIMIT_MOBILE_MAX || 1,
             disableHeader: false,
             show_api_error: false,
+            clear_interval: process.env.RATELIMIT_MOBILE_CLEAR_INTERVAL || '1m',
         },
-        //whitelist: ["::1", "127.0.0.1"],
+        whitelist: ["127.0.0.1","192.168.*.*"],
         blacklist: [],
         blackMessage: 'This is forbidden area for you.',
     },
@@ -59,8 +61,9 @@ module.exports = {
             max: process.env.RATELIMIT_LOGIN_MAX || 5,
             disableHeader: false,
             show_api_error: true,
+            clear_interval: process.env.RATELIMIT_LOGIN_CLEAR_INTERVAL || '1m',
         },
-        //whitelist: ["::1", "127.0.0.1"],
+        whitelist: ["127.0.0.1","192.168.*.*"],
         blacklist: [],
         blackMessage: 'This is forbidden area for you.',
     },
