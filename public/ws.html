@@ -25,10 +25,10 @@
 
     function init() {
         if (webSocket === undefined) {
-            webSocket = CreateWebSocket("wss://localhost:5001");
+            webSocket = CreateWebSocket("ws://localhost:5000?Authorization=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6ZmFsc2UsImlhdCI6MTU2NDU2MjgxNSwiZXhwIjoxNTY0NTcwMDE1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.kgm_V38MWepJvipP4h83dbCQRzPdIDUZgCqE26GYBJ8");
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
-                webSocket.send("第一条数据")
+                //webSocket.send("第一条数据")
             }
             webSocket.onmessage = function(evt) {
                     // 这是服务端返回的数据
@@ -42,8 +42,8 @@
         }
     }
     // input事件发送数据
+    init();
     document.getElementById("submit").onclick = function() {
-        init();
         var str = document.getElementById("pl").value
         webSocket.send(str)
     }

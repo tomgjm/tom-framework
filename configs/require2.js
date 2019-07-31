@@ -116,6 +116,7 @@ module.exports = {
         "tomjs/rules/auth/base_register": "tomjs/rules/auth/base_register",
         "tomjs/session/cahce_store": "tomjs/session/cahce_store",
         "tomjs/sms": "tomjs/sms",
+        "tomjs/websocket": "tomjs/websocket",
         "tomjs/streams": "tomjs/streams",
         "tomjs/streams/redis_streams": "tomjs/streams/redis_streams",
         "tomjs/validator": "tomjs/validator",
