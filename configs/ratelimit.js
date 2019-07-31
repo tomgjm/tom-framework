@@ -66,10 +66,11 @@ module.exports = {
         //whitelist: ["127.0.0.1","192.168.*.*"],
         blacklist: [],
         blackMessage: 'This is forbidden area for you.',
-    },    
+    },
+    //如果设置 websocket_global 会对全局
     websocket: {
         //不设置 redis 就表示使用本机内存
-        redis: process.env.RATELIMIT_DEFAULT_REDIS_URL || "redis://127.0.0.1:6379/0",
+        //redis: process.env.RATELIMIT_DEFAULT_REDIS_URL || "redis://127.0.0.1:6379/0",
         options: {
             duration: process.env.RATELIMIT_WEBSOCKET_DURATION || '1m',
             errorMessage: 'too many requests',

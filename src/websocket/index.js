@@ -6,30 +6,41 @@ const validator = require2('tomjs/handlers/validator');//表单验证 validator(
 const ratelimit = require2('tomjs/middleware/ratelimit');//访问限制器
 
 module.exports = async function (ws, isWSS) {
-    //ws.use(ratelimit('websocket_all').websocket);//全局访问限制
     ws.use(async function (ctx, next) {
         // the websocket is added to the context as `ctx.websocket`.
-        ctx.websocket.on('message', async function (message) {
-            try {
-                await ratelimit('websocket').websocket(ctx);//进行访问限制
-                //validator(ctx,'websocket/a@message',{});
-                //authorize(ctx,'show',cr);
-                await ctx.ws_send('Hello:'+ JSON.stringify(ctx.state));
-                console.log("socket msessage:", message);
-            } catch (error) {
-                console.error(error);
-                ctx.ws_error_send(error);
-            }
+        ctx.websocket.on_error = (error) => {
+            console.log('on_error', error);
+        };
+        ctx.websocket.on_message = async function (message) {
+            await ratelimit('websocket').websocket(ctx);//进行访问限制
+            //validator(ctx,'websocket/a@message',{});
+            //authorize(ctx,'show',cr);
+            await ctx.ws_send('Hello:' + JSON.stringify(ctx.state));
+            console.log("socket msessage:", message);
+        };
+        ctx.websocket.on('error', async (error) => {
+            await ctx.ws_error_send(error);
+            ctx.websocket.terminate();
         });
+        return next();
     });
-    ws.use(route.all('/test/:id',async function (ctx, next) {
+    ws.use(route.all('/test/:id', async function (ctx, next) {
         // `ctx` is the regular koa context created from the `ws` onConnection `socket.upgradeReq` object.
         // the websocket is added to the context on `ctx.websocket`.
-        await ctx.websocket.send('Hello World');
-        ctx.websocket.on('message',async function (message) {
+        ctx.websocket.on_error = (error) => {
+            console.log('on_error', error);
+        };
+        ctx.websocket.on_message = async function (message) {
             // do something with the message from client
+            await ratelimit('websocket').websocket(ctx);//进行访问限制
+            await ctx.ws_send('re2:' + message + ' ' + JSON.stringify(ctx.state));
             console.log(message);
+        };
+        ctx.websocket.on('error', async (error) => {
+            await ctx.ws_error_send(error);
+            ctx.websocket.terminate();
         });
+        return next();
     }));
 
     if (isWSS) {

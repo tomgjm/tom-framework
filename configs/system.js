@@ -20,6 +20,7 @@ module.exports = {
     websocket_open: toBool(process.env.WEBSOCKET_OPEN) || false,
     websocket_options:{
     },
+    websocket_auto_error_send: true,
 
     country: process.env.SYSTEM_COUNTRY || 'zh-cn', // 所在国家的国家代码
     plugin_path: process.env.SYSTEM_PLUGIN_PATH || path.join(__dirname, './plugins'), // 插件路径
