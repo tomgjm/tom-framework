@@ -30,11 +30,11 @@ module.exports = async function (ws, isWSS) {
         ctx.websocket.on_error = (error) => {
             console.log('on_error', error);
         };
-        ctx.websocket.on_message = async function (message) {
+        ctx.websocket.on_message = async function (data) {
             // do something with the message from client
             await ratelimit('websocket').websocket(ctx);//进行访问限制
-            await ctx.ws_send('re2:' + message + ' ' + JSON.stringify(ctx.state));
-            console.log(message);
+            await ctx.ws_send('re2:' + JSON.stringify(data) + ' ' + JSON.stringify(ctx.state));
+            console.log(data);
         };
         ctx.websocket.on('error', async (error) => {
             await ctx.ws_error_send(error);
