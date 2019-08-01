@@ -14,10 +14,23 @@
 <script type="text/javascript">
     // 很重要 必须写，判断浏览器是否支持websocket
     var CreateWebSocket = (function() {
-            return function(urlValue) {
-                if (window.WebSocket) return new WebSocket(urlValue);
-                if (window.MozWebSocket) return new MozWebSocket(urlValue);
-                return false;
+            return function(urlValue, token) {
+                urlValue += (urlValue.indexOf('?')<0 ? '?' : '&') + 'Authorization=Bearer%20' + token;
+                let new_websocket = undefined;
+                if (window.WebSocket) {
+                    new_websocket = new WebSocket(urlValue);
+                }
+                if (window.MozWebSocket) {
+                    new_websocket = new MozWebSocket(urlValue);
+                }
+                if(new_websocket){
+                    let send = new_websocket.send;
+                    new_websocket.send = function(){
+                        arguments[0]=JSON.stringify(arguments[0]);
+                        return send.apply(new_websocket,arguments);
+                    }
+                }
+                return new_websocket;
             }
         })()
         // 实例化websoscket websocket有两种协议ws(不加密)和wss(加密)
@@ -25,7 +38,7 @@
 
     function init() {
         if (webSocket === undefined) {
-            webSocket = CreateWebSocket("ws://localhost:5000/test/1?Authorization=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYjlkMDg0OWYxYmZhMzExY2U1NmZlMCIsInRva2VuX3ZlcnNpb24iOjMsImV4cF9pc19sb25nIjp0cnVlLCJpYXQiOjE1NjQ1ODMxMjYsImV4cCI6MTU2NDg0MjMyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCJ9.m6uhtVfcGk-SEtpLPimbei7b5k240GSBa-MLTXN5Yfo");
+            webSocket = CreateWebSocket("ws://localhost:5000/", "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6dHJ1ZSwiaWF0IjoxNTY0NjMxODg4LCJleHAiOjE1NjQ4OTEwODgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.65EvcJmJQ6ItTg2Hzt26eVw7Kj27b6Z6hGPds2jcQtQ");
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
                 //webSocket.send("第一条数据")
@@ -44,7 +57,7 @@
     // input事件发送数据
     init();
     document.getElementById("submit").onclick = function() {
-        var str = document.getElementById("pl").value
-        webSocket.send(str)
+        var str = document.getElementById("pl").value;
+        webSocket.send({msg:str});
     }
 </script>

@@ -4,6 +4,7 @@ module.exports = {
     AUTHORIZE_ERROR: 'authorize error',
     VALIDATOR_ERROR:'validator error',
     LANGUAGE_ERROR: 'language error',
+    UNAUTHORIZED:'Unauthorized',
     NOT_FOUND_ERROR:'not found error',
     DEEP_POPULATE_MODEL_FILE_NOT_FOUND_ERROR:'deep populate model file not found error',
     TOO_MANY_REQUESTS_ERROR:'too many requests',

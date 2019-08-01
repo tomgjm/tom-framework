@@ -4,6 +4,7 @@ module.exports = {
     AUTHORIZE_ERROR: '您无权进行当前操作',
     VALIDATOR_ERROR: '验证不通过',
     LANGUAGE_ERROR: '语言类型错误',
+    UNAUTHORIZED: '未授权',
     NOT_FOUND_ERROR: '没有找到',
     DEEP_POPULATE_MODEL_FILE_NOT_FOUND_ERROR:'深度填充没有找到需要的Model文件',
     TOO_MANY_REQUESTS_ERROR:'请求次数太多',
