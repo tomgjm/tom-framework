@@ -3,6 +3,7 @@ const SystemConfig = require2('tomjs/configs')().system;
 const route = require2('koa-route');
 const authorize = require2('tomjs/handlers/authorize');//数据库模型权限验证函数
 const validator = require2('tomjs/handlers/validator');//表单验证 validator(ctx,'websocket/a@message',{});
+const { login, retoken, decode_token, logout } = require2('tomjs/handlers/login_out');//提供用户登录，登出，生成新的token，解读token等功能
 const ratelimit = require2('tomjs/middleware/ratelimit');//访问限制器
 
 module.exports = async function (ws, isWSS) {

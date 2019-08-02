@@ -38,7 +38,7 @@
 
     function init() {
         if (webSocket === undefined) {
-            webSocket = CreateWebSocket("ws://localhost:5000", "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6dHJ1ZSwiaWF0IjoxNTY0NjMxODg4LCJleHAiOjE1NjQ4OTEwODgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.65EvcJmJQ6ItTg2Hzt26eVw7Kj27b6Z6hGPds2jcQtQ");
+            webSocket = CreateWebSocket("ws://localhost:5000/test/1?lang=en", "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6dHJ1ZSwiaWF0IjoxNTY0NjMxODg4LCJleHAiOjE1NjQ4OTEwODgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.65EvcJmJQ6ItTg2Hzt26eVw7Kj27b6Z6hGPds2jcQtQ");
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
                 //webSocket.send("第一条数据")

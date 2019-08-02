@@ -18,7 +18,7 @@ module.exports = {
     jwt_key: 'user',
     jwt_key_id: 'id',
     jwt_key_token_version: 'token_version',
-    jwt_key_check_token_version: true,
+    jwt_key_check_token_version: toBool(process.env.JWT_KEY_CHECK_TOKEN_VERSION) || false,
     jwt_key_exp_is_long: 'exp_is_long',
     jwt_tokenkey: 'tokenkey',
     jwt_cookie: process.env.JWT_COOKIE || '__tomjs_tokenkey__',
