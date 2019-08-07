@@ -1,5 +1,5 @@
 //cache 系统使用的是 cacheman 具体配置以及支持引擎可以参考（默认支持memory、mongo）
-const { toBool } = require('../src/node_modules/tomjs/handlers/tools')
+const { toBool } = require('tomjs/handlers/tools')
 module.exports = {
     session_key:'tomjs:sess',
     type:'token',//如果设置为 cookie 那么token完全失效，但如果设置为token，在没有认证通过前会以cookie方式工作
