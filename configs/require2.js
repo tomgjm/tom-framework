@@ -25,6 +25,7 @@ module.exports = {
         "koa-router": "koa-router",
         "koa-static": "koa-static",
         "koa-sslify": "koa-sslify",
+        "koa-subdomain": "koa-subdomain",
         "koa-websocket": "koa-websocket",
         "koa-unless": "koa-unless",
         "lodash": "lodash",

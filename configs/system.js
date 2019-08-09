@@ -8,8 +8,8 @@ module.exports = {
     server_run_type: process.env.SERVER_RUN_TYPE || 'http', // "ht-tp", "https", "http and https", "http force https"
     server_url_type: process.env.SERVER_URL_TYPE || 'http://', // 服务器协议类型,包含"http://"或"https://"
     server_host: process.env.SERVER_HOST || 'localhost', // 服务器暴露的域名地址,请勿添加"http://"
-    server_http_port: process.env.SERVER_HTTP_PORT || '5000', // 服务器监听的http端口号
-    server_https_port: process.env.SERVER_HTTP_PORT || '5001', // 服务器监听的https端口号
+    server_http_port: process.env.SERVER_HTTP_PORT || '80', // 服务器监听的http端口号
+    server_https_port: process.env.SERVER_HTTP_PORT || '443', // 服务器监听的https端口号
     server_bind_ip: process.env.SERVER_BIND_IP || '0.0.0.0', // 服务器绑定IP
     server_timeout: process.env.SERVER_TIMEOUT || 60000,//单位毫秒
     ssl_options: {
