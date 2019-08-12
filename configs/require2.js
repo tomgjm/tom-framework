@@ -99,6 +99,8 @@ module.exports = {
         "tomjs/middleware/render": "tomjs/middleware/render",
         "tomjs/middleware/response-formatter": "tomjs/middleware/response-formatter",
         "tomjs/middleware/setuplang": "tomjs/middleware/setuplang",
+        "tomjs/middleware/websocket_lang": "tomjs/middleware/websocket_lang",
+        "tomjs/middleware/websocket_onmessage": "tomjs/middleware/websocket_onmessage",
         "tomjs/middleware/websocket_response_formatter": "tomjs/middleware/websocket_response_formatter",
         "tomjs/models/mongoose_middleware/deep_populate": "tomjs/models/mongoose_middleware/deep_populate",
         "tomjs/models/mongoose_middleware/pagination": "tomjs/models/mongoose_middleware/pagination",
