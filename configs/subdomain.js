@@ -5,6 +5,10 @@ module.exports = {
     },
     subdomain_offset: process.env.SUBDOMAIN_OFFSET || 2,
     maps: {
+        "api": {
+            route: "./routes/api.js",
+            websocket: './routes/index.js',
+        },
         "*": {
             route: "./routes/web.js",
             static: {
@@ -19,9 +23,6 @@ module.exports = {
                     defer: true,
                 },
             },
-        },
-        "api": {
-            route: "./routes/api.js",            
         },
     }
 }
