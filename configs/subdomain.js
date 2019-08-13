@@ -5,7 +5,23 @@ module.exports = {
     },
     subdomain_offset: process.env.SUBDOMAIN_OFFSET || 2,
     maps: {
-        "www": "./routes/web.js",
-        "api": "./routes/api.js",
+        "*": {
+            route: "./routes/web.js",
+            static: {
+                source_path: 'public',
+                target_path: '/',
+                options: {
+                    maxage: 0,
+                    hidden: false,
+                    index: "index.html",
+                    gzip: true,
+                    br: true,
+                    defer: true,
+                },
+            },
+        },
+        "api": {
+            route: "./routes/api.js",            
+        },
     }
 }
