@@ -14,4 +14,5 @@ module.exports = {
     "send_email": ["send_email_listener"],
     "send_email_end": ["send_email_end_listener"],
     "error": ["error_listener"],
+    "websocket": ["websocket_listener"],
 };

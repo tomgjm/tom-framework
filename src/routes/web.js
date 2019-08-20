@@ -1,7 +1,7 @@
 const require2 = require('tomjs/handlers/require2');
-const MainRoutes = require2('tomjs/route/main-routes');
+const MainRouter = require2('tomjs/router/main-router');
 
-let web = new MainRoutes();
+let web = new MainRouter();
 
 web.get('/', 'web/show@index');
 

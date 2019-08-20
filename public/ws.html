@@ -12,10 +12,13 @@
     <input type="button" value="关闭" id="close" />
 </body>
 <script type="text/javascript">
+    function isObject(obj) {
+        return (typeof(obj) == "object") && (!Array.isArray(obj) && obj !== null);
+    }
     // 很重要 必须写，判断浏览器是否支持websocket
     var CreateWebSocket = (function() {
             return function(urlValue, token) {
-                urlValue += (urlValue.indexOf('?')<0 ? '?' : '&') + 'Authorization=Bearer%20' + token;
+                urlValue += (urlValue.indexOf('?') < 0 ? '?' : '&') + 'Authorization=Bearer%20' + token;
                 let new_websocket = undefined;
                 if (window.WebSocket) {
                     new_websocket = new WebSocket(urlValue);
@@ -23,11 +26,11 @@
                 if (window.MozWebSocket) {
                     new_websocket = new MozWebSocket(urlValue);
                 }
-                if(new_websocket){
+                if (new_websocket) {
                     let send = new_websocket.send;
-                    new_websocket.send = function(){
-                        arguments[0]=JSON.stringify(arguments[0]);
-                        return send.apply(new_websocket,arguments);
+                    new_websocket.send = function() {
+                        arguments[0] = JSON.stringify(arguments[0]);
+                        return send.apply(new_websocket, arguments);
                     }
                 }
                 return new_websocket;
@@ -38,7 +41,7 @@
 
     function init() {
         if (webSocket === undefined) {
-            webSocket = CreateWebSocket("ws://api.my.com/", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWQ4M2Y4OGZkYzUxN2JlY2Y2MGVkMyIsInRva2VuX3ZlcnNpb24iOjAsImV4cF9pc19sb25nIjpmYWxzZSwiaWF0IjoxNTY1Njg1MzA5LCJleHAiOjE1NjU2OTI1MDksImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.0I070UuDhyKL89npvOR5Db2X20rmSmkdevtgCSElu7k");
+            webSocket = CreateWebSocket("ws://api.my.com/test/1", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWQ4M2Y4OGZkYzUxN2JlY2Y2MGVkMyIsInRva2VuX3ZlcnNpb24iOjAsImV4cF9pc19sb25nIjpmYWxzZSwiaWF0IjoxNTY1Njg1MzA5LCJleHAiOjE1NjU2OTI1MDksImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.0I070UuDhyKL89npvOR5Db2X20rmSmkdevtgCSElu7k");
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
                 //webSocket.send("第一条数据")
@@ -51,13 +54,28 @@
             webSocket.onclose = function(evt) {
                 console.log("Connection closed.")
             }
-
+            let old_send = webSocket.send;
+            webSocket.send = async function(method, path, data) {
+                if (!isObject(data)) {
+                    data = {
+                        data: data
+                    };
+                }
+                arguments[0] = {
+                    method,
+                    path,
+                    data
+                };
+                return await old_send.apply(webSocket, arguments);
+            };
         }
     }
     // input事件发送数据
     init();
     document.getElementById("submit").onclick = function() {
         var str = document.getElementById("pl").value;
-        webSocket.send({msg:str});
+        webSocket.send('get', '/', {
+            message: str
+        });
     }
 </script>

@@ -3,14 +3,15 @@ module.exports = {
         hostname: '^api',
         //path: '^/api',
     },
+    socket_router_path: './websocket/routes/socket/',
     subdomain_offset: process.env.SUBDOMAIN_OFFSET || 2,
     maps: {
         "api": {
-            route: "./routes/api.js",
-            websocket: './websocket/routes/index.js',
+            web: "./routes/api.js",
+            websocket: './websocket/routes/url/api.js',
         },
         "*": {
-            route: "./routes/web.js",
+            web: "./routes/web.js",
             static: {
                 source_path: 'public',
                 target_path: '/',

@@ -15,11 +15,11 @@ route.all('/', async function (ctx, next) {
         await ratelimit('websocket').websocket(ctx);//进行访问限制
         //validator(ctx,'websocket/a@message',{});
         //authorize(ctx,'show',dbObject);
-        await ctx.ws_send('Hello:' + JSON.stringify(ctx.state));
+        await ctx.websocket.send('Hello:' + JSON.stringify(ctx.state));
         console.log("socket msessage:", data);
     };
     ctx.websocket.on('error', async (error) => {
-        await ctx.ws_error_send(error);
+        await ctx.websocket.error_send(error);
         ctx.websocket.terminate();
     });
     return next();
@@ -34,11 +34,11 @@ route.all('/test/:id', async function (ctx, next) {
     ctx.websocket.on_message = async function (data) {
         // do something with the message from client
         await ratelimit('websocket').websocket(ctx);//进行访问限制
-        await ctx.ws_send('re2:' + JSON.stringify(data) + ' ' + JSON.stringify(ctx.state));
+        await ctx.websocket.send('re2:' + JSON.stringify(data) + ' ' + JSON.stringify(ctx.state));
         console.log(data);
     };
     ctx.websocket.on('error', async (error) => {
-        await ctx.ws_error_send(error);
+        await ctx.websocket.error_send(error);
         ctx.websocket.terminate();
     });
     return next();
