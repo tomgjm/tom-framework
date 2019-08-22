@@ -64,7 +64,6 @@ module.exports = {
         "tomjs/error/streams_error": "tomjs/error/streams_error",
         "tomjs/error/ws_router_error": "tomjs/error/ws_router_error",
         "tomjs/error/ws_timeout_error": "tomjs/error/ws_timeout_error",
-        "tomjs/error/ws_timeout_receive_error": "tomjs/error/ws_timeout_receive_error",
         "tomjs/handlers/__": "tomjs/handlers/__",
         "tomjs/handlers/authorize": "tomjs/handlers/authorize",
         "tomjs/handlers/base_tools": "tomjs/handlers/base_tools",
