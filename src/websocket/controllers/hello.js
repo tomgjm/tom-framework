@@ -1,6 +1,8 @@
 const require2 = require('tomjs/handlers/require2');
 // const path = require2('path');
 // const { isObject } = require2('tomjs/handlers/tools');
+const BaseApiError = require2('tomjs/error/base_api_error');
+
 class co {
     //显示列表
     async index(ctx) {
@@ -29,7 +31,6 @@ class co {
     //删除数据
     async destroy(ctx, id) {
     }
-
 
     async hello(ctx) {
         ctx.body = { message: 'hello!', receive: ctx.request.body };

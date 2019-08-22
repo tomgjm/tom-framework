@@ -52,6 +52,7 @@ function websocket(url, token, timeout) {
         }
         var old_send = this.prototype.send;
         function send(method, path, data, id) {
+            if (data === undefined) { data = {}; }
             var obj = { code: 0, message: 'success', method: method, path: path, data: data };
             if (id) { obj.id = id; }
             arguments[0] = JSON.stringify(obj);
