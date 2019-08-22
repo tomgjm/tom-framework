@@ -16,7 +16,15 @@ class WebsocketListener extends BaseListener {
     }
     error_send({ error, ctx } = {}) {
         let user_id = getUserIDByCTX(ctx);
-        Log.error(`Websocket error ip: ${ctx.ip}, user id:${user_id}, error:`,error);
+        Log.error(`Websocket error_send ip: ${ctx.ip}, user id:${user_id}, error:`,error);
+    }    
+    error_not_send({ error, ctx } = {}) {
+        let user_id = getUserIDByCTX(ctx);
+        Log.error(`Websocket error_not_send ip: ${ctx.ip}, user id:${user_id}, error:`,error);
+    }    
+    receive_error_reply({ error, ctx } = {}) {
+        let user_id = getUserIDByCTX(ctx);
+        Log.error(`Websocket receive_error_reply error ip: ${ctx.ip}, user id:${user_id}, error:`,error);
     }
 }
 module.exports = WebsocketListener;

@@ -8,7 +8,7 @@ module.exports = {
     maps: {
         "api": {
             web: "./routes/api.js",
-            websocket: './websocket/routes/url/api.js',
+            websocket: './websocket/routes/api.js',
         },
         "*": {
             web: "./routes/web.js",

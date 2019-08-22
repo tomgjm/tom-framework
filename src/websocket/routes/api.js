@@ -1,5 +1,5 @@
 const require2 = require('tomjs/handlers/require2');//可以开始使用require2引入模块了
-const WsRouter = require2('tomjs/router/websocket-router');
+const WsRouter = require2('tomjs/router/ws-url-router');
 const ratelimit = require2('tomjs/middleware/ratelimit');//访问限制器
 
 let route = new WsRouter();
