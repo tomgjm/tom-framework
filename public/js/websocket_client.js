@@ -69,7 +69,7 @@ function websocket(url, token, timeout) {
                 var time_out = timeout || self.timeout;
                 if (time_out > 0) {
                     var timeout_fn = function () {
-                        if (AsyncObj[id]) { AsyncObj[id].timeout_handle = null; }
+                        if (AsyncObj[id]) { delete AsyncObj[id]; }
                         reject({
                             code: -2, message: 'websocket time out:' + time_out, data: { id: id, method: method, path: path, data: data }
                         });
@@ -97,19 +97,12 @@ function websocket(url, token, timeout) {
                 if (AsyncObj[data.id]) {
                     var resolve_reject = AsyncObj[data.id];
                     delete AsyncObj[data.id];
-
-                    if (resolve_reject.timeout_handle !== null) {
-                        if (resolve_reject.timeout_handle) { clearTimeout(resolve_reject.timeout_handle); }
-                        if (data.code == 0) {
-                            resolve_reject.resolve(data.data);
-                        }
-                        else {
-                            resolve_reject.reject(data);
-                        }
+                    if (resolve_reject.timeout_handle) { clearTimeout(resolve_reject.timeout_handle); }
+                    if (data.code == 0) {
+                        resolve_reject.resolve(data.data);
                     }
                     else {
-                        //如果 resolve_reject.timeout_handle === null 表示已经超时
-                        CreateError(evt, "websocket time out receive", "ws_time_out_receive", data);
+                        resolve_reject.reject(data);
                     }
                 }
                 else {
