@@ -12,9 +12,9 @@ route.use('/', ratelimit('websocket').websocket);
 route.all('/', async function (ctx, next) {
     //validator(ctx,'websocket/a@message',{});
     //authorize(ctx,'show',dbObject);
-    //await ctx.websocket.send('Hello:' + JSON.stringify(ctx.websocket.message));
     ctx.body = { server_msg: 'Hello:' + JSON.stringify(ctx.request.body) };
-    console.log("socket msessage:", ctx.websocket.message);
+    //ctx.websocket.reply({ server_msg: 'Hello:' + JSON.stringify(ctx.request.body) });
+    ctx.websocket.send({ server_msg: 'OK' });
     return next();
 });
 route.all('/test/:id', async function (ctx, next) {

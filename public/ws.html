@@ -11,6 +11,7 @@
     <input type="button" value="发送" id="submit" />
     <input type="button" value="关闭" id="close" />
 </body>
+<script type="text/javascript" src="js/promise.js"></script>
 <script type="text/javascript" src="js/websocket_client.js"></script>
 <script type="text/javascript">
     var webSocket = undefined;
@@ -19,14 +20,18 @@
         if (webSocket === undefined) {
             webSocket = new websocket("ws://api.my.com/test/1",
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViYWQ4M2Y4OGZkYzUxN2JlY2Y2MGVkMyIsInRva2VuX3ZlcnNpb24iOjAsImV4cF9pc19sb25nIjpmYWxzZSwiaWF0IjoxNTY1Njg1MzA5LCJleHAiOjE1NjU2OTI1MDksImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.0I070UuDhyKL89npvOR5Db2X20rmSmkdevtgCSElu7k",
-                1000);
+                0);
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
                 //webSocket.send("第一条数据")
             }
             webSocket.onmessage = function(evt) {
                     // 这是服务端返回的数据
-                    console.log("服务端说" + evt.data)
+                    console.log("服务端说" + evt.data);
+                    var data = JSON.parse(evt.data);
+                    if (data.code == 0 && data.id) {
+                        webSocket.reply("ok");
+                    }
                 }
                 // 关闭连接
             webSocket.onclose = function(evt) {
