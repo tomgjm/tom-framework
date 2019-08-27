@@ -33,7 +33,8 @@ class co {
     }
 
     async hello(ctx) {
-        ctx.body = { message: 'hello!', receive: ctx.request.body };
+        //ctx.body = { message: 'hello!', receive: ctx.request.body };
+        await ctx.render('index', { title: 'my title', content: 'my content' });
     }
 
 }
