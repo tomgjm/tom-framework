@@ -3,7 +3,10 @@ const WsRouter = require2('tomjs/router/ws-url-router');
 const ratelimit = require2('tomjs/middleware/ratelimit');//访问限制器
 
 let route = new WsRouter();
-route.path('/', async function (ctx, next) {
+
+route.path('/', 'api');
+
+route.path('/test/:id', async function (ctx, next) {
     ctx.websocket.on_message = async function (data) {
         await ctx.websocket.send('on_message:' + JSON.stringify(data));
     };
@@ -14,6 +17,4 @@ route.path('/', async function (ctx, next) {
     });
     return next();
 });
-
-route.path('/test/:id', 'api');
 module.exports = route;

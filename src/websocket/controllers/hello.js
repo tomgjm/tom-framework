@@ -34,7 +34,9 @@ class co {
 
     async hello(ctx) {
         //ctx.body = { message: 'hello!', receive: ctx.request.body };
-        await ctx.render('index', { title: 'my title', content: 'my content' });
+        //await ctx.render('index', { title: 'my title', content: 'my content' });
+        ctx.websocket.broadcast_send({msg:'haha!'});
+        ctx.websocket_server.broadcast_send({msg:'websocket_server'});
     }
 
 }
