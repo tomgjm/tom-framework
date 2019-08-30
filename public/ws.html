@@ -19,7 +19,7 @@
     function init() {
         if (webSocket === undefined) {
             webSocket = new websocket("ws://api.my.com/",
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6ZmFsc2UsImlhdCI6MTU2Njk3MDM0MywiZXhwIjoxNTY2OTc3NTQzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.HuE5lHD3FrdL1x5NqDhsVvEZTKyRyisW8aWuSxe0qQU",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGE0Mzg5MTA4NmJkN2M5Y2ZmMjEwNSIsInRva2VuX3ZlcnNpb24iOjIxLCJleHBfaXNfbG9uZyI6dHJ1ZSwiaWF0IjoxNTY3MTQyMjYzLCJleHAiOjE1Njc0MDE0NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.DXJZZbI4DiP9FjqEmeMTkoyR-HUfCzrXZ0xUipGUFTo",
                 0);
             webSocket.onopen = function(evt) {
                 // 一旦连接成功，就发送第一条数据
