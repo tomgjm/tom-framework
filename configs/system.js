@@ -1,5 +1,5 @@
 const path = require('path');
-const { toBool } = require('tomjs/handlers/tools');
+const { toBool } = require('tomjs/handlers/base_tools');
 
 // 系统配置
 module.exports = {
@@ -36,7 +36,4 @@ module.exports = {
 
     log4js_error_category: process.env.ERROR_LOG_CATEGORY || "error",
     all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW) || false,
-
-    websocket_send_time_out: process.env.WEBSOCKET_SEND_TIME_OUT || 0,//单位毫秒
-    websocket_id_head: process.env.WEBSOCKET_ID_HEAD || 's',
 }
