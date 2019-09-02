@@ -1,5 +1,5 @@
 const path = require('path');
-const { toBool } = require('tomjs/handlers/tools');
+const { toBool } = require('tomjs/handlers/base_tools');
 module.exports = {
     multipart: toBool(process.env.BODY_MULTIPART) || true,
     //strict: toBool(process.env.BODY_STRICT) || false,

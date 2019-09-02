@@ -1,6 +1,6 @@
 const path = require('path');
 const app_dir = require('tomjs/handlers/dir')();
-const { toBool } = require('tomjs/handlers/tools');
+const { toBool } = require('tomjs/handlers/base_tools');
 const system_cfg = require('./system');
 
 // 用户认证配置

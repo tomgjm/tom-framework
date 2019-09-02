@@ -1,4 +1,4 @@
-const { toBool } = require('tomjs/handlers/tools');
+const { toBool } = require('tomjs/handlers/base_tools');
 const default_server_cfg = process.env.STREAMS_REDIS_DEFAULT_URL || "redis://127.0.0.1:6379/0" //"redis://:authpassword@127.0.0.1:6380/4"
 module.exports = {
     type_default: 'redis',

@@ -1,4 +1,4 @@
-const { toBool } = require('tomjs/handlers/tools');
+const { toBool } = require('tomjs/handlers/base_tools');
 module.exports = {
     log4js_category : process.env.EMAIL_LOG_CATEGORY ||"email",
     service: process.env.MAIL_SERVICE,

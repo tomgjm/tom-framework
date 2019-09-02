@@ -1,4 +1,4 @@
-const { toBool } = require('tomjs/handlers/tools')
+const { toBool } = require('tomjs/handlers/base_tools')
 module.exports = {
     default: process.env.DB_TYPE || "mongodb",
     await: toBool(process.env.DB_AWAIT) || true,

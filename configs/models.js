@@ -1,4 +1,4 @@
-const { toBool } = require('tomjs/handlers/tools')
+const { toBool } = require('tomjs/handlers/base_tools')
 module.exports = {
     models: {
         UserModel: './models/user',
