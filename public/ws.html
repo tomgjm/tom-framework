@@ -48,7 +48,7 @@
     document.getElementById("submit").onclick = function() {
         var str = document.getElementById("pl").value;
         webSocket.sendAsync('get', '/', {
-            message: str
+            socket_id: str
         }).then(function(data) {
             console.log(data);
         }).catch(function(data) {

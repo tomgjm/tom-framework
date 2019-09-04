@@ -35,13 +35,14 @@ class co {
 
     async hello(ctx) {
         index++;
-        //ctx.body = { message: 'hello!', receive: ctx.request.body };
-        await ctx.render('index', { title: 'my title', content: 'my content' });
+        //ctx.body = { receive: ctx.request.body };
+        //await ctx.render('index', { title: 'my title', content: 'my content' });
         //ctx.websocket.broadcast({receive: ctx.request.body});
         //ctx.websocket.all_broadcast({msg:'websocket_server'});
-        ctx.websocket.joinRoom('temp');
-        let count = await ctx.websocket.broadcastRoom('temp',index+",haha~");
-        console.log(`broadcastRoom count:${count}`);
+        //ctx.websocket.joinRoom('temp');
+        //ctx.body = await ctx.websocket.sendUsersAsync(['5c8a43891086bd7c9cff2105'], index + ",haha~");
+        ctx.body = await ctx.websocket.sendSocketsAsync([ctx.request.body.socket_id], index + ",haha~");
+        //console.log(`broadcastRoom count:${count}`);
     }
 
 }

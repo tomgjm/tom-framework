@@ -69,6 +69,7 @@ module.exports = {
         "tomjs/handlers/all_ws_server": "tomjs/handlers/all_ws_server",
         "tomjs/handlers/authorize": "tomjs/handlers/authorize",
         "tomjs/handlers/base_tools": "tomjs/handlers/base_tools",
+        "tomjs/handlers/build_error": "tomjs/handlers/build_error",
         "tomjs/handlers/build_redis": "tomjs/handlers/build_redis",
         "tomjs/handlers/build_token": "tomjs/handlers/build_token",
         "tomjs/handlers/captcha": "tomjs/handlers/captcha",
