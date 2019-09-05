@@ -15,7 +15,7 @@
 <script type="text/javascript" src="js/websocket_client.js"></script>
 <script type="text/javascript">
     var webSocket = undefined;
-
+    var index = 0;
     function init() {
         if (webSocket === undefined) {
             webSocket = new websocket("ws://api.my.com/",
@@ -30,7 +30,7 @@
                     console.log("服务端说" + evt.data);
                     var data = JSON.parse(evt.data);
                     if (data.code == 0 && data.id) {
-                        webSocket.reply("ok");
+                        webSocket.reply("ok:"+ ++index);
                     }
                 }
                 // 关闭连接
