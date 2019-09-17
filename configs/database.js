@@ -23,6 +23,7 @@ module.exports = {
             reconnectInterval: process.env.DB_RECONNECTINTERVAL,
             poolSize: process.env.DB_POOLSIZE,
             bufferMaxEntries: process.env.DB_BUFFERMAXENTRIES,
+            useUnifiedTopology: true,
         },
         showConnInfo: toBool(process.env.DB_SHOW_CONN_INFO),
     },
