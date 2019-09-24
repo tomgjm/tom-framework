@@ -4,7 +4,7 @@
   "description": "tomjs framework",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node src/app.js",
     "migrate": "node ./node_modules/migrate/bin/migrate",
     "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js"
@@ -19,7 +19,10 @@
   "homepage": "https://github.com/tiandiwy/tomjs",
   "author": "tiandiwy",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2"
+  },
   "dependencies": {
     "migrate": "^1.6.2",
     "tomjs": "^0.1.57"

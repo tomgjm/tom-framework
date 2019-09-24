@@ -5,7 +5,7 @@ const { toBool } = require('tomjs/handlers/base_tools');
 module.exports = {
     NODE_ENV: process.env.NODE_ENV || 'development',
 
-    server_run_type: process.env.SERVER_RUN_TYPE || 'http', // "ht-tp", "https", "http and https", "http force https"
+    server_run_type: process.env.SERVER_RUN_TYPE || 'http', // "http", "https", "http and https", "http force https"
     server_url_type: process.env.SERVER_URL_TYPE || 'http://', // 服务器协议类型,包含"http://"或"https://"
     server_host: process.env.SERVER_HOST || 'localhost', // 服务器暴露的域名地址,请勿添加"http://"
     server_http_port: process.env.SERVER_HTTP_PORT || '80', // 服务器监听的http端口号
