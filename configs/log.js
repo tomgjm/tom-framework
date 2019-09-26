@@ -1,6 +1,8 @@
 const { toBool } = require('tomjs/handlers/base_tools')
 module.exports = {
     open_koa_logger: toBool(process.env.LOG_OPEN_KOA_LOGGER || true),
+    open_log4js: toBool(process.env.LOG_OPEN_LOG4JS || true),
+    show_init_info: toBool(process.env.LOG_SHOW_INIT_INFO || true),
     bind: ['log', 'info', 'error', 'warn'],
     log4js: {
         "appenders": {
