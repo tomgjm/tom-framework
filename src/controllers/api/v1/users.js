@@ -2,10 +2,11 @@ const require2 = require('tomjs/handlers/require2');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const ApiError = require(path.join(AppDir, './error/api_error'));
-//const { verify, getToken, decode } = require2('tomjs/handlers/jwt-sign');
+const UsersHandler = require(path.join(AppDir, './handlers/users_handler'));
 const Password = require2('tomjs/password');
 const BaseUser = require2('tomjs/controllers/base_user');
-const { isObject } = require2('tomjs/handlers/tools');
+const { isObject } = require2('tomjs/handlers/base_tools');
+const { getDBObjByID } = require2('tomjs/handlers/db_tools');
 class co extends BaseUser {
     constructor() {
         super();
@@ -13,7 +14,7 @@ class co extends BaseUser {
     async index(ctx) {
         //显示列表
         //throw new ApiError(ApiError.DB_NOT_FOUND, { message: 'test message' });
-        let MainRoutes = require('../../../routes/main-routes');
+        let MainRoutes = require2('tomjs/router/main-router');
         ctx.body = {
             result: 'index',
             path: ctx.request.path,
@@ -26,23 +27,12 @@ class co extends BaseUser {
 
     async show(ctx, id) {
         //显示单项
-        let cr = undefined;
-        try { cr = await this.users.findById(id); } catch (e) {
-            throw new ApiError(ApiError.DB_NOT_FOUND, { id: id, message: e.message });
-        }
-        if (cr == null) {
-            throw new ApiError(ApiError.DB_NOT_FOUND, { id: id });
-        }
-        this.authorize(ctx,'show',cr);
+        let user = await getDBObjByID(this.users, id);
+        this.authorize(ctx, 'show', user);
         //let token = getToken(ctx) //获取头部提交过来的token原文
         //let verify_obj = await verify(token) //验证并解析出token中内容，示例一下
         //let decode_obj = decode(token) //不验证直接解析出token中内容，示例一下
-        ctx.body = {
-            user: ctx.state.user, //获取验证后的token信息
-            //token: token,
-            //verify: verify_obj,
-            //decode: decode_obj,
-        }
+        ctx.body = user;
     }
 
     async create(ctx) {
@@ -88,24 +78,32 @@ class co extends BaseUser {
     }
 
     async update(ctx, id) {
+        //authorize权限检测 统一检测权限规范方便统一调整
+        let user = await getDBObjByID(this.users, id);
+        this.authorize(ctx, 'edit', user);
+        let old_info = user.toJSON();
+
         //保存编辑数据
-        if(isObject(ctx.request.files)&&isObject(ctx.request.files.image))
-        {
-            let url = path.relative(path.resolve(AppDir,'../'), ctx.request.files.image.path);
+        if (isObject(ctx.request.files) && isObject(ctx.request.files.image)) {
+            ctx.request.body.avatar = [await UsersHandler.avatar(id, ctx.request.files.avatar.path)];
             //console.log(url);            
         }
+        user.assign(ctx.request.body);
 
-        ctx.body = {
-            result: 'update',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-            id: id
+        try {
+            await user.save();
+            this.emitter.emit('update', { user_id: id, old_info, new_info: user.toJSON() });
+        } catch (e) {
+            throw new ApiError(BaseApiError.DB_ERROR, { id: id, message: ctx.request.body });
         }
+
+        ctx.body = user;
     }
 
     async destroy(ctx, id) {
         //删除数据
+        let user = await getDBObjByID(this.users, id);
+        this.authorize(ctx, 'delete', user);
         ctx.body = {
             result: 'destroy',
             path: ctx.request.path,

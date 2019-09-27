@@ -7,8 +7,6 @@ const system_cfg = require('./system');
 module.exports = {
     log4js_category: process.env.AUTH_LOG_CATEGORY || "user",
 
-    jwt_work_path: '/api',
-    jwt_auth_all_path: toBool(process.env.JWT_AUTH_ALL_PATH || false),//所有jwt_work_path路径下是否都要预先经过JWT验证
     jwt_secret: (process.env.JWT_SECRET ? path.join(app_dir, '../keys/', process.env.JWT_SECRET) : undefined) || path.join(app_dir, '../keys/publicKey.pub'), // jwt需要的Key文件名
     jwt_expiresin: process.env.JWT_EXPIRESIN || '2h', // jwt有效时间
     jwt_expiresin_long: process.env.JWT_EXPIRESIN_LONG || '3d',
