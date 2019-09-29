@@ -8,7 +8,8 @@ class UserModel extends model {
     Init() {
         //this.collection = 'users'
 
-        this.fillable = ['name', 'password', 'memo', configs.auth.email_field, configs.auth.mobile_field];
+        this.fillable = ['name', 'memo', configs.auth.email_field, configs.auth.mobile_field];
+        this.guarded = ['password'];
 
         this.Schema = {
             name: {

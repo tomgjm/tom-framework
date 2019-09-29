@@ -38,7 +38,31 @@ describe('#test koa app', () => {
     });
 
     let token_obj = undefined;
-    let user_obj = undefined;
+    let user_obj = { name: 'test_'+new Date().getTime(), password: '123456' };
+    describe('#API Create User', () => {
+        let captcha = {};
+        it('#API GET /v1/auth/captcha/register_captcha', async () => {
+            let res = await request(API_HOST)
+                .get('/v1/auth/captcha/register_captcha')
+                .expect('Content-Type', /json/)
+                .expect(200, /^{"code":0,/);
+            captcha = res.body.data;
+            //console.log(`register captcha text: ${login_captcha.text}, key: ${login_captcha.key}`);
+        });
+        it('#API POST /v1/auth/register', async () => {
+            let res = await request(API_HOST)
+                .post('/v1/auth/register')
+                .send({
+                    name: user_obj.name,
+                    password: user_obj.password,
+                    password_confirmation: user_obj.password,
+                    captcha_key: captcha.key,
+                    register_captcha: captcha.text
+                })
+                .expect('Content-Type', /json/)
+                .expect(200, /^{"code":0,/);
+        });
+    });
     describe('#API Login', () => {
         let login_captcha = {};
         it('#API GET /v1/auth/captcha/login_captcha', async () => {
@@ -53,8 +77,8 @@ describe('#test koa app', () => {
             let res = await request(API_HOST)
                 .post('/v1/auth/login')
                 .send({
-                    name: 'gjm',
-                    password: '123456',
+                    name: user_obj.name,
+                    password: user_obj.password,
                     captcha_key: login_captcha.key,
                     login_captcha: login_captcha.text,
                     expiresin_long: true,
@@ -72,13 +96,13 @@ describe('#test koa app', () => {
                 .set('Authorization', 'Bearer ' + token_obj.token)
                 .expect('Content-Type', /json/)
                 .expect(200, /^{"code":0,/);
-            user_obj = res.body.data;
-            console.log(user_obj);
+            user_obj = Object.assign({}, user_obj, res.body.data);
+            //console.log(user_obj);
             //console.log(`register captcha text: ${login_captcha.text}, key: ${login_captcha.key}`);
         });
         it('#API patch /v1/users', async () => {
             let new_user = {
-                memo: user_obj.memo+'_1',
+                memo: user_obj.memo + '_1',
             };
             let res = await request(API_HOST)
                 .patch('/v1/users/' + token_obj.userid)
