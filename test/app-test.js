@@ -10,7 +10,7 @@ describe('#test koa app', () => {
     let WEB_HOST = getUrlDomain();
     let API_HOST = getUrlDomain('api');
 
-    console.log(`WEB_HOST: ${WEB_HOST}`,`API_HOST: ${API_HOST}`);
+    console.log(`WEB_HOST: ${WEB_HOST}`, `API_HOST: ${API_HOST}`);
 
     it('#startRun ', async () => {
         obj = await startRun();
@@ -38,6 +38,7 @@ describe('#test koa app', () => {
     });
 
     let token_obj = undefined;
+    let user_obj = undefined;
     describe('#API Login', () => {
         let login_captcha = {};
         it('#API GET /v1/auth/captcha/login_captcha', async () => {
@@ -61,7 +62,7 @@ describe('#test koa app', () => {
                 .expect('Content-Type', /json/)
                 .expect(200, /^{"code":0,/);
             token_obj = res.body.data;
-            console.log(token_obj);
+            //console.log(token_obj);
         });
     });
     describe('#API User info', () => {
@@ -71,9 +72,22 @@ describe('#test koa app', () => {
                 .set('Authorization', 'Bearer ' + token_obj.token)
                 .expect('Content-Type', /json/)
                 .expect(200, /^{"code":0,/);
-            console.log(res.body);
+            user_obj = res.body.data;
+            console.log(user_obj);
+            //console.log(`register captcha text: ${login_captcha.text}, key: ${login_captcha.key}`);
+        });
+        it('#API patch /v1/users', async () => {
+            let new_user = {
+                memo: user_obj.memo+'_1',
+            };
+            let res = await request(API_HOST)
+                .patch('/v1/users/' + token_obj.userid)
+                .send(new_user)
+                .set('Authorization', 'Bearer ' + token_obj.token)
+                .expect('Content-Type', /json/)
+                .expect(200, /^{"code":0,/);
+            console.log(res.body.data);
             //console.log(`register captcha text: ${login_captcha.text}, key: ${login_captcha.key}`);
         });
     });
-
 });

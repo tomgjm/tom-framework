@@ -8,7 +8,7 @@ class UserModel extends model {
     Init() {
         //this.collection = 'users'
 
-        this.fillable = ['name', 'password', configs.auth.email_field, configs.auth.mobile_field];
+        this.fillable = ['name', 'password', 'memo', configs.auth.email_field, configs.auth.mobile_field];
 
         this.Schema = {
             name: {
@@ -24,6 +24,9 @@ class UserModel extends model {
                 required: true,
                 minlength: 6,
                 maxlength: 255,
+            },
+            memo: {
+                type: String,
             },
         };
 
@@ -48,8 +51,7 @@ class UserModel extends model {
         this.timestamps();
         this.softDeletes();
     }
-    modelAfter(modelObj)
-    {
+    modelAfter(modelObj) {
         //console.log('modelAfter');
     }
 }
