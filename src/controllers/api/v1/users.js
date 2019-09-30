@@ -28,7 +28,7 @@ class co extends BaseUser {
 
     async show(ctx, id) {
         //显示单项
-        let user = await getDBObjByID(this.users, id, { password: -1 });
+        let user = await getDBObjByID(this.users, id);
         this.authorize(ctx, 'show', user);
         //let token = getToken(ctx) //获取头部提交过来的token原文
         //let verify_obj = await verify(token) //验证并解析出token中内容，示例一下
