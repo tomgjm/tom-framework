@@ -25,6 +25,7 @@ class UserModel extends model {
                 required: true,
                 minlength: 6,
                 maxlength: 255,
+                hideJSON: true,
             },
             memo: {
                 type: String,
