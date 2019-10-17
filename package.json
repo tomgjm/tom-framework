@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "migrate": "node ./node_modules/migrate/bin/migrate",
     "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js"
   },
@@ -21,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^6.2.0",
+    "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
   },
   "dependencies": {
