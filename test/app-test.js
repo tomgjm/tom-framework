@@ -34,7 +34,7 @@ describe('#test koa app', () => {
         let res = await request(API_HOST)
             .get('/')
             .expect('Content-Type', /json/)
-            .expect(200, /^{"code":401/);
+            .expect(200, /^{"code":404/);
     });
 
     let token_obj = undefined;
@@ -154,6 +154,17 @@ describe('#test koa app', () => {
                 token_obj = res.body.data;
             });
         });
+        describe('#API Re Token', () => {
+            it('#API GET /v1/auth/retoken', async () => {
+                let res = await request(API_HOST)
+                    .get('/v1/auth/retoken/1')
+                    .set('Authorization', 'Bearer ' + token_obj.token)
+                    .expect('Content-Type', /json/)
+                    .expect(200, /^{"code":0,/);
+                token_obj = res.body.data;
+            });
+
+        });
         describe('#API User info', () => {
             it('#API GET /v1/users', async () => {
                 let res = await request(API_HOST)
@@ -206,9 +217,9 @@ describe('#test koa app', () => {
                 //图形验证码
                 let mobile_svg_captcha = {};
                 if (auth_cfg.mobile_need_captcha) {
-                    it(`#API mobile验证码 图形验证码 GET /v1/auth/captcha/${auth_cfg.resetpassword_mobile_field}`, async () => {
+                    it(`#API mobile验证码 图形验证码 GET /v1/auth/captcha/${auth_cfg.mobile_captcha_field}`, async () => {
                         let res = await request(API_HOST)
-                            .get(`/v1/auth/captcha/${auth_cfg.resetpassword_mobile_field}`)
+                            .get(`/v1/auth/captcha/${auth_cfg.mobile_captcha_field}`)
                             .expect('Content-Type', /json/)
                             .expect(200, /^{"code":0,/);
                         mobile_svg_captcha = res.body.data;
@@ -252,6 +263,111 @@ describe('#test koa app', () => {
                     .send(data)
                     .expect('Content-Type', /json/)
                     .expect(200, /^{"code":0,/);
+                token_obj.token = res.body.data.token;
+            });
+        });
+
+        describe('#API Forgot Password', () => {
+            //图形验证码
+            let forgotpassword_captcha = {};
+            if (auth_cfg.forgotpassword_captcha) {
+                it(`#API 图形验证码 GET /v1/auth/captcha/${auth_cfg.forgotpassword_captcha_field}`, async () => {
+                    let res = await request(API_HOST)
+                        .get(`/v1/auth/captcha/${auth_cfg.forgotpassword_captcha_field}`)
+                        .expect('Content-Type', /json/)
+                        .expect(200, /^{"code":0,/);
+                    forgotpassword_captcha = res.body.data;
+                });
+            }
+
+            //email验证码
+            let forgotpassword_email = {};
+            if (auth_cfg.forgotpassword_email) {
+                it(`#API email验证码 GET /v1/auth/captcha/email/${auth_cfg.forgotpassword_email_field}/${user_obj.email}`, async () => {
+                    let res = await request(API_HOST)
+                        .get(`/v1/auth/captcha/email/${auth_cfg.forgotpassword_email_field}/${user_obj.email}`)
+                        .expect('Content-Type', /json/)
+                        .expect(200, /^{"code":0,/);
+                    forgotpassword_email = res.body.data;
+                });
+            }
+
+            //mobile验证码
+            let forgotpassword_mobile = {};
+            if (auth_cfg.forgotpassword_mobile) {
+                //图形验证码
+                let mobile_svg_captcha = {};
+                if (auth_cfg.mobile_need_captcha) {
+                    it(`#API mobile验证码 图形验证码 GET /v1/auth/captcha/${auth_cfg.mobile_captcha_field}`, async () => {
+                        let res = await request(API_HOST)
+                            .get(`/v1/auth/captcha/${auth_cfg.mobile_captcha_field}`)
+                            .expect('Content-Type', /json/)
+                            .expect(200, /^{"code":0,/);
+                        mobile_svg_captcha = res.body.data;
+                    });
+                }
+                //获取手机验证码
+                it(`#API mobile验证码 GET /v1/auth/captcha/mobile/${auth_cfg.forgotpassword_mobile_field}/${user_obj.mobile}`, async () => {
+                    let data = {};
+                    data[auth_cfg.captcha_key_field] = mobile_svg_captcha.key;
+                    data[auth_cfg.mobile_captcha_field] = mobile_svg_captcha.text;
+                    let res = await request(API_HOST)
+                        .post(`/v1/auth/captcha/mobile/${auth_cfg.forgotpassword_mobile_field}/${user_obj.mobile}`)
+                        .send(data)
+                        .expect('Content-Type', /json/)
+                        .expect(200, /^{"code":0,/);
+                    forgotpassword_mobile = res.body.data;
+                });
+            }
+
+            it('#API POST /v1/auth/forgotpassword', async () => {
+                let data = {
+                    password: '123456',
+                    password_confirmation: '123456',
+                }
+                if (auth_cfg.forgotpassword_captcha) {//图形验证码
+                    data[auth_cfg.captcha_key_field] = forgotpassword_captcha.key;
+                    data[auth_cfg.forgotpassword_captcha_field] = forgotpassword_captcha.text;
+                }
+                if (auth_cfg.forgotpassword_email) {//email验证码
+                    data[auth_cfg.email_field] = user_obj.email;
+                    data[auth_cfg.forgotpassword_email_field] = forgotpassword_email.text;
+                }
+                if (auth_cfg.forgotpassword_mobile) {//mobile验证码
+                    data[auth_cfg.mobile_field] = user_obj.mobile;
+                    data[auth_cfg.forgotpassword_mobile_field] = forgotpassword_mobile.text;
+                }
+                let res = await request(API_HOST)
+                    .post('/v1/auth/forgotpassword')
+                    .send(data)
+                    .expect('Content-Type', /json/)
+                    .expect(200, /^{"code":0,/);
+            });
+        });
+
+        describe('#API Logout', () => {
+            it('#API GET /v1/auth/logout', async () => {
+                let res = await request(API_HOST)
+                    .get('/v1/auth/logout')
+                    .set('Authorization', 'Bearer ' + token_obj.token)
+                    .expect('Content-Type', /json/)
+                    .expect(200, /^{"code":0,/);
+            });
+            it('#API GET /v1/auth/retoken', async () => {
+                let res = await request(API_HOST)
+                    .get('/v1/auth/retoken/1')
+                    .set('Authorization', 'Bearer ' + token_obj.token)
+                    .expect('Content-Type', /json/)
+                    .expect(200, /^{"code":901,/);
+                token_obj = res.body.data;
+            });
+            it('#API GET /v1/users', async () => {
+                let res = await request(API_HOST)
+                    .get('/v1/users/' + token_obj.userid)
+                    .set('Authorization', 'Bearer ' + token_obj.token)
+                    .expect('Content-Type', /json/)
+                    .expect(200, /^{"code":401,/);
+                user_obj = Object.assign({}, user_obj, res.body.data);
             });
         });
     });
