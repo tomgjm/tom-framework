@@ -7,6 +7,9 @@ module.exports = {
     websocket_socket_routes_path: './websocket/routes/socket/',
     subdomain_offset: process.env.SUBDOMAIN_OFFSET || 2,
     maps: {
+        // "dev": {
+        //     proxy: "http://127.0.0.1:8010",
+        // },
         "api": {
             web: "./routes/api.js",
             websocket: './websocket/routes/api.js',
