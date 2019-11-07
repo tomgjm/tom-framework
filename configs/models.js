@@ -32,6 +32,7 @@ module.exports = {
             _deepPopulate_values: '_deepPopulate_values',
             getValues: 'getValues',
             locals: {},
+            aggregate_id: 'id',
         },
         pivot:'$pivot',
     },
