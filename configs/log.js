@@ -42,7 +42,7 @@ module.exports = {
             },
             "error": {
                 "type": "dateFile",
-                "filename": process.env.LOG_USER_FILE || "./logs/error",
+                "filename": process.env.LOG_ERROR_FILE || "./logs/error",
                 "pattern": "_yyyyMMdd.log",
                 "alwaysIncludePattern": true,
             },
