@@ -41,6 +41,9 @@ module.exports = {
         ctx_field: 'query',//是读取ctx的query属性还是body属性
         pageindex: 'pageindex',
         pagesize: 'pagesize',
+        pagesize_default: 10,
+        pagesize_min: 0,
+        pagesize_max: 100,
     },
     belongs_to_many:{
         _belongs_to_many_head:'_belongs_to_many_',
