@@ -42,7 +42,7 @@ module.exports = {
         pageindex: 'pageindex',
         pagesize: 'pagesize',
         pagesize_default: 10,
-        pagesize_min: 0,
+        pagesize_min: 1,
         pagesize_max: 100,
     },
     belongs_to_many:{
