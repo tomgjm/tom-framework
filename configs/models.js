@@ -24,7 +24,7 @@ module.exports = {
         ctx_body_pql_file_values_field: 'values',
         pql_path:(process.env.PQL_PATH || 'pql'),
         pql_public_path:(process.env.PQL_PUBLIC_PATH || 'pql/public'),
-        only_pql_file_mode: toBool(process.env.ONLY_PQL_FILE) || false,
+        only_pql_file_mode: toBool(process.env.ONLY_PQL_FILE || false),
         options:{
             max_deep: 3,
             default_limit: 10,//默认限制deep返回记录数量，如果值为false就表示不限制，对于直接查询结果无效 对deep记录有效（就是对第一层记录无效）

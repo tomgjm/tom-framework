@@ -17,7 +17,7 @@ module.exports = {
         cert_file: process.env.SERVER_HTTPS_CRT_FILE || 'https.crt'
     },
 
-    websocket_open: toBool(process.env.WEBSOCKET_OPEN) || false,
+    websocket_open: toBool(process.env.WEBSOCKET_OPEN || false),
     websocket_options:{
     },
     websocket_auto_error_send: false,
@@ -35,5 +35,5 @@ module.exports = {
     log4js_category: process.env.APP_LOG_CATEGORY ||"app",
 
     log4js_error_category: process.env.ERROR_LOG_CATEGORY || "error",
-    all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW) || false,
+    all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW || false),
 }

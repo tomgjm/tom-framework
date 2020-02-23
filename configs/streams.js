@@ -20,8 +20,8 @@ module.exports = {
         //     db: 0
         //   },
     },
-    can_stream_default: toBool(process.env.STREAMS_CAN_STREAM_DEFAULT) || false,
-    can_stream_class: toBool(process.env.STREAMS_CAN_STREAM_CLASS) || false,
+    can_stream_default: toBool(process.env.STREAMS_CAN_STREAM_DEFAULT || false),
+    can_stream_class: toBool(process.env.STREAMS_CAN_STREAM_CLASS || false),
     streams: {
         //属性名称可以为 具体的监听类名.方法名        
         "AppListener.error": {
@@ -42,8 +42,8 @@ module.exports = {
             type: 'default',//指向type_default值
         }
     },
-    boot_run_consumers: toBool(process.env.STREAMS_BOOT_RUN_CONSUMERS) || false,//是否自动时就开始运行
-    auto_ack_by_not_false: toBool(process.env.STREAMS_AUTO_ACK_BY_NOT_FALSE) || true,//每次consumer函数处理完后如果不返回false一律自动进行ack 如果为否的话就不自动进行ack
+    boot_run_consumers: toBool(process.env.STREAMS_BOOT_RUN_CONSUMERS || false),//是否自动时就开始运行
+    auto_ack_by_not_false: toBool(process.env.STREAMS_AUTO_ACK_BY_NOT_FALSE || true),//每次consumer函数处理完后如果不返回false一律自动进行ack 如果为否的话就不自动进行ack
     consumers: {
         //只能用具体streams中的事件名（监听类名.方法名） 后面跟处理此事件的文件名@方法名（如果文件只有一个方法可以省略方名）
         "MyListener.my": {
