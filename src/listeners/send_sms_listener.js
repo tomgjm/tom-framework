@@ -6,7 +6,7 @@ const BaseListener = require2('tomjs/listener/base_listener');
 const { SendSMS } = require2('tomjs/sms');
 const log4js = require2('tomjs/handlers/log4js');
 let smsLog = console;
-if (typeof (sms_cfg.log4js_category) && (sms_cfg.log4js_category.length > 0)) {
+if (sms_cfg.log4js_category) {
     smsLog = log4js.getLogger(sms_cfg.log4js_category);
 }
 

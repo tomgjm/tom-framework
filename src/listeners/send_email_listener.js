@@ -5,7 +5,7 @@ const email_cfg = require2('tomjs/configs')().email;
 const BaseListener = require2('tomjs/listener/base_listener');
 const log4js = require2('tomjs/handlers/log4js');
 let emailLog = console;
-if (typeof (email_cfg.log4js_category) && (email_cfg.log4js_category.length > 0)) {
+if (email_cfg.log4js_category) {
     emailLog = log4js.getLogger(email_cfg.log4js_category);
 }
 

@@ -3,7 +3,7 @@ const auth_cfg = require2('tomjs/configs')().auth;
 const BaseListener = require2('tomjs/listener/base_listener');
 const log4js = require2('tomjs/handlers/log4js');
 let Log = console;
-if (typeof(auth_cfg.log4js_category) && (auth_cfg.log4js_category.length > 0)) {
+if (auth_cfg.log4js_category) {
     Log = log4js.getLogger(auth_cfg.log4js_category);
 }
 

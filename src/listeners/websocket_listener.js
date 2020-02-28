@@ -4,7 +4,7 @@ const BaseListener = require2('tomjs/listener/base_listener');
 const log4js = require2('tomjs/handlers/log4js');
 const { getUserIDByCTX } = require2('tomjs/handlers/listener_tools');
 let Log = console;
-if (typeof (system_cfg.log4js_error_category) && (system_cfg.log4js_error_category.length > 0)) {
+if (system_cfg.log4js_error_category) {
     Log = log4js.getLogger(system_cfg.log4js_error_category);
 }
 

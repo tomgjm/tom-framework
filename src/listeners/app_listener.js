@@ -3,7 +3,7 @@ const system_cfg = require2('tomjs/configs')().system;
 const BaseListener = require2('tomjs/listener/base_listener');
 const log4js = require2('tomjs/handlers/log4js');
 let appLog = console;
-if (typeof (system_cfg.log4js_category) && (system_cfg.log4js_category.length > 0)) {
+if (system_cfg.log4js_category) {
     appLog = log4js.getLogger(system_cfg.log4js_category);
 }
 
