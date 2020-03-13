@@ -5,8 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "test": "mocha",
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "start": "nodemon src/app.js",
+    "dev": "node src/app.js",
     "migrate": "node ./node_modules/migrate/bin/migrate",
     "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js"
   },
@@ -22,11 +22,11 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^6.2.0",
-    "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
   },
   "dependencies": {
     "migrate": "^1.6.2",
+    "nodemon": "^1.19.4",
     "tomjs": "^0.1.83"
   }
 }
