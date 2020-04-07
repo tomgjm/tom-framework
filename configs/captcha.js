@@ -2,7 +2,7 @@ const { toBool } = require('tomjs/handlers/base_tools');
 module.exports = {
     cache_name: 'captche',
     cache_options: {
-        engine: process.env.CAPTCHE_CACHE_ENGINE || 'mongo', //存储引擎
+        engine: process.env.CAPTCHE_CACHE_ENGINE || 'tom-cacheman-mongodb', //存储引擎
         host: process.env.CAPTCHE_CACHE_HOST || 'localhost', //主机地址
         port: process.env.CAPTCHE_CACHE_PORT || 27017, //端口
         username: process.env.CAPTCHE_CACHE_USERNAME || '',
