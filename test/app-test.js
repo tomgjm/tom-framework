@@ -351,14 +351,14 @@ describe('#test koa app', () => {
                     .get('/v1/auth/logout')
                     .set('Authorization', 'Bearer ' + token_obj.token)
                     .expect('Content-Type', /json/)
-                    .expect(200, /^{"code":0,/);
+                    .expect(200, /^{"code":401,/);
             });
             it('#API GET /v1/auth/retoken', async () => {
                 let res = await request(API_HOST)
                     .get('/v1/auth/retoken/1')
                     .set('Authorization', 'Bearer ' + token_obj.token)
                     .expect('Content-Type', /json/)
-                    .expect(200, /^{"code":901,/);
+                    .expect(200, /^{"code":401,/);
                 token_obj = res.body.data;
             });
             it('#API GET /v1/users', async () => {
