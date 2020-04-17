@@ -1,6 +1,6 @@
 {
   "name": "tomjs",
-  "version": "0.1.90",
+  "version": "0.1.91",
   "description": "tomjs framework",
   "main": "src/app.js",
   "scripts": {
@@ -27,6 +27,6 @@
   "dependencies": {
     "migrate": "^1.6.2",
     "nodemon": "^1.19.4",
-    "tomjs": "^0.1.90"
+    "tomjs": "^0.1.91"
   }
 }
