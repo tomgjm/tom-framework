@@ -7,6 +7,7 @@ module.exports = {
     //如果指定事件和排除指定事件不要混合用，如果混合那么只会保留指定事件
     //如果文件只是一个函数，那么函数名默认为事件名,如果是匿名函数就自动转为统配所有事件
     "app": ["app_listener"],
+    //"jwt_auth":["jwt_auth_listener"],
     "user": ["user_listener"],
     "send_sms_end": ["send_sms_end_listener"],
     "send_sms": ["send_sms_listener"],
