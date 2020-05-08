@@ -2,6 +2,10 @@ const { toBool } = require('tomjs/handlers/base_tools')
 module.exports = {
     default: process.env.DB_TYPE || "mongodb",
     await: toBool(process.env.DB_AWAIT || true),
+    migrate:{
+        up_outtime:2000,
+        down_outtime:2000,
+    },
     mongodb: {
         type: "mongodb",
         url: process.env.DB_URL,
