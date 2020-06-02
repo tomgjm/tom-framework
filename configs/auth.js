@@ -44,6 +44,7 @@ module.exports = {
     login_username_fields: process.env.LOGIN_USERNAME_FIELDS || 'name',
     unique_user_name: toBool(process.env.UNIQUE_USER_NAME || true),
 
+    register_name_email_mobile_lower_case: true,
     not_exists_field_head: 'register_',//以此开头的验证变量名,就表示必须在数据库内不能重复 主要用于注册
     register_captcha: toBool(process.env.REGISTER_CAPTCHA || false),
     register_captcha_field: 'register_captcha', //存放注册图像验证码内容的字段名
