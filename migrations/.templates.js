@@ -7,13 +7,13 @@ const { src_dir, database, configs } = require('./.base_templates.js');
 //let UserModel = require(path.resolve(src_dir, './models/user'));
 
 async function up() {
-    let db = await database.build(); //连接数据库
-    //let Users = UserModel.Model(db);
+    const db = await database.build(); //连接数据库
+    //const Users = UserModel.Model(db);
 }
 
 async function down() {
-    let db = await database.build(); //连接数据库
-    //let Users = UserModel.Model(db);
+    const db = await database.build(); //连接数据库
+    //const Users = UserModel.Model(db);
 }
 
 module.exports = {
