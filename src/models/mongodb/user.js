@@ -27,6 +27,11 @@ class UserModel extends model {
                 maxlength: 255,
                 hideJSON: true,
             },
+            state:{
+                type: Number,
+                required: true,
+                default: 1,
+            },
             memo: {
                 type: String,
             },
@@ -46,6 +51,13 @@ class UserModel extends model {
             validate: validate({ validator: 'isMobile' }),
             index: true,
             unique: configs.auth.register_mobile,
+        };
+
+        this.defines = {
+            state: {
+                lock: 0,
+                ok: 1,
+            },
         };
 
         this.tokenVersion();
