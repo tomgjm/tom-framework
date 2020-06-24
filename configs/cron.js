@@ -1,4 +1,5 @@
 module.exports = {
+    // boot_run: true,
     // crons: [
     //     {
     //         cronTime: '* * * * * *',
