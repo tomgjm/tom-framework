@@ -3,7 +3,7 @@ const log4js = require2('tomjs/handlers/log4js'); //日志和控制台输出处�
 const SystemConfig = require2('tomjs/configs')().system;
 const startRun = require2('tomjs/app');
 
-startRun().then(({ app, server_http, server_https } = {}) => {
+startRun().then(({ app, server_http, server_https, crons } = {}) => {
     if (SystemConfig.server_run_type_https) {
         console.log('Now start https server on IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_https_port + '...');
     }

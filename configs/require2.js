@@ -6,6 +6,7 @@ module.exports = {
         "cacheman": "cacheman",
         "consolidate": "consolidate",
         "continuation-local-storage": "continuation-local-storage",
+        "cron": "cron",
         "eventemitter2": "eventemitter2",
         "events": "events",
         "file-exists": "file-exists",
