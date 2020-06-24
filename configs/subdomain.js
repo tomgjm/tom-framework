@@ -28,6 +28,14 @@ module.exports = {
                     defer: true,
                 },
             },
+            // ip: {
+            //     whitelist: ['172.18.*.*'],
+            //     blacklist: ['127.0.0.*'],
+            //     handler: async (ctx, next) => {
+            //         //handle blacklist ip
+            //         console.log("* ip handler");
+            //     }
+            // }
         },
     }
 }

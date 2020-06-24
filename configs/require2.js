@@ -19,6 +19,7 @@ module.exports = {
         "koa-body": "koa-body",
         "koa-jwt": "koa-jwt",
         "koa-jwt/lib/verify": "koa-jwt/lib/verify",
+        "koa-ip": "koa-ip",
         "koa-locale": "koa-locale",
         "koa-logger": "koa-logger",
         "koa-ratelimit": "koa-ratelimit",
