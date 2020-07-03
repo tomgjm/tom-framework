@@ -8,6 +8,6 @@ const configs = require2('tomjs/configs')();
     } else {
         database.build();
     }
-    console.log("run crons runing...");
+    console.log("crons runing...");
     const cron = require2('tomjs/handlers/cron');
 })();
