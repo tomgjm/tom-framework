@@ -8,10 +8,8 @@ const Password = require2('tomjs/password');
 const BaseUser = require2('tomjs/controllers/base_user');
 const { isObject } = require2('tomjs/handlers/base_tools');
 const { getDBObjByID } = require2('tomjs/handlers/db_tools');
-class co extends BaseUser {
-    constructor() {
-        super();
-    }
+class User extends BaseUser {
+
     async index(ctx) {
         //显示列表
         //throw new ApiError(ApiError.DB_NOT_FOUND, { message: 'test message' });
@@ -115,4 +113,4 @@ class co extends BaseUser {
     }
 
 }
-module.exports = co
+module.exports = User
