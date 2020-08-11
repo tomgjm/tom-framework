@@ -1,4 +1,6 @@
-module.exports = class Test {
+const BaseCron = require2('tomjs/crons/base_cron');
+
+module.exports = class test extends BaseCron {
     test() {
         console.log("crons test class")
     }
