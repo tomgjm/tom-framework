@@ -12,4 +12,5 @@ module.exports = {
     jsonLimit: process.env.BODY_JSONLIMIT || '10mb',
     formLimit: process.env.BODY_FORMLIMIT || '10mb',
     textLimit: process.env.BODY_TEXTLIMIT || '10mb',
+    unless: (ctx) => { return false },
 }
