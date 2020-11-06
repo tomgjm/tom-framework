@@ -2,7 +2,8 @@
 const { toBool } = require('tomjs/handlers/base_tools');
 module.exports = {
     engine: process.env.CACHE_ENGINE || 'tom-cacheman-mongodb',//存储引擎
-    host: process.env.CACHE_HOST || 'localhost',//主机地址
+    hosts: process.env.CACHE_HOSTS,//多主机地址
+    host: process.env.CACHE_HOST,//单主机地址
     port: process.env.CACHE_PORT || 27017,//端口
     username: process.env.CACHE_USERNAME || '',
     password: process.env.CACHE_PASSWORD || '',

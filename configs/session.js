@@ -7,7 +7,8 @@ module.exports = {
     prefix: 's',
     store: {
         engine: process.env.SESSION_ENGINE || 'tom-cacheman-mongodb', //存储引擎
-        host: process.env.SESSION_HOST || 'localhost', //主机地址
+        hosts: process.env.SESSION_HOSTS, //多主机地址
+        host: process.env.SESSION_HOST, //单主机地址
         port: process.env.SESSION_PORT || 27017, //端口
         username: process.env.SESSION_USERNAME || '',
         password: process.env.SESSION_PASSWORD || '',
