@@ -1,4 +1,6 @@
 module.exports = {
-    'haha' : 'Hello',
-    'too many requests':'too many requests',
+    default: {
+        'haha': 'Hello',
+        'too many requests': 'too many requests',
+    }
 }
