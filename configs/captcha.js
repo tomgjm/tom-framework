@@ -36,12 +36,41 @@ module.exports = {
     email_view_code: process.env.CAPTCHE_EMAIL_VIEW_CODE || 'code',
     mobile_code_size: process.env.CAPTCHE_MOBILE_SIZE || 6,
     mobile_code_type: process.env.CAPTCHE_MOBILE_TYPE || '0', //表示纯数字 具体说明请查看 npmjs.com上的randomatic
-    mobile_default_template_id: process.env.CAPTCHE_MOBILE_DEFAULT_TEMPLATE_ID || '0',
-    mobile_template_ids: {
-        register_mobile_captcha: process.env.CAPTCHE_MOBILE_REGISTER_TEMPLATE_ID || '0',
-        resetpassword_mobile_captcha: process.env.CAPTCHE_MOBILE_RESETPASSWORD_TEMPLATE_ID || '0',
-        forgotpassword_mobile_captcha: process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_TEMPLATE_ID || '0',
+    mobile_templates: {
+        aliyunsms: {
+            register_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_REGISTER_ALIYUNSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_REGISTER_ALIYUNSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_REGISTER_ALIYUNSMS_PARAMS),
+            },
+            resetpassword_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_RESETPASSWORD_ALIYUNSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_RESETPASSWORD_ALIYUNSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_RESETPASSWORD_ALIYUNSMS_PARAMS),
+            },
+            forgotpassword_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_ALIYUNSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_ALIYUNSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_ALIYUNSMS_PARAMS),
+            },
+        },
+        qcloudsms: {
+            register_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_REGISTER_QCLOUDSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_REGISTER_QCLOUDSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_REGISTER_QCLOUDSMS_PARAMS),
+            },
+            resetpassword_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_RESETPASSWORD_QCLOUDSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_RESETPASSWORD_QCLOUDSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_RESETPASSWORD_QCLOUDSMS_PARAMS),
+            },
+            forgotpassword_mobile_captcha: {
+                template_id: process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_QCLOUDSMS_TEMPLATE_ID || '0',
+                code: process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_QCLOUDSMS_PARAMS_CODE,
+                params: toObject(process.env.CAPTCHE_MOBILE_FORGOTPASSWORD_QCLOUDSMS_PARAMS),
+            },
+        },
     },
-    mobile_param_code: process.env.CAPTCHE_MOBILE_PARAM_CODE || 'code',
     mobile_gateways: process.env.CAPTCHE_MOBILE_GATEWAYS || 'aliyunsms',
 };
