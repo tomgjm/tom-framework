@@ -8,7 +8,7 @@ module.exports = {
     log4js: {
         "pm2": toBool(process.env.LOG_PM2 || false),
         "pm2InstanceVar": process.env.LOG_PM2_INSTANCE_VAR || "INSTANCE_ID",
-        "disableClustering": process.env.LOG_DISABLE_CLUSTERING || false,
+        "disableClustering": toBool(process.env.LOG_DISABLE_CLUSTERING || false),
         "appenders": {
             "out": {
                 "type": process.env.LOG_OUT_DEFAULT_TYPE || "console",
