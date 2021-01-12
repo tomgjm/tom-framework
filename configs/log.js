@@ -6,7 +6,9 @@ module.exports = {
     show_init_info: toBool(process.env.LOG_SHOW_INIT_INFO || true),
     bind: ['log', 'info', 'error', 'warn'],
     log4js: {
-        "pm2": toBool(rocess.env.LOG_PM2 || false),
+        "pm2": toBool(process.env.LOG_PM2 || false),
+        "pm2InstanceVar": process.env.LOG_PM2_INSTANCE_VAR || "INSTANCE_ID",
+        "disableClustering": process.env.LOG_DISABLE_CLUSTERING || false,
         "appenders": {
             "out": {
                 "type": process.env.LOG_OUT_DEFAULT_TYPE || "console",
