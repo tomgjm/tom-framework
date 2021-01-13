@@ -1,4 +1,4 @@
-const { toBool } = require('tomjs/handlers/base_tools');
+const { toBool, toObject } = require('tomjs/handlers/base_tools');
 module.exports = {
     cache_name: 'captche',
     cache_options: {
