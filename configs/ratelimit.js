@@ -1,6 +1,7 @@
+const { toObject } = require('tomjs/handlers/base_tools');
 module.exports = {
     default: {
-        redis: process.env.RATELIMIT_DEFAULT_REDIS_URL || "redis://127.0.0.1:6379/0",
+        redis: process.env.RATELIMIT_DEFAULT_REDIS_URL,// || "redis://127.0.0.1:6379/0",
         //redis 也可以如下配置
         // redis:{
         //     port: 6379,          // Redis port
@@ -23,10 +24,10 @@ module.exports = {
             max: process.env.RATELIMIT_DEFAULT_MAX || 10,
             disableHeader: false,
             show_api_error: true,
-            clear_interval: '1m',//仅仅针对本机内存情况下生效
+            clear_interval: process.env.RATELIMIT_DEFAULT_CLEAR_INTERVAL || '1m',//仅仅针对本机内存情况下生效
         },
-        //whitelist: ["127.0.0.1","192.168.*.*"],//白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
-        blacklist: [],//黑名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数（黑名单优先于白名单）
+        whitelist: ["127.0.0.1","192.168.*.*"],// 白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
+        blacklist: [],
         blackMessage: 'This is forbidden area for you.',
     },
     mobile: {
@@ -44,8 +45,8 @@ module.exports = {
             show_api_error: false,
             clear_interval: process.env.RATELIMIT_MOBILE_CLEAR_INTERVAL || '1m',
         },
-        whitelist: ["127.0.0.1","192.168.*.*"],
-        blacklist: [],
+        whitelist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST_INTERVAL),
         blackMessage: 'This is forbidden area for you.',
     },
     login: {
@@ -63,8 +64,8 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_LOGIN_CLEAR_INTERVAL || '1m',
         },
-        //whitelist: ["127.0.0.1","192.168.*.*"],
-        blacklist: [],
+        whitelist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST_INTERVAL),
         blackMessage: 'This is forbidden area for you.',
     },
     //如果设置 websocket_global 会对全局
@@ -84,8 +85,8 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_WEBSOCKET_CLEAR_INTERVAL || '1m',
         },
-        //whitelist: ["127.0.0.1","192.168.*.*"],
-        blacklist: [],
+        whitelist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST_INTERVAL),
         blackMessage: 'This is forbidden area for you.',
     },
 };
