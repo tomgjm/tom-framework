@@ -45,8 +45,8 @@ module.exports = {
             show_api_error: false,
             clear_interval: process.env.RATELIMIT_MOBILE_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
-        blacklist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST_INTERVAL),
+        whitelist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
     login: {
@@ -64,8 +64,8 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_LOGIN_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
-        blacklist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST_INTERVAL),
+        whitelist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
     //如果设置 websocket_global 会对全局
@@ -85,8 +85,8 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_WEBSOCKET_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST_INTERVAL),//此处示例用toObject函数可以将json字符串转为js对象
-        blacklist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST_INTERVAL),
+        whitelist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        blacklist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
 };
