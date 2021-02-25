@@ -1,5 +1,5 @@
 //cache 系统使用的是 cacheman 具体配置以及支持引擎可以参考（默认支持memory、tom-cacheman-mongodb）
-const { toBool } = require('tomjs/handlers/base_tools')
+const { toBool, toObject } = require('tomjs/handlers/base_tools');
 module.exports = {
     session_key: 'tomjs:sess',
     type: 'token',//如果设置为 cookie 那么token完全失效，但如果设置为token，在没有认证通过前会以cookie方式工作
@@ -7,7 +7,7 @@ module.exports = {
     prefix: 's',
     store: {
         engine: process.env.SESSION_ENGINE || 'tom-cacheman-mongodb', //存储引擎
-        hosts: process.env.SESSION_HOSTS, //多主机地址
+        hosts: toObject(process.env.SESSION_HOSTS), //多主机地址
         host: process.env.SESSION_HOST, //单主机地址
         port: process.env.SESSION_PORT || 27017, //端口
         username: process.env.SESSION_USERNAME || '',
@@ -17,6 +17,7 @@ module.exports = {
         ttl: process.env.SESSION_TTL || 1800, //半个小时
         compression: toBool(process.env.SESSION_COMPRESSION || false),
         prefix: '',
+        options: toObject(process.env.SESSION_OPTIONS),
     },
     language_key: 'language',
     unless: (ctx) => { return false },

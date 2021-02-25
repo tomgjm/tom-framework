@@ -1,11 +1,12 @@
-const { toBool } = require('tomjs/handlers/base_tools')
+const { toBool, toObject } = require('tomjs/handlers/base_tools')
 module.exports = {
     default: process.env.DB_TYPE || "mongodb",
     await: toBool(process.env.DB_AWAIT || true),
-    migrate:{
-        up_outtime:2000,
-        down_outtime:2000,
+    migrate: {
+        up_outtime: 2000,
+        down_outtime: 2000,
     },
+    mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": { "level": "majority" },"writeConcern": { "w": "majority" }}'),
     mongodb: {
         type: "mongodb",
         url: process.env.DB_URL,
@@ -36,7 +37,7 @@ module.exports = {
         type: "mysql",
         url: '',
         useCLS: true,
-        namespaceCLS:'mysql_namespaceCLS',
+        namespaceCLS: 'mysql_namespaceCLS',
         host: process.env.DB_HOST || 'localhost',
         port: process.env.DB_PORT || 3306,
         database: process.env.DB_DATABASE || 'tomjs',

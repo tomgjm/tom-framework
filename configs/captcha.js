@@ -3,7 +3,7 @@ module.exports = {
     cache_name: 'captche',
     cache_options: {
         engine: process.env.CAPTCHE_CACHE_ENGINE || 'tom-cacheman-mongodb', //存储引擎
-        hosts: process.env.CAPTCHE_CACHE_HOSTS, //多主机地址
+        hosts: toObject(process.env.CAPTCHE_CACHE_HOSTS),//多主机地址
         host: process.env.CAPTCHE_CACHE_HOST, //单主机地址
         port: process.env.CAPTCHE_CACHE_PORT || 27017, //端口
         username: process.env.CAPTCHE_CACHE_USERNAME || '',
@@ -12,6 +12,7 @@ module.exports = {
         collection: process.env.CAPTCHE_CACHE_COLLECTION || 'tom_captche',
         ttl: process.env.CAPTCHE_CACHE_TTL || 600, //10分钟
         compression: toBool(process.env.CAPTCHE_CACHE_COMPRESSION || false),
+        options: toObject(process.env.CAPTCHE_CACHE_OPTIONS),
     },
     cache_key_length: 24,
     options: {
@@ -72,5 +73,6 @@ module.exports = {
             },
         },
     },
+    mobile_param_code: process.env.CAPTCHE_MOBILE_PARAM_CODE || 'code',
     mobile_gateways: process.env.CAPTCHE_MOBILE_GATEWAYS || 'aliyunsms',
 };
