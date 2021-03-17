@@ -7,7 +7,7 @@ const { getUrlDomain } = require2('tomjs/handlers/tools');
 
 describe('#test koa app', () => {
     let servers_obj = {};
-    // let WEB_HOST = getUrlDomain();
+    let WEB_HOST = getUrlDomain();
     let API_HOST = getUrlDomain() + '/api';
 
     console.log(`WEB_HOST: ${WEB_HOST}`, `API_HOST: ${API_HOST}`);
