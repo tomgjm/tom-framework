@@ -26,8 +26,8 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_DEFAULT_CLEAR_INTERVAL || '1m',//仅仅针对本机内存情况下生效
         },
-        whitelist: ["127.0.0.1","192.168.*.*"],// 白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
-        blacklist: [],
+        whitelist: toObject(process.env.RATELIMIT_DEFAULT_WHITELIST),// 白名单 支持 数组，字符串（可用,分割）以及函数 参数有ctx,ip 返回 true或false 函数可以是 async 函数
+        blacklist: toObject(process.env.RATELIMIT_DEFAULT_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
     mobile: {
@@ -45,7 +45,7 @@ module.exports = {
             show_api_error: false,
             clear_interval: process.env.RATELIMIT_MOBILE_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        whitelist: toObject(process.env.RATELIMIT_MOBILE_WHITELIST),//此处示例用toObject函数可以将json字符串转为js对象
         blacklist: toObject(process.env.RATELIMIT_MOBILE_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
@@ -64,7 +64,7 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_LOGIN_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        whitelist: toObject(process.env.RATELIMIT_LOGIN_WHITELIST),//此处示例用toObject函数可以将json字符串转为js对象
         blacklist: toObject(process.env.RATELIMIT_LOGIN_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },
@@ -85,7 +85,7 @@ module.exports = {
             show_api_error: true,
             clear_interval: process.env.RATELIMIT_WEBSOCKET_CLEAR_INTERVAL || '1m',
         },
-        whitelist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST),//此处示例用toObject函数可以将json字符串转为js对象
+        whitelist: toObject(process.env.RATELIMIT_WEBSOCKET_WHITELIST),//此处示例用toObject函数可以将json字符串转为js对象
         blacklist: toObject(process.env.RATELIMIT_WEBSOCKET_BLACKLIST),
         blackMessage: 'This is forbidden area for you.',
     },

@@ -7,8 +7,8 @@ const { getUrlDomain } = require2('tomjs/handlers/tools');
 
 describe('#test koa app', () => {
     let servers_obj = {};
-    let WEB_HOST = getUrlDomain();
-    let API_HOST = getUrlDomain('api');
+    // let WEB_HOST = getUrlDomain();
+    let API_HOST = getUrlDomain() + '/api';
 
     console.log(`WEB_HOST: ${WEB_HOST}`, `API_HOST: ${API_HOST}`);
 
@@ -22,14 +22,12 @@ describe('#test koa app', () => {
                 + (SystemConfig.server_run_type_force_https ? (' force to https IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_https_port) : '...'));
         }
     });
-    it('#WEB 验证Web是否工作 GET /', async () => {
-        let res = await request(WEB_HOST)
-            .get('/')
-            //.get('/?name=Manny&species=cat')
-            //.send({ name: 'Manny', species: 'cat' })
-            .expect('Content-Type', /html/)
-            .expect(200, /hello world!/);
-    });
+    // it('#WEB 验证Web是否工作 GET /', async () => {
+    //     let res = await request(WEB_HOST)
+    //         .get('/')
+    //         .expect('Content-Type', /html/)
+    //         .expect(200, /hello world!/);
+    // });
     it('#API 验证API是否工作 GET /', async () => {
         let res = await request(API_HOST)
             .get('/')

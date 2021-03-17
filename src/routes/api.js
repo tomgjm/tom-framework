@@ -15,6 +15,6 @@ api_v1.resource('/users/', 'api/v1/users', { name: 'users' });
 // api_v2.resource('/users/', 'api/v2/users', {'only': 'index,show'});
 
 let routers = new KoaRouter();
-routers.use('/v1', api_v1.routes(), api_v1.allowedMethods())
-//    .use('/v2', api_v2.routes(), api_v2.allowedMethods())
+routers.use('/api/v1', api_v1.routes(), api_v1.allowedMethods())
+//    .use('/api/v2', api_v2.routes(), api_v2.allowedMethods())
 module.exports = routers;
