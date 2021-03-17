@@ -9,41 +9,50 @@ if (auth_cfg.log4js_category) {
 
 class UserListener extends BaseListener {
     //函数名就是具体事件名称
-    register({ctx, user, token}={}) {
+    register({ ctx, user, token } = {}) {
         Log.info(`user register ip: ${ctx.ip}, user id: ${user.id}`);
     }
-    login_$({ctx, user, token}={}) {
+    login_$({ ctx, user, token } = {}) {
         Log.info(`user login_$ ok ip: ${ctx.ip}, user id: ${user.id}`);
     }
-    login_ok({ctx, user, token}={}) {
+    login_ok({ ctx, user, token } = {}) {
         Log.info(`user login ok ip: ${ctx.ip}, user id: ${user.id}`);
     }
-    login_error({ctx, where}={}) {
+    login_error({ ctx, where } = {}) {
         Log.error(`user login error ip: ${ctx.ip}, where:`, where);
     }
-    login_by_id({ctx, user, token}={}) {
+    login_by_id({ ctx, user, token } = {}) {
         Log.info(`user login by id ok ip: ${ctx.ip}, user id: ${user.id}`);
     }
-    login_by_id_error({ctx, id}={}) {
+    login_by_id_error({ ctx, id } = {}) {
         Log.error(`user login by id error ip: ${ctx.ip}, user id: ${id}`);
     }
-    retoken({ctx, token_obj, token}={}) {
+    retoken({ ctx, token_obj, token } = {}) {
         Log.info(`user retoken ip: ${ctx.ip}, user id: ${token_obj.id}`);
     }
-    logout({ctx, id}={}) {
+    logout({ ctx, id } = {}) {
         Log.info(`user logout ip: ${ctx.ip}, user id: ${id}`);
     }
-    resetpassword({ctx,id}={}){
+    resetpassword({ ctx, id } = {}) {
         Log.info(`resetpassword ok ip: ${ctx.ip}, user id: ${id}`);
     }
-    resetpassword_error({ctx,id}={}){
+    resetpassword_error({ ctx, id } = {}) {
         Log.error(`resetpassword error ip: ${ctx.ip}, user id: ${id}`);
     }
-    forgotpassword({ctx,id}={}){
+    forgotpassword({ ctx, id } = {}) {
         Log.info(`forgotpassword ok ip: ${ctx.ip}, user id: ${id}`);
     }
-    forgotpassword_error({ctx,where}={}){
-        Log.error(`forgotpassword error ip: ${ctx.ip}, where:`,where);
+    forgotpassword_error({ ctx, where } = {}) {
+        Log.error(`forgotpassword error ip: ${ctx.ip}, where:`, where);
     }
+
+    update({ ctx, id, old_info, new_info } = {}) {
+        Log.info("update_auth", ctx, id, old_info, new_info);
+    }
+
+    update_auth({ ctx, id, old_info, new_info } = {}) {
+        Log.info("update_auth", ctx, id, old_info, new_info);
+    }
+
 }
 module.exports = UserListener;
