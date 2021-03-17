@@ -26,7 +26,7 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "migrate": "^1.6.2",
+    "migrate": "^1.7.0",
     "nodemon": "^2.0.4",
     "tomjs": "^0.9.59"
   }
