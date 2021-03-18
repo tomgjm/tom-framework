@@ -18,9 +18,9 @@ async function down() {
 
 module.exports = {
     up: function(next) {
-        up().then(function() { setTimeout(next, configs.database.migrate.up_outtime); }).catch(function(err) { throw err; })
+        up().then(function() { setTimeout(next, configs.database.migrate.up_outtime); }).catch(function(err) { next(err); })
     },
     down: function(next) {
-        down().then(function() { setTimeout(next, configs.database.migrate.down_outtime); }).catch(function(err) { throw err; })
+        down().then(function() { setTimeout(next, configs.database.migrate.down_outtime); }).catch(function(err) { next(err); })
     }
 };
