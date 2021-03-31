@@ -4,7 +4,7 @@ const path = require2('path');
 const { src_dir, database, configs } = require('./.base_templates.js');
 
 //载入UserModel
-//let UserModel = require(path.resolve(src_dir, './models/user'));
+//const UserModel = require(path.resolve(src_dir, './models/user'));
 
 async function up() {
     const db = await database.build(); //连接数据库

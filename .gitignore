@@ -9,3 +9,5 @@ yarn-error.log
 /doc
 /keys
 package-lock.json
+.migrate
+yarn.lock
