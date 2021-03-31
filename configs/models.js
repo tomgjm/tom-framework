@@ -32,6 +32,7 @@ module.exports = {
         options: {
             max_deep: 3,
             default_limit: 10,//默认限制deep返回记录数量，如果值为false就表示不限制，对于直接查询结果无效 对deep记录有效（就是对第一层记录无效）
+            default_limit_max: 100,
             is_guard: false,// 此项为true 那么 $match 就会失效（pqlfile文件不受其影响），此项为false 那么 $match 就会生效（但第一层$match还是会失效，其只对填充项内$match 生效）要完全生成就要将 is_pql_file 设置为 true
             _deepPopulate_values: '_deepPopulate_values',
             getValues: 'getValues',
