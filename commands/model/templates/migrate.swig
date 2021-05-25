@@ -4,19 +4,18 @@ const path = require2('path');
 const { src_dir, database, configs } = require('./.base_templates.js');
 
 //载入Model
-//const UserModel = require(path.resolve(src_dir, './models/user'));
+const {{ model_name }} = require(path.resolve(src_dir, './models/{{ file_name }}'));
 
 async function up() {
     const db = await database.build(); //连接数据库
-    // const Users = UserModel.Model(db);
+    const {{ object_name }} = {{ model_name }}.Model(db);
 }
 
 async function down() {
     const db = await database.build(); //连接数据库
-    // const Users = UserModel.Model(db);
-    // 删除集合
-    // const result = await db.connection.db.dropCollection(UserModel.collection);
-    // console.log("Collection drop:" + UserModel.collection + ", OK!:", result);
+    // const {{ object_name }} = {{ model_name }}.Model(db);
+    const result = await db.connection.db.dropCollection({{ model_name }}.collection);
+    console.log("Collection drop:" + {{ model_name }}.collection + ", OK!:", result);
 }
 
 module.exports = {

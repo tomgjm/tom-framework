@@ -9,7 +9,8 @@
     "dev": "node src/app.js",
     "crons": "nodemon src/run_crons.js",
     "migrate": "node ./node_modules/migrate/bin/migrate",
-    "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js"
+    "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js",
+    "model": "node ./commands/model"
   },
   "keywords": [
     "tomjs",
