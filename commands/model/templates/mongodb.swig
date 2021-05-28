@@ -12,7 +12,7 @@ class {{ model_name }} extends model {
         this.guarded = ['_id', 'created_at', 'updated_at',];//不会被在create中被填充字段
 
         this.Schema = {
-            mail: {
+            field_name: {
                 type: String,//字段类型
                 // required: true,//是否为必须字段
                 // index: true,//是否索引
