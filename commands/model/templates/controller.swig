@@ -56,7 +56,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
 
         try {
             await {{ document }}.save();
-            this.emitter.emit('update', { ctx, id, old_info, new_info: {{ document }}.toJSON() });
+            this.emitter.emit('edit', { ctx, id, old_info, new_info: {{ document }}.toJSON() });
         } catch (e) {
             throw new ApiError(BaseApiError.DB_ERROR, { id: id, message: ctx.request.body });
         }
@@ -71,7 +71,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
         const old_info = {{ document }}.toJSON();
         try {
             await {{ document }}.delete();
-            this.emitter.emit('destroy', { ctx, id, info: old_info });
+            this.emitter.emit('delete', { ctx, id, info: old_info });
         } catch (e) {
             throw new ApiError(BaseApiError.DB_ERROR, { id: id, message: ctx.request.body });
         }

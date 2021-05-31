@@ -11,10 +11,10 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
     store({ ctx, info } = {}) {
         Log.info(`{{ class_name }}Listener.store ip: ${ctx.ip}, info:`, info);
     }
-    update({ ctx, id, old_info, new_info } = {}) {
+    edit({ ctx, id, old_info, new_info } = {}) {
         Log.info(`{{ class_name }}Listener.update ip: ${ctx.ip}, old_info:`, old_info, "new_info:", new_info);
     }
-    destroy({ ctx, id, info } = {}) {
+    delete({ ctx, id, info } = {}) {
         Log.info(`{{ class_name }}Listener.destroy ip: ${ctx.ip}, id: ${id}, info:`, info);
     }
 }

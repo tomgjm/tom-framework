@@ -13,7 +13,6 @@ async function up() {
 
 async function down() {
     const db = await database.build(); //连接数据库
-    // const {{ object_name }} = {{ model_name }}.Model(db);
     const result = await db.connection.db.dropCollection({{ model_name }}.collection);
     console.log("Collection drop:" + {{ model_name }}.collection + ", OK!:", result);
 }
