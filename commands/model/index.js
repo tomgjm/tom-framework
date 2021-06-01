@@ -16,6 +16,7 @@ const VIEW_NAME_POLICY = "policy";
 const VIEW_NAME_CONTROLLER = "controller";
 const VIEW_NAME_RULE = "rule";
 const VIEW_NAME_LISTENER = "listener";
+const VIEW_NAME_ADMINBRO = "adminbro";
 const TEMPLATE_ROOT_PATH = path.join(AppDir, "../commands/model/templates/");
 
 
@@ -106,10 +107,20 @@ class ModelCommand extends BaseCommand {
                     default: "api/v1",
                     action: "all"
                 },
+                {
+                    must: false,
+                    args: ["-b", "--adminbro"],
+                    para: "CollectionChineseName[,language]",
+                    show_help_tab_count: -1,
+                    help: "create AdminBro Model files",
+                    default: "新表单,zh-CN",
+                    action: "create_adminbro"
+                },
             ],
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
+        this.__version = "1.0.2";
     }
 
     default() {
@@ -117,7 +128,7 @@ class ModelCommand extends BaseCommand {
     }
 
     version() {
-        console.log("Version: 1.0.1");
+        console.log(`Version: ${this.__version}`);
         process.exit();
     }
 
@@ -378,7 +389,7 @@ class ModelCommand extends BaseCommand {
                     console.log(`Modify file OK:${write_file_listener_cfg}`);
                 }
                 else {
-                    throw new Error("Error: not find  Route Var:" + var_name);
+                    throw new Error("Error: not find Route Var:" + var_name);
                 }
             }
             else {
@@ -417,7 +428,7 @@ class ModelCommand extends BaseCommand {
                     throw new Error("all parameter error!");
                     break;
             }
-            
+
             const route_info = `${RouteFile},${RouteVarName},${ControllerPath}`;
             const ListenerPath = "controllers/" + ControllerPath;
             this.__paras["ControllerPath"] = ControllerPath;
@@ -433,6 +444,118 @@ class ModelCommand extends BaseCommand {
         }
         catch (error) {
             console.error("Error:" + error.message);
+        }
+    }
+
+    async create_adminbro(chinese_collection_name_info) {
+        let [chinese_collection_name, language] = chinese_collection_name_info.split(",");
+        if (!language) { language = "zh-CN"; }
+        const m_name = this.__paras["ModelName"];
+        const file_name = pluralize.plural(m_name);
+        const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
+        const object_name = humps.pascalize(pluralize.plural(file_name));
+        const en_collection_name = humps.decamelize(object_name, { separator: ' ' });
+        const locals = { model_class, en_collection_name, object_name };
+        const model_dir = path.join(AppDir, `./adminbro/resources/${model_class}`);
+        const write_model_file = model_dir + "/index.js";
+        const model_dir_index_file = path.join(AppDir, `./adminbro/resources/index.js`);
+
+        try {
+            if (!fs.existsSync(model_dir)) {
+                fs.mkdirSync(model_dir);
+            }
+            if (!fs.existsSync(write_model_file)) {
+                const content = await render(VIEW_NAME_ADMINBRO, locals, undefined, TEMPLATE_ROOT_PATH);
+                fs.writeFileSync(write_model_file, content);
+                console.log(`Write file OK:${write_model_file}`);
+            }
+            else {
+                throw new Error("Error: file exists:" + write_model_file);
+            }
+
+            if (fs.existsSync(model_dir_index_file)) {
+                const content = fs.readFileSync(model_dir_index_file, 'utf8');
+                const regx1 = new RegExp(`\\s*?const\\s+.*?\\s+=\\s+require.*`, "g");
+                const regx2 = new RegExp(`module\\s*.\\s*exports\\s*=\\s*\\{.*`);
+                let finds = content.match(regx1);
+                let prefix = "\r\n";
+                let splitStr = undefined;
+                let new_content = "";
+                if (finds && finds.length > 0) {
+                    splitStr = finds[finds.length - 1];
+                    for (let index = 0; index < splitStr.length; index++) {
+                        const element = splitStr[index];
+                        if (element === '\t' || element === ' ') {
+                            prefix += element;
+                        }
+                        else { break; }
+                    }
+                    prefix += `const ${model_class} = require('./${model_class}');`;
+                    const content_arr = content.split(splitStr);
+                    new_content = content_arr[0] + splitStr
+                        + prefix
+                        + (content_arr[1] ? content_arr[1] : "");
+                }
+                else {
+                    new_content = `const ${model_class} = require('./${model_class}');\r\n` + content;
+                }
+
+                finds = new_content.match(regx2);
+                splitStr = undefined;
+                if (finds && finds.length > 0) {
+                    const content_arr = new_content.split(finds[0]);
+                    new_content = content_arr[0]
+                        + finds[0]
+                        + `\r\n\t${model_class},`
+                        + (content_arr[1] ? content_arr[1] : "");
+                    fs.writeFileSync(model_dir_index_file, new_content);
+                    console.log(`Modify file OK:${model_dir_index_file}`);
+                }
+                else {
+                    throw new Error("Error: not find 'module.exports = {'");
+                }
+            }
+            else {
+                throw new Error("Error: not exists:" + model_dir_index_file);
+            }
+
+            const write_file_language = path.join(AppDir, `/language/${language}.js`);
+            if (fs.existsSync(write_file_language)) {
+                const content = fs.readFileSync(write_file_language, 'utf8');
+                const finds = content.match(/adminbor\s*:\s*{.*?[\r\n](\s*)/);
+                if (finds.length > 0) {
+                    const allAttr = finds[1].split("\n");
+                    let prefix = "";
+                    if (allAttr.length > 1) {
+                        const iL = allAttr.length - 1;
+                        for (let index = 0; index < allAttr[iL].length; index++) {
+                            const element = allAttr[iL][index];
+                            if (element === '\t' || element === ' ') {
+                                prefix += element;
+                            }
+                            else { break; }
+                        }
+                    }
+                    const addContent = `"${en_collection_name}": "${chinese_collection_name}",\r\n${prefix}`;
+
+                    const content_arr = content.split(finds[0]);
+                    const new_content = content_arr[0]
+                        + finds[0]
+                        + addContent
+                        + content_arr[1];
+                    fs.writeFileSync(write_file_language, new_content);
+                    console.log(`Modify file OK:${write_file_language}`);
+                }
+                else {
+                    throw new Error(`Error: language:${language} attribute:"adminbor" error!`);
+                }
+            }
+            else {
+                throw new Error("Error: not exists:" + write_file_language);
+            }
+        }
+        catch (error) {
+            console.error(error);
         }
     }
 }
