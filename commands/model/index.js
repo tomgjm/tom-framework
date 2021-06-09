@@ -345,6 +345,14 @@ class ModelCommand extends BaseCommand {
         const write_file_listener_cfg = path.join(AppDir, `../configs/listener.js`);
 
         try {
+            let write_file_listener_dir = './listeners';
+            ListenerPath.split("/").map((dir) => {
+                write_file_listener_dir += `/${dir}`;
+                const newDir = path.join(AppDir, write_file_listener_dir);
+                if (!fs.existsSync(newDir)) {
+                    fs.mkdirSync(newDir);
+                }
+            })
             if (!fs.existsSync(write_file_listener)) {
                 const content = await render(VIEW_NAME_LISTENER, locals, undefined, TEMPLATE_ROOT_PATH);
                 fs.writeFileSync(write_file_listener, content);
