@@ -463,7 +463,7 @@ class ModelCommand extends BaseCommand {
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
         const object_name = humps.pascalize(pluralize.plural(file_name));
         const en_collection_name = humps.decamelize(object_name, { separator: ' ' });
-        const locals = { model_class, en_collection_name, object_name };
+        const locals = { model_class, en_collection_name, object_name, m_name };
         const model_dir = path.join(AppDir, `./adminbro/resources/${model_class}`);
         const write_model_file = model_dir + "/index.js";
         const model_dir_index_file = path.join(AppDir, `./adminbro/resources/index.js`);

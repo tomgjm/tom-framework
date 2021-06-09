@@ -4,7 +4,7 @@ const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const admin_roles = require(path.join(AppDir, './adminbro/handlers/roles'));
 const after_emit = require(path.join(AppDir, './adminbro/handlers/after_emit'));
-const {{ model_class }} = require2(path.join(AppDir, './models/image_url'));
+const {{ model_class }} = require2(path.join(AppDir, './models/{{ m_name }}'));
 const {{ object_name }} = {{ model_class }}.Model();
 
 // const { href_img, list_href_img, } = require(path.join(AppDir, './adminbro/components'));
