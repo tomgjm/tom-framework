@@ -17,6 +17,7 @@ class {{ model_name }} extends model {
                 // required: true,//是否为必须字段
                 // index: true,//是否索引
                 // unique: true,//是否不重复
+                // sparse: true,//不重复但可以有空值
                 // default: "",//默认值
                 // validate: validate({ validator: 'isEMail' }),//验证规则
             },            
@@ -49,7 +50,7 @@ class {{ model_name }} extends model {
         //console.log('modelAfter');
     }
 }
-let obj = new {{ model_name }};
+const obj = new {{ model_name }};
 // new middleware(obj.BuildSchema); //引入中间件
 // obj.BuildSchema.index({ 字段A: 1, 字段B: 1, }, { unique: true });//联合索引
 module.exports = obj;
