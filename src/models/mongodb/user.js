@@ -27,7 +27,7 @@ class UserModel extends model {
                 maxlength: 255,
                 hideJSON: true,
             },
-            state:{
+            status:{
                 type: Number,
                 required: true,
                 default: 1,
@@ -54,7 +54,7 @@ class UserModel extends model {
         };
 
         this.defines = {
-            state: {
+            status: {
                 lock: 0,
                 ok: 1,
             },

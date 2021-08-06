@@ -15,7 +15,7 @@ module.exports = {
     jwt_issuer: process.env.JWT_ISSUER || (system_cfg.server_url_type + system_cfg.server_host),
     jwt_key: 'user',
     jwt_key_id: 'id',
-    jwt_key_status: 'state',
+    jwt_key_status: 'status',
     jwt_key_status_pass_values: [1],
     jwt_key_token_version: 'token_version',
     jwt_key_check_token_version: toBool(process.env.JWT_KEY_CHECK_TOKEN_VERSION || false),
