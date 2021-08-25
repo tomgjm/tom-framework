@@ -110,17 +110,17 @@ class ModelCommand extends BaseCommand {
                 {
                     must: false,
                     args: ["-b", "--adminbro"],
-                    para: "CollectionChineseName[,language]",
+                    para: "CollectionChineseName[,languages]",
                     show_help_tab_count: -1,
                     help: "create AdminBro Model files",
-                    default: "新表单,zh-CN",
+                    default: "新表单,zh-CN|en",
                     action: "create_adminbro"
                 },
             ],
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.0.2";
+        this.__version = "1.0.3";
     }
 
     default() {
@@ -456,8 +456,8 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_adminbro(chinese_collection_name_info) {
-        let [chinese_collection_name, language] = chinese_collection_name_info.split(",");
-        if (!language) { language = "zh-CN"; }
+        let [chinese_collection_name, languages] = chinese_collection_name_info.split(",");
+        if (!languages) { languages = "zh-CN|en"; }
         const m_name = this.__paras["ModelName"];
         const file_name = pluralize.plural(m_name);
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
@@ -527,39 +527,45 @@ class ModelCommand extends BaseCommand {
                 throw new Error("Error: not exists:" + model_dir_index_file);
             }
 
-            const write_file_language = path.join(AppDir, `/language/${language}.js`);
-            if (fs.existsSync(write_file_language)) {
-                const content = fs.readFileSync(write_file_language, 'utf8');
-                const finds = content.match(/adminbor\s*:\s*{.*?[\r\n](\s*)/);
-                if (finds.length > 0) {
-                    const allAttr = finds[1].split("\n");
-                    let prefix = "";
-                    if (allAttr.length > 1) {
-                        const iL = allAttr.length - 1;
-                        for (let index = 0; index < allAttr[iL].length; index++) {
-                            const element = allAttr[iL][index];
-                            if (element === '\t' || element === ' ') {
-                                prefix += element;
+            const language_arr = languages.split('|');
+            const lang_count = language_arr.length;
+            for (let index = 0; index < lang_count; index++) {
+                const language = language_arr[index].trim();
+                const write_file_language = path.join(AppDir, `/language/${language}.js`);
+                if (fs.existsSync(write_file_language)) {
+                    const content = fs.readFileSync(write_file_language, 'utf8');
+                    const finds = content.match(/adminbor\s*:\s*{.*?[\r\n](\s*)/);
+                    if (finds.length > 0) {
+                        const allAttr = finds[1].split("\n");
+                        let prefix = "";
+                        if (allAttr.length > 1) {
+                            const iL = allAttr.length - 1;
+                            for (let index = 0; index < allAttr[iL].length; index++) {
+                                const element = allAttr[iL][index];
+                                if (element === '\t' || element === ' ') {
+                                    prefix += element;
+                                }
+                                else { break; }
                             }
-                            else { break; }
                         }
-                    }
-                    const addContent = `"${en_collection_name}": "${chinese_collection_name}",\r\n${prefix}`;
+                        const collection_name = language.startsWith('zh') ? chinese_collection_name : en_collection_name;
+                        const addContent = `"${en_collection_name}": "${collection_name}",\r\n${prefix}`;
 
-                    const content_arr = content.split(finds[0]);
-                    const new_content = content_arr[0]
-                        + finds[0]
-                        + addContent
-                        + content_arr[1];
-                    fs.writeFileSync(write_file_language, new_content);
-                    console.log(`Modify file OK:${write_file_language}`);
+                        const content_arr = content.split(finds[0]);
+                        const new_content = content_arr[0]
+                            + finds[0]
+                            + addContent
+                            + content_arr[1];
+                        fs.writeFileSync(write_file_language, new_content);
+                        console.log(`Modify file OK:${write_file_language}`);
+                    }
+                    else {
+                        throw new Error(`Error: language:${language} attribute:"adminbor" error!`);
+                    }
                 }
                 else {
-                    throw new Error(`Error: language:${language} attribute:"adminbor" error!`);
+                    throw new Error("Error: not exists:" + write_file_language);
                 }
-            }
-            else {
-                throw new Error("Error: not exists:" + write_file_language);
             }
         }
         catch (error) {

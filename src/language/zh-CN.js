@@ -12,4 +12,6 @@ module.exports = {
         'New Password Confirmation': '重复新密码',
         'graph captcha': '图像验证码',
     },
+    adminbor: {
+    },
 }
