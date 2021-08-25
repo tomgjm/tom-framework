@@ -98,6 +98,7 @@ module.exports = {
         "tomjs/handlers/validator": "tomjs/handlers/validator",
         "tomjs/listener/base_listener": "tomjs/listener/base_listener",
         "tomjs/middleware/access_control_allow": "tomjs/middleware/access_control_allow",
+        "tomjs/middleware/all_params": "tomjs/middleware/all_params",
         "tomjs/middleware/auth_user": "tomjs/middleware/auth_user",
         "tomjs/middleware/options": "tomjs/middleware/options",
         "tomjs/middleware/ratelimit": "tomjs/middleware/ratelimit",

@@ -35,7 +35,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
         //保存新建数据
         let cr = undefined;
         try {
-            cr = await this.{{ model_object }}.create(ctx.request.body);
+            cr = await this.{{ model_object }}.create(ctx.all_params);
         } catch (e) {
             throw new ApiError(ApiError.DB_ERROR, { message: e.message });
         }
@@ -53,7 +53,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
         this.authorize(ctx, 'edit', {{ document }});
         const old_info = {{ document }}.toJSON();
 
-        {{ document }}.assign(ctx.request.body);
+        {{ document }}.assign(ctx.all_params);
 
         try {
             await {{ document }}.save();
