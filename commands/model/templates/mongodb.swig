@@ -9,7 +9,7 @@ class {{ model_name }} extends model {
         //this.collection = '{{ collection_name }}'
 
         // this.fillable = ['name',];//如果有设置那么create函数中这些字段会被填充
-        this.guarded = ['_id', 'created_at', 'updated_at',];//不会被在create中被填充字段
+        this.guarded = ['_id', 'created_at', 'updated_at', 'deleted', 'deleted_at',];//不会被在create中被填充字段
 
         this.Schema = {
             field_name: {
