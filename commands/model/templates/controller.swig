@@ -4,7 +4,7 @@ const AppDir = require2('tomjs/handlers/dir')();
 const ApiError = require(path.join(AppDir, './error/api_error'));
 const BaseController = require2('tomjs/controllers/base_controller');
 const { getDBObjByID } = require2('tomjs/handlers/db_tools');
-const { filterCTXQuery } = require2('tomjs/handlers/tools');
+const { filterCTXQuery, isObject } = require2('tomjs/handlers/tools');
 const {{ model_name }} = require(path.join(AppDir, './models/{{ file_name }}'));
 
 
@@ -15,8 +15,15 @@ module.exports = class {{ controller }}Controller extends BaseController {
     }
 
     async index(ctx) {
-        //getValues可以传入一个对象，其属性名就是不要输出的属性内容
-        ctx.body = (await this.{{ model_object }}.findAll(filterCTXQuery(ctx.query)).pql(ctx).paginate(ctx)).getValues();
+        // getValues可以传入一个对象，其属性名就是不要输出的属性内容
+        // if(!isObject(ctx.query)){ctx.query = {};}
+        // if(ctx.auth.id()){
+        //     ctx.query['$or'] = [{status: {{ model_name }}.defines.status.ok},{user_id: ctx.auth.id()}];
+        // }
+        // else{
+        //     ctx.query.status = {{ model_name }}.defines.status.ok;
+        // }
+        ctx.body = (await this.{{ model_object }}.findAll(filterCTXQuery(ctx)).pql(ctx).paginate(ctx)).getValues();
     }
 
     async show(ctx, id) {
