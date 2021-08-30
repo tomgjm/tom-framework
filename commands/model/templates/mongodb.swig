@@ -26,7 +26,7 @@ class {{ model_name }} extends model {
         };
 
         // mongodb 读写等级
-        this.SchemaOption = toObject(database_cfg.mongodb_schema_options) ||
+        this.SchemaOption = Object.assign({}, toObject(database_cfg.mongodb_schema_options) ||
         {
             readConcern: {
                 level: 'majority',
@@ -36,7 +36,7 @@ class {{ model_name }} extends model {
                 j: true,
                 wtimeout: 1000,
             }
-        };
+        });
 
         // 字段枚举定义
         // this.defines = {
