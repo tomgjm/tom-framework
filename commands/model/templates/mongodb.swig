@@ -1,8 +1,10 @@
 const require2 = require('tomjs/handlers/require2');
 const model = require2('tomjs/models/mongoose_model');
 // const middleware = require('./middleware/user');
-const validate = require('./validate');
-// const configs = require2('tomjs/configs')();
+// const validate = require('./validate');
+const { toObject } = require('tomjs/handlers/base_tools')
+const configs = require2('tomjs/configs')();
+const database_cfg = configs.database;
 
 class {{ model_name }} extends model {
     Init() {
@@ -20,20 +22,21 @@ class {{ model_name }} extends model {
                 // sparse: true,//不重复但可以有空值
                 // default: "",//默认值
                 // validate: validate({ validator: 'isEMail' }),//验证规则
-            },            
+            },
         };
 
         // mongodb 读写等级
-        // this.SchemaOption = {
-        //     readConcern: {
-        //         level: 'majority',
-        //     },
-        //     writeConcern: {
-        //         w: 'majority',
-        //         j: true,
-        //         wtimeout: 1000,
-        //     }
-        // }
+        this.SchemaOption = toObject(database_cfg.mongodb_schema_options) ||
+        {
+            readConcern: {
+                level: 'majority',
+            },
+            writeConcern: {
+                w: 'majority',
+                j: true,
+                wtimeout: 1000,
+            }
+        };
 
         // 字段枚举定义
         // this.defines = {

@@ -6,7 +6,8 @@ module.exports = {
         up_outtime: 2000,
         down_outtime: 2000,
     },
-    mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": { "level": "majority" },"writeConcern": { "w": "majority" }}'),
+    mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": {"level": "majority" },"writeConcern": {"w": "majority","j": true , "wtimeout": 1000}}'),
+    mongodb_schema_options: toObject(process.env.DB_SCHEMA_OPTIONS) || toObject('{"readConcern": {"level": "majority" },"writeConcern": {"w": "majority","j": true , "wtimeout": 1000}}'),
     mongodb: {
         type: "mongodb",
         url: process.env.DB_URL,
