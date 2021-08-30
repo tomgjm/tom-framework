@@ -1,7 +1,7 @@
 const require2 = require('tomjs/handlers/require2');
 const model = require2('tomjs/models/mongoose_model');
 // const middleware = require('./middleware/user');
-// const validate = require('./validate');
+const validate = require('./validate');
 const { toObject } = require('tomjs/handlers/base_tools')
 const configs = require2('tomjs/configs')();
 const database_cfg = configs.database;
