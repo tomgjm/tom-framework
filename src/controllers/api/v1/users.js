@@ -1,7 +1,6 @@
 const require2 = require('tomjs/handlers/require2');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
-const BaseApiError = require2('tomjs/error/base_api_error');
 const ApiError = require(path.join(AppDir, './error/api_error'));
 const UsersHandler = require(path.join(AppDir, './handlers/users_handler'));
 const Password = require2('tomjs/password');
@@ -93,7 +92,7 @@ class User extends BaseUser {
             await user.save();
             this.emitter.emit('update', { user_id: id, old_info, new_info: user.toJSON() });
         } catch (e) {
-            throw new ApiError(BaseApiError.DB_ERROR, e.message, { id: id, message: ctx.request.body });
+            throw new ApiError(ApiError.DB_ERROR, e.message, { id: id, message: ctx.request.body });
         }
 
         ctx.body = user;
