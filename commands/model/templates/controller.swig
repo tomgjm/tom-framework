@@ -45,7 +45,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
             // ctx.all_params.user_id = ctx.auth.id();
             cr = await this.{{ model_object }}.create(ctx.all_params);
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, { message: e.message });
+            throw new ApiError(ApiError.DB_ERROR, { all_params: ctx.all_params });
         }
         ctx.body = cr;
         this.emitter.emit('store', { ctx, info: cr.toJSON() });
@@ -68,7 +68,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
             await {{ document }}.save();
             this.emitter.emit('edit', { ctx, id, old_info, new_info: {{ document }}.toJSON() });
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, { id: id, message: e.message });
+            throw new ApiError(ApiError.DB_ERROR, { id: id, all_params: ctx.all_params });
         }
 
         ctx.body = {{ document }};
@@ -83,7 +83,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
             await {{ document }}.delete();
             this.emitter.emit('delete', { ctx, id, info: old_info });
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, { id: id, message: e.message });
+            throw new ApiError(ApiError.DB_ERROR, { id: id, all_params: ctx.all_params });
         }
         ctx.body = true;
     }

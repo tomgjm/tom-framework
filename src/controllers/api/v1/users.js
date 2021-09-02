@@ -53,7 +53,7 @@ class User extends BaseUser {
                 password: await Password.hash(ctx.request.body.password)
             });
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, { message: e.message });
+            throw new ApiError(ApiError.DB_ERROR, { all_params: ctx.all_params });
         }
         ctx.body = {
             result: 'store',
@@ -92,7 +92,7 @@ class User extends BaseUser {
             await user.save();
             this.emitter.emit('update', { user_id: id, old_info, new_info: user.toJSON() });
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, e.message, { id: id, message: ctx.request.body });
+            throw new ApiError(ApiError.DB_ERROR, e.message, { id: id, all_params: ctx.all_params });
         }
 
         ctx.body = user;
