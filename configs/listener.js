@@ -8,11 +8,11 @@ module.exports = {
     //如果文件只是一个函数，那么函数名默认为事件名,如果是匿名函数就自动转为统配所有事件
     "app": ["app_listener"],
     //"jwt_auth":["jwt_auth_listener"],
-    "user": ["controllers/ap/v1/user_listener"],
-    "send_sms_end": ["controllers/ap/v1/send_sms_end_listener"],
-    "send_sms": ["controllers/ap/v1/send_sms_listener"],
-    "send_email": ["controllers/ap/v1/send_email_listener"],
-    "send_email_end": ["controllers/ap/v1/send_email_end_listener"],
+    "user": ["controllers/api/v1/user_listener"],
+    "send_sms_end": ["controllers/api/v1/send_sms_end_listener"],
+    "send_sms": ["controllers/api/v1/send_sms_listener"],
+    "send_email": ["controllers/api/v1/send_email_listener"],
+    "send_email_end": ["controllers/api/v1/send_email_end_listener"],
     "error": ["error_listener"],
     "websocket": ["websocket/websocket_listener"],
 };
