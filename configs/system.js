@@ -30,7 +30,7 @@ module.exports = {
     jwt_secret: process.env.JWT_SECRET || 'publicKey.pub', // jwt需要的Key文件名
 
     Lang:process.env.DEFAULT_LANG || 'zh-CN',//默认语言
-    languages:process.env.LANGUAGES || 'zh-CN,en',//允许的语言范围以 , 进行分割
+    languages:process.env.LANGUAGES || 'zh-CN,en-US',//允许的语言范围以 , 进行分割
     lang_cookie_key: 'lang',
 
     log4js_category: process.env.APP_LOG_CATEGORY ||"app",

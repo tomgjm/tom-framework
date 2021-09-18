@@ -113,7 +113,7 @@ class ModelCommand extends BaseCommand {
                     para: "CollectionChineseName[,languages]",
                     show_help_tab_count: -1,
                     help: "create AdminBro Model files",
-                    default: "新表单,zh-CN|en",
+                    default: "新表单,zh-CN|en-US",
                     action: "create_adminbro"
                 },
             ],
@@ -457,7 +457,7 @@ class ModelCommand extends BaseCommand {
 
     async create_adminbro(chinese_collection_name_info) {
         let [chinese_collection_name, languages] = chinese_collection_name_info.split(",");
-        if (!languages) { languages = "zh-CN|en"; }
+        if (!languages) { languages = "zh-CN|en-US"; }
         const m_name = this.__paras["ModelName"];
         const file_name = pluralize.plural(m_name);
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
