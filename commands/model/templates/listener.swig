@@ -9,7 +9,7 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
     show({ ctx, id } = {}) {
         const fn_name = getClassFuncName();
         try{
-            Log.info(`{{ fn_name }} ip: ${ctx.ip}, id: ${id}`);
+            Log.info(`${fn_name} ip: ${ctx.ip}, id: ${id}`);
         }
         catch(error){
             Log.error(fn_name, error);
@@ -18,7 +18,7 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
     store({ ctx, info } = {}) {
         const fn_name = getClassFuncName();
         try{
-            Log.info(`{{ fn_name }} ip: ${ctx.ip}, info:`, info);
+            Log.info(`${fn_name} ip: ${ctx.ip}, info:`, info);
         }
         catch(error){
             Log.error(fn_name, error);
@@ -27,7 +27,7 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
     edit({ ctx, id, old_info, new_info } = {}) {
         const fn_name = getClassFuncName();
         try{
-            Log.info(`{{ fn_name }} ip: ${ctx.ip}, id: ${id}, old_info:`, old_info, "new_info:", new_info);
+            Log.info(`${fn_name} ip: ${ctx.ip}, id: ${id}, old_info:`, old_info, "new_info:", new_info);
         }
         catch(error){
             Log.error(fn_name, error);
@@ -36,7 +36,7 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
     delete({ ctx, id, info } = {}) {
         const fn_name = getClassFuncName();
         try{
-            Log.info(`{{ fn_name }} ip: ${ctx.ip}, id: ${id}, info:`, info);
+            Log.info(`${fn_name} ip: ${ctx.ip}, id: ${id}, info:`, info);
         }
         catch(error){
             Log.error(fn_name, error);
