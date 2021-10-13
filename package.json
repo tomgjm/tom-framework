@@ -8,6 +8,7 @@
     "start": "nodemon src/app.js",
     "dev": "node src/app.js",
     "crons": "nodemon src/run_crons.js",
+    "cron": "nodemon src/run_cron.js",
     "migrate": "node ./node_modules/migrate/bin/migrate",
     "migrate_create": "node ./node_modules/migrate/bin/migrate create --template-file ./migrations/.templates.js",
     "model": "node ./commands/model"
