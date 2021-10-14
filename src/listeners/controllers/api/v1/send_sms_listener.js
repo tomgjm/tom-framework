@@ -13,7 +13,7 @@ if (sms_cfg.log4js_category) {
 class SendSMSListener extends BaseListener {
     //函数名就是具体事件名称
     send({ phoneNumber, templateId, params, mobile_gateways } = {}) {
-        emitter = Events.getEventEmitter('send_email_end');
+        emitter = Events.getEventEmitter('send_sms_end');
         queue.add(() => {
             SendSMS(phoneNumber, templateId, params, mobile_gateways)
                 .then(function (res) {
