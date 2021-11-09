@@ -11,7 +11,7 @@ extend(
 );
 extend(
     'isMobile',
-    function isEMail(val) {
+    function isMobile(val) {
         var re = /^1\d{10}$/;
         return re.test(val);
     },
