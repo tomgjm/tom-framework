@@ -29,7 +29,7 @@ class ModelCommand extends BaseCommand {
                 {
                     must: true,
                     // args: ["-h", "--help"],
-                    para: "ModelName",//变量名称
+                    para: "model_name",//变量名称
                     show_help_tab_count: 0,//显示 说明、帮助 前面增加或减少 tab显示个数
                     help: "Model Name",//说明、帮助
                     // default, //默认值
