@@ -133,7 +133,7 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_model() {
-        const file_name = this.__paras["ModelName"];
+        const file_name = this.__paras["model_name"];
         const model_name = camelize(file_name) + "Model";
         const collection_name = pluralize.plural(file_name);
         const object_name = humps.pascalize(pluralize.plural(file_name));
@@ -233,7 +233,7 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_controller(ControllerPath) {
-        const m_name = this.__paras["ModelName"];
+        const m_name = this.__paras["model_name"];
         const model_name = camelize(m_name) + "Model";
         const model_object = humps.pascalize(pluralize.plural(m_name));
         const controller = humps.pascalize(pluralize.singular(m_name));
@@ -263,7 +263,7 @@ class ModelCommand extends BaseCommand {
         if (!ControllerPath) {
             throw new Error("add route need argument:ControllerPath!")
         }
-        const ModelName = this.__paras["ModelName"];
+        const ModelName = this.__paras["model_name"];
         // const model_name = camelize(file_name) + "Model";
         const url_path_name = pluralize.plural(ModelName);
         // const object_name = humps.pascalize(pluralize.plural(file_name));
@@ -315,7 +315,7 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_rule(RulePath) {
-        const m_name = this.__paras["ModelName"];
+        const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
         const class_name = humps.pascalize(pluralize.singular(m_name));
         const locals = { class_name, };
@@ -337,7 +337,7 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_listener(ListenerPath) {
-        const m_name = this.__paras["ModelName"];
+        const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
         const class_name = humps.pascalize(pluralize.singular(m_name));
         const locals = { class_name, };
@@ -458,7 +458,7 @@ class ModelCommand extends BaseCommand {
     async create_adminbro(chinese_collection_name_info) {
         let [chinese_collection_name, languages] = chinese_collection_name_info.split(",");
         if (!languages) { languages = "zh-CN|en-US"; }
-        const m_name = this.__paras["ModelName"];
+        const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
         const object_name = humps.pascalize(pluralize.plural(file_name));
