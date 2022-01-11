@@ -26,7 +26,7 @@ module.exports = class {{ class_name }}Listener extends BaseListener {
             if (isObject(ctx) && ctx.ip) {
                 ip = ctx.ip;
             }
-            Log.info(`${fn_name} ip: ${ip}, id: ${id}`);
+            Log.info(`${fn_name} ip: ${ip}, info: `, info);
         }
         catch(error){
             Log.error(fn_name, error);
