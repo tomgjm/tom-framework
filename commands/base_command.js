@@ -29,6 +29,13 @@ module.exports = class BaseCommand {
         }
     }
 
+    replaceVar(str) {
+        for (const key in this.__paras) {
+            str = str.replace(new RegExp("\\$\\{" + key + "\\}"), this.__paras[key]);
+        }
+        return str;
+    }
+
     async run() {
         try {
             let usage = "usage: " + this.__cmd_name;
@@ -64,14 +71,14 @@ module.exports = class BaseCommand {
                         if (!boFind) {
                             boFind = this.__argv[fnName] === undefined ? false : true;
                             if (arg.default && this.__argv[fnName] === null && arg.action) {
-                                this.__argv[fnName] = arg.default;
+                                this.__argv[fnName] = this.replaceVar(arg.default);
                             }
                             if (boFind && arg.para) {
                                 this.__paras[arg.para] = this.__argv[fnName];
                             }
                         }
                     }
-                    if (!boFind && arg.para && arg.default) { this.__paras[arg.para] = arg.default; }
+                    if (!boFind && arg.para && arg.default) { this.__paras[arg.para] = this.replaceVar(arg.default); }
                     if (!boFind && arg.must
                         && ((arg.action && !this.__argv[full_name]) || (!arg.action && !this.__paras[arg.para]))
                         && !this.__have_cmd_help_version
@@ -122,7 +129,7 @@ module.exports = class BaseCommand {
                 }
 
                 if (arg.default) {
-                    op_args_str += " (default: " + arg.default + ")";
+                    op_args_str += " (default: " + this.replaceVar(arg.default) + ")";
                 }
 
                 if (usage_str.length > 0) {
@@ -138,6 +145,10 @@ module.exports = class BaseCommand {
                 out += arg_str + "\r\n";
             });
             this.__help_info = out;
+
+            if (isFunction(this.before)) {
+                await this.before();
+            }
 
             for (const key in this.__argv) {
                 if (key != '_') {
@@ -165,8 +176,8 @@ module.exports = class BaseCommand {
                 }
             }
 
-            if (isFunction(this.default)) {
-                await this.default();
+            if (isFunction(this.after)) {
+                await this.after();
             }
         }
         catch (error) {

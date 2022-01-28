@@ -2,7 +2,7 @@ const require2 = require('tomjs/handlers/require2');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const render = require2('tomjs/handlers/render');
-const { camelize } = require2('tomjs/handlers/tools');
+const { camelize, mkdirsSync } = require2('tomjs/handlers/tools');
 const pluralize = require2('pluralize');
 const humps = require2('humps');
 const fs = require2("fs");
@@ -17,9 +17,11 @@ const VIEW_NAME_CONTROLLER = "controller";
 const VIEW_NAME_RULE = "rule";
 const VIEW_NAME_LISTENER = "listener";
 const VIEW_NAME_ADMINBRO = "adminbro";
+const VIEW_NAME_PQL = "pql_";
 const TEMPLATE_ROOT_PATH = path.join(AppDir, "../commands/model/templates/");
 
-
+const API_VERSION = "api_version";
+const API_VERSION_DEFAULT = "v1";
 class ModelCommand extends BaseCommand {
     constructor() {
         super({
@@ -34,6 +36,15 @@ class ModelCommand extends BaseCommand {
                     help: "Model Name",//说明、帮助
                     // default, //默认值
                     // action: "help" //默认方法 可是是函数也可以字符串 如果是字符串就是本类的函数名
+                },
+                {
+                    must: false,
+                    args: ["-i", "--apiversion"],
+                    para: API_VERSION,//变量名称
+                    show_help_tab_count: -1,//显示 说明、帮助 前面增加或减少 tab显示个数
+                    help: "set default api version",//说明、帮助
+                    default: API_VERSION_DEFAULT, //默认值
+                    action: "set_api_version" //默认方法 可是是函数也可以字符串 如果是字符串就是本类的函数名
                 },
                 {
                     must: false,
@@ -68,7 +79,7 @@ class ModelCommand extends BaseCommand {
                     para: "ControllerPath",
                     show_help_tab_count: -1,
                     help: "create new controller file",
-                    default: "api/v1",
+                    default: "api/${" + API_VERSION + "}",
                     action: "create_controller"
                 },
                 {
@@ -77,7 +88,7 @@ class ModelCommand extends BaseCommand {
                     para: "RouteFile,RouteVarName[,ControllerPath]",
                     show_help_tab_count: 0,
                     help: "add route configure",
-                    default: "api,api_v1",
+                    default: "api,api_${" + API_VERSION + "}",
                     action: "add_route"
                 },
                 {
@@ -86,7 +97,7 @@ class ModelCommand extends BaseCommand {
                     para: "RulePath",
                     show_help_tab_count: 0,
                     help: "add controller rule file",
-                    default: "api/v1",
+                    default: "api/${" + API_VERSION + "}",
                     action: "create_rule"
                 },
                 {
@@ -95,8 +106,17 @@ class ModelCommand extends BaseCommand {
                     para: "ListenerPath",
                     show_help_tab_count: -1,
                     help: "add controller listener file",
-                    default: "controllers/api/v1",
+                    default: "controllers/api/${" + API_VERSION + "}",
                     action: "create_listener"
+                },
+                {
+                    must: false,
+                    args: ["-p", "--pql"],
+                    para: "PQLPath",
+                    show_help_tab_count: 0,
+                    help: "add controller PQL file",
+                    default: "public/api/${" + API_VERSION + "}",
+                    action: "create_pql"
                 },
                 {
                     must: false,
@@ -104,7 +124,7 @@ class ModelCommand extends BaseCommand {
                     para: "ControllerPath[,RouteFile,RouteVarName]",
                     show_help_tab_count: 0,
                     help: "create Model and all files",
-                    default: "api/v1",
+                    default: "api/${" + API_VERSION + "}",
                     action: "all"
                 },
                 {
@@ -113,23 +133,31 @@ class ModelCommand extends BaseCommand {
                     para: "CollectionChineseName[,languages]",
                     show_help_tab_count: -1,
                     help: "create AdminBro Model files",
-                    default: "新表单,zh-CN|en-US",
+                    default: "新表单,zh-CN|en",
                     action: "create_adminbro"
                 },
             ],
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.0.3";
+        this.__version = "1.1.0";
     }
 
-    default() {
+
+    before() {
+    }
+
+    after() {
         console.log("run end.");
     }
 
     version() {
         console.log(`Version: ${this.__version}`);
         process.exit();
+    }
+
+    set_api_version(api_version) {
+        this.__paras[API_VERSION] = api_version;
     }
 
     async create_model() {
@@ -409,6 +437,32 @@ class ModelCommand extends BaseCommand {
         }
     }
 
+    async create_pql(PQLPath) {
+        const m_name = this.__paras["model_name"];
+        const file_name = pluralize.plural(m_name);
+        const class_name = humps.pascalize(pluralize.singular(m_name));
+        const locals = { class_name, };
+        const basePath = path.join(AppDir, '../pql/', PQLPath + "/" + file_name);
+        mkdirsSync(basePath);
+        const pql_arr = ['index', 'show'];
+        try {
+            for (let index = 0; index < pql_arr.length; index++) {
+                const filename = basePath + '/' + pql_arr[index] + ".pql";
+                if (!fs.existsSync(filename)) {
+                    const content = await render(VIEW_NAME_PQL + pql_arr[index], locals, undefined, TEMPLATE_ROOT_PATH);
+                    fs.writeFileSync(filename, content);
+                    console.log(`Write file OK:${filename}`);
+                }
+                else {
+                    throw new Error("Error: file exists:" + filename);
+                }
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     async all(AllPath) {
         // ControllerPath[, RouteFile, RouteVarName]
         try {
@@ -416,6 +470,7 @@ class ModelCommand extends BaseCommand {
             let ControllerPath = undefined;
             let RouteFile = undefined;
             let RouteVarName = undefined;
+            const PQLPath = 'public/' + AllPath;
             switch (allPathArr.length) {
                 case 1:
                     {
@@ -449,6 +504,7 @@ class ModelCommand extends BaseCommand {
             await this.add_route(route_info);
             await this.create_rule(ControllerPath);
             await this.create_listener(ListenerPath);
+            await this.create_pql(PQLPath);
         }
         catch (error) {
             console.error("Error:" + error.message);
@@ -457,7 +513,7 @@ class ModelCommand extends BaseCommand {
 
     async create_adminbro(chinese_collection_name_info) {
         let [chinese_collection_name, languages] = chinese_collection_name_info.split(",");
-        if (!languages) { languages = "zh-CN|en-US"; }
+        if (!languages) { languages = "zh-CN|en"; }
         const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
