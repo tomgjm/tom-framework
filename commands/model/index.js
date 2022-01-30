@@ -2,10 +2,12 @@ const require2 = require('tomjs/handlers/require2');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const render = require2('tomjs/handlers/render');
-const { camelize, mkdirsSync } = require2('tomjs/handlers/tools');
+const { isString, isObject, camelize, mkdirsSync } = require2('tomjs/handlers/tools');
 const pluralize = require2('pluralize');
 const humps = require2('humps');
 const fs = require2("fs");
+
+const loose_json = require('loose-json');
 
 const BaseCommand = require(path.join(AppDir, '../commands/base_command'));
 
@@ -22,6 +24,35 @@ const TEMPLATE_ROOT_PATH = path.join(AppDir, "../commands/model/templates/");
 
 const API_VERSION = "api_version";
 const API_VERSION_DEFAULT = "v1";
+
+function delQuotes(str) {
+    str = ('' + str).trim();
+    const str_len = str.length - 1;
+    if (str[0] === '"' && str[str_len] === '"') {
+        //去读掉两头 双引号
+        str = str.substring(1, str_len);
+    }
+    else if (str[0] === "'" && str[str_len] === "'") {
+        //去读掉两头 单引号
+        str = str.substring(1, str_len);
+    }
+    return str;
+}
+
+function stringify(obj_from_json, fn, num) {
+    if (typeof obj_from_json !== "object" || Array.isArray(obj_from_json)) {
+        // not an object, stringify using native function
+        return JSON.stringify(obj_from_json, fn, num);
+    }
+    // Implements recursive object serialization according to JSON spec
+    // but without quotes around the keys.
+    let props = Object
+        .keys(obj_from_json)
+        .map(key => `${key}:${stringify(obj_from_json[key], fn, num)}`)
+        .join(",");
+    return `{${props}}`;
+}
+
 class ModelCommand extends BaseCommand {
     constructor() {
         super({
@@ -45,6 +76,15 @@ class ModelCommand extends BaseCommand {
                     help: "set default api version",//说明、帮助
                     default: API_VERSION_DEFAULT, //默认值
                     action: "set_api_version" //默认方法 可是是函数也可以字符串 如果是字符串就是本类的函数名
+                },
+                {
+                    must: false,
+                    args: ["-f", "--fields"],
+                    para: "Fields",
+                    show_help_tab_count: -1,
+                    help: "Model fields definition",
+                    // default,
+                    action: "fields"
                 },
                 {
                     must: false,
@@ -140,7 +180,8 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.0";
+        this.__version = "1.1.2";
+        this.__fields_lang__ = {};
     }
 
 
@@ -150,6 +191,85 @@ class ModelCommand extends BaseCommand {
     after() {
         console.log("run end.");
     }
+
+    stringifyNotQuotes(obj_key, obj, fn, num) {
+        // return JSON.stringify(obj, fn, num).replace(/\\"/g, "\uFFFF").replace(/"([^"]+)":/g, '$1:').replace(/\uFFFF/g, '\\\"');
+        if (isString(obj)) {
+            return obj;
+        }
+        else if (!isObject(obj) || Array.isArray(obj)) {
+            // not an object, stringify using native function
+            return JSON.stringify(obj, fn, num);
+        }
+        // Implements recursive object serialization according to JSON spec
+        // but without quotes around the keys.
+
+        const TemplateObj = {
+            type: "String",//字段类型
+            required: true,//是否为必须字段
+            index: true,//是否索引
+            unique: true,//是否不重复
+            sparse: true,//不重复但可以有空值
+            default: '""',//默认值
+            validate: "validate({ validator: 'isEMail' })",//验证规则
+        }
+
+        let props = Object
+            .keys(obj)
+            .map(key => {
+                let re = undefined;
+                switch (key) {
+                    case "type":
+                    case "validate":
+                        re = `${key}: ${obj[key]}`;
+                        break;
+                    case "__lang__":
+                        this.__fields_lang__[obj_key] = obj[key];
+                        re = undefined;
+                        break;
+                    default:
+                        re = `${key}: ${JSON.stringify(obj[key], fn, num)}`;
+                        break;
+                }
+                if (TemplateObj[key]) { delete TemplateObj[key]; }
+                return re ? "\n" + "\t".repeat(num) + re : undefined;
+            })
+            .filter(item => item !== undefined)
+            .concat(
+                Object
+                    .keys(TemplateObj)
+                    .map(key => {
+                        return "\n" + "\t".repeat(num) + (key === "type" ? '' : '// ') + `${key}: ${TemplateObj[key]}`;
+                    })
+            )
+            .join(",") + "\n" + "\t".repeat(num - 1);
+        return `{${props}}`;
+    }
+
+    getLangString(lang) {
+        let str = '';
+        for (const key in this.__fields_lang__) {
+            const element = this.__fields_lang__[key];
+            if (element[lang]) {
+                str += (str === "" ? "" : "\r\n") + ' '.repeat(8) + `"${key}": "${element[lang]}",`;
+            }
+        }
+        return str;
+    }
+
+    adminbro_fields_str(model_class) {
+        let fields_str = '';
+        let fields_list_str = '';
+        if (isObject(this.__paras['Fields'])) {
+            for (const key in this.__paras['Fields']) {
+                fields_str += (fields_str === '' ? '' : "\r\n") + " ".repeat(8) + `${key}:  __('${model_class}.${key}'),`;
+                fields_list_str += `"${key}", `;
+            }
+        }
+
+        return { fields_str, fields_list_str };
+    }
+
 
     version() {
         console.log(`Version: ${this.__version}`);
@@ -166,7 +286,10 @@ class ModelCommand extends BaseCommand {
         const collection_name = pluralize.plural(file_name);
         const object_name = humps.pascalize(pluralize.plural(file_name));
         const singular_name = humps.pascalize(pluralize.singular(file_name));
-        const locals = { file_name, model_name, collection_name, object_name, singular_name, };
+        const fields_str = this.__paras['Fields_str'] ? this.__paras['Fields_str'] :
+            '          field_name: {\n                type: String,//字段类型\n                // required: true,//是否为必须字段\n                // index: true,//是否索引\n                // unique: true,//是否不重复\n                // sparse: true,//不重复但可以有空值\n                // default: "",//默认值\n                // validate: validate({ validator: "isEMail" }),//验证规则\n            },\n';
+        const fields_ref_str = this.__paras['Fields_ref_str'] ? this.__paras['Fields_ref_str'] : "";
+        const locals = { file_name, model_name, collection_name, object_name, singular_name, fields_str, fields_ref_str };
         const write_file_main = path.join(AppDir, './models/' + file_name + ".js");
         const write_file_mongodb = path.join(AppDir, './models/mongodb/' + file_name + ".js");
         const write_file_migrate = path.join(AppDir, `../migrations/${new Date().getTime()}-create_${file_name}.js`);
@@ -346,7 +469,10 @@ class ModelCommand extends BaseCommand {
         const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
         const class_name = humps.pascalize(pluralize.singular(m_name));
-        const locals = { class_name, };
+
+        const rule_str = this.__paras['Fields_rule_str'];
+        const rule_attributes_str = this.__paras['Fields_rule_attributes_str'];
+        const locals = { class_name, rule_str, rule_attributes_str };
         const write_file_rule = path.join(AppDir, './rules/', RulePath + "/" + file_name + ".js");
 
         try {
@@ -463,6 +589,87 @@ class ModelCommand extends BaseCommand {
         }
     }
 
+    async fields(Fields) {
+        Fields = delQuotes(Fields);
+        try {
+            Fields = loose_json(Fields);
+            const m_name = this.__paras["model_name"];
+            const model_name = camelize(m_name) + "Model";
+            let str = '';
+            let ref_str = '';
+            let rule_str = "";
+            let rule_attributes_str = "";
+
+            for (const key in Fields) {
+                const field = Fields[key];
+                str += (str === '' ? '' : ",\r\n") + "\t".repeat(3) + key + ": " + this.stringifyNotQuotes(key, field, null, 4);
+                rule_attributes_str += (rule_attributes_str === '' ? '' : "\r\n") + " ".repeat(16) + `// ${key}: ctx.__('${model_name}.${key}'),`;
+
+                const ruleArr = {};
+                for (const fKey in field) {
+                    const fType = fKey.toLowerCase();
+                    switch (fKey) {
+                        case "ref":
+                            {
+                                if (key.toLowerCase().endsWith("_id")) {
+                                    const className = key.substring(0, key.length - 3);
+                                    ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${key.substring(0, key.length - 3)}');`
+                                    ruleArr[fKey] = `exists:${pluralize.plural(className)},_id`;
+                                }
+                                break;
+                            }
+                        case "required":
+                            {
+                                ruleArr[fKey] = `required`;
+                                break;
+                            }
+                        case "type":
+                            {
+                                if (fType === "string" || fType === "boolean" || fType === 'date') {
+                                    ruleArr[fKey] = fType;
+                                } else if (fType === "number") {
+                                    ruleArr[fKey] = "numeric";
+
+                                } else if (fType === "array" || fType[0] === '[') {
+                                    ruleArr[fKey] = "array";
+                                }
+                                else {
+                                    ruleArr[fKey] = "string";
+                                }
+                                break;
+                            }
+                        case "unique":
+                            {
+                                if (key.toLowerCase().endsWith("_id")) {
+                                    const className = key.substring(0, key.length - 3);
+                                    ruleArr[fKey] = `unique:${pluralize.plural(className)},key`;
+                                }
+                                break;
+                            }
+                    }
+                }
+
+                const attr = [];
+                for (const key in ruleArr) {
+                    attr.push(ruleArr[key]);
+                }
+                if (attr.length === 0) {
+                    attr.push("string");
+                }
+
+                rule_str += (rule_str === '' ? '' : "\r\n") + " ".repeat(16) + `// ${key}: '${attr.join("|")}',`;
+            }
+            this.__paras['Fields'] = Fields;
+            this.__paras['Fields_str'] = str;
+            this.__paras['Fields_ref_str'] = ref_str;
+            this.__paras['Fields_rule_str'] = rule_str;
+            this.__paras['Fields_rule_attributes_str'] = rule_attributes_str;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     async all(AllPath) {
         // ControllerPath[, RouteFile, RouteVarName]
         try {
@@ -519,10 +726,12 @@ class ModelCommand extends BaseCommand {
         const model_class = humps.pascalize(pluralize.singular(m_name)) + "Model";
         const object_name = humps.pascalize(pluralize.plural(file_name));
         const en_collection_name = humps.decamelize(object_name, { separator: ' ' });
-        const locals = { model_class, en_collection_name, object_name, m_name };
         const model_dir = path.join(AppDir, `./adminbro/resources/${model_class}`);
         const write_model_file = model_dir + "/index.js";
         const model_dir_index_file = path.join(AppDir, `./adminbro/resources/index.js`);
+
+        const { fields_str, fields_list_str } = this.adminbro_fields_str(model_class);
+        const locals = { model_class, en_collection_name, object_name, m_name, fields_str, fields_list_str };
 
         try {
             if (!fs.existsSync(model_dir)) {
@@ -608,6 +817,22 @@ class ModelCommand extends BaseCommand {
                         const addContent = `"${en_collection_name}": "${collection_name}",\r\n${prefix}`;
 
                         const content_arr = content.split(finds[0]);
+                        if (content_arr[1]) {
+                            const ends = content_arr[1].match(/(([\s]*?)\}([,\s]*?))([\r\n\s]*?}[;\s\r\n]*?$)/);
+                            if (ends.length === 5) {
+                                let comma = ends[3].trim();
+                                if (comma.length <= 0) { comma = ','; }
+                                else if (comma === ',') { comma = ""; }
+                                const start_str = (ends[2].startsWith("\r\n") ? '' : "\r\n") + ends[2];
+                                content_arr[1] = content_arr[1].split(ends[4])[0]
+                                    + comma
+                                    + start_str
+                                    + model_class + ": {\r\n"
+                                    + this.getLangString(language)
+                                    + start_str + "}"
+                                    + ends[4];
+                            }
+                        }
                         const new_content = content_arr[0]
                             + finds[0]
                             + addContent

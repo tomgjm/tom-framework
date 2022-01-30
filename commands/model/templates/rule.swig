@@ -11,12 +11,10 @@ module.exports = class {{ class_name }}Rules {
         //保存新建数据
         return {
             rules: {
-                // article_id: 'required|string|exists:articles,_id',
-                // content: 'required|string',
+{{rule_str|safe}}
             },
             attributes: {
-                // article_id: ctx.__('article id'),
-                // content: ctx.__('content'),
+{{rule_attributes_str|safe}}
             }
         }
     }
@@ -25,11 +23,10 @@ module.exports = class {{ class_name }}Rules {
         //保存更新数据
         return {
             rules: {
-                // id: 'required|string|exists:article_comments,_id',
-                // content: 'required|string',
+{{rule_str|safe}}
             },
             attributes: {
-                // content: ctx.__('content'),
+{{rule_attributes_str|safe}}
             }
         }
     }

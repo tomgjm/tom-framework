@@ -14,15 +14,7 @@ class {{ model_name }} extends model {
         this.guarded = ['_id', 'created_at', 'updated_at', 'deleted', 'deleted_at',];//不会被在create中被填充字段
 
         this.Schema = {
-            field_name: {
-                type: String,//字段类型
-                // required: true,//是否为必须字段
-                // index: true,//是否索引
-                // unique: true,//是否不重复
-                // sparse: true,//不重复但可以有空值
-                // default: "",//默认值
-                // validate: validate({ validator: 'isEMail' }),//验证规则
-            },
+{{fields_str|safe}}
         };
 
         // mongodb 读写等级
@@ -48,6 +40,7 @@ class {{ model_name }} extends model {
 
         this.timestamps();
         // this.softDeletes();//开启支持软删除
+{{fields_ref_str|safe}}
     }
     modelAfter(modelObj) {
         //console.log('modelAfter');

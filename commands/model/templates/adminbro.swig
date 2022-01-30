@@ -12,7 +12,7 @@ const {{ object_name }} = {{ model_class }}.Model();
 module.exports = (parent) => {
     const properties = {
         _id: 'ID',
-        // field_name: __('{{ model_class }}.field_name'),
+{{fields_str|safe}}
         created_at: __('created_at'),
         updated_at: __('updated_at'),
     };
@@ -26,10 +26,10 @@ module.exports = (parent) => {
         resource: {{ object_name }},
         options: {
             parent,
-            listProperties: ['_id', 'created_at', 'updated_at',],
-            showProperties: ['_id', 'created_at', 'updated_at',],
-            editProperties: [],
-            filterProperties: ['_id', 'created_at', 'updated_at',],
+            listProperties: ['_id', {{fields_list_str|safe}}'created_at', 'updated_at',],
+            showProperties: ['_id', {{fields_list_str|safe}}'created_at', 'updated_at',],
+            editProperties: [{{fields_list_str|safe}}],
+            filterProperties: ['_id', {{fields_list_str|safe}}'created_at', 'updated_at',],
             properties: {
                 // field_name: {
                 //     isRequired: true,
