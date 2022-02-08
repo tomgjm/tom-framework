@@ -209,7 +209,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.3";
+        this.__version = "1.1.4";
         this.__fields_lang__ = {};
     }
 
@@ -620,10 +620,29 @@ class ModelCommand extends BaseCommand {
     }
 
     async fields(Fields) {
-        Fields = delQuotes(Fields);
         try {
-            Fields = loose_json(Fields);
             const m_name = this.__paras["model_name"];
+            if (isString(Fields) && Fields.length > 0) {
+                Fields = Fields.trim();
+                if (Fields[0] === "{" && Fields[Fields.length - 1] === "}") {
+                    Fields = loose_json(Fields);
+                }
+                else {
+                    if (extname(Fields).length < 1) {
+                        Fields += '.json';
+                    }
+                    if (Fields.indexOf('/') <= 0) {
+                        Fields = require(path.join(AppDir, `../fields_define/${Fields}`));
+                    }
+                    else {
+                        Fields = require(path.join(AppDir, Fields));
+                    }
+                }
+            }
+            else {
+                Fields = require(path.join(AppDir, `../fields_define/${m_name}.json`));
+            }
+
             const model_name = camelize(m_name) + "Model";
             let str = '';
             let ref_str = '';
