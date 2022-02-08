@@ -39,6 +39,35 @@ function delQuotes(str) {
     return str;
 }
 
+function delParentheses(str) {
+    const str_len = str.length - 1;
+    if (str[0] === '"' && str[str_len] === '"') {
+        //去读掉两头 双引号
+        str = str.substring(1, str_len);
+    }
+    else if (str[0] === "'" && str[str_len] === "'") {
+        //去读掉两头 单引号
+        str = str.substring(1, str_len);
+    }
+    return str;
+}
+
+function objectToPQL(obj, delParentheses = false) {
+    const pqlObj = Object.assign({}, obj);
+    for (const key in pqlObj) {
+        pqlObj[key] = 1;
+    }
+    let str = JSON.stringify(pqlObj, null, 4);
+    if (delParentheses) {
+        const str_len = str.length - 1;
+        if (str[0] === '{' && str[str_len] === '}') {
+            //去读掉两头 双引号
+            str = str.substring(1, str_len);
+        }
+    }
+    return str.trim();
+}
+
 function stringify(obj_from_json, fn, num) {
     if (typeof obj_from_json !== "object" || Array.isArray(obj_from_json)) {
         // not an object, stringify using native function
@@ -180,7 +209,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.2";
+        this.__version = "1.1.3";
         this.__fields_lang__ = {};
     }
 
@@ -565,9 +594,10 @@ class ModelCommand extends BaseCommand {
 
     async create_pql(PQLPath) {
         const m_name = this.__paras["model_name"];
+        const pql_fields = objectToPQL(this.__paras['Fields'], true);
         const file_name = pluralize.plural(m_name);
         const class_name = humps.pascalize(pluralize.singular(m_name));
-        const locals = { class_name, };
+        const locals = { class_name, pql_fields, };
         const basePath = path.join(AppDir, '../pql/', PQLPath + "/" + file_name);
         mkdirsSync(basePath);
         const pql_arr = ['index', 'show'];
