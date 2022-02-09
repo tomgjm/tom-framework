@@ -209,7 +209,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.4";
+        this.__version = "1.1.5";
         this.__fields_lang__ = {};
     }
 
@@ -662,7 +662,7 @@ class ModelCommand extends BaseCommand {
                             {
                                 if (key.toLowerCase().endsWith("_id")) {
                                     const className = key.substring(0, key.length - 3);
-                                    ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${key.substring(0, key.length - 3)}');`
+                                    ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${pluralize.plural(key.substring(0, key.length - 3))}');`
                                     ruleArr[fKey] = `exists:${pluralize.plural(className)},_id`;
                                 }
                                 break;
