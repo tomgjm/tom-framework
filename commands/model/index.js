@@ -209,7 +209,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.5";
+        this.__version = "1.1.6";
         this.__fields_lang__ = {};
     }
 
@@ -656,7 +656,7 @@ class ModelCommand extends BaseCommand {
 
                 const ruleArr = {};
                 for (const fKey in field) {
-                    const fType = fKey.toLowerCase();
+                    const fType = fKey.trim().toLowerCase();
                     switch (fKey) {
                         case "ref":
                             {
@@ -674,12 +674,13 @@ class ModelCommand extends BaseCommand {
                             }
                         case "type":
                             {
-                                if (fType === "string" || fType === "boolean" || fType === 'date') {
-                                    ruleArr[fKey] = fType;
-                                } else if (fType === "number") {
+                                const type_val = field[fType].trim().toLowerCase();
+                                if (type_val === "string" || type_val === "boolean" || type_val === 'date') {
+                                    ruleArr[fKey] = type_val;
+                                } else if (type_val === "number") {
                                     ruleArr[fKey] = "numeric";
 
-                                } else if (fType === "array" || fType[0] === '[') {
+                                } else if (type_val === "array" || type_val[0] === '[') {
                                     ruleArr[fKey] = "array";
                                 }
                                 else {
