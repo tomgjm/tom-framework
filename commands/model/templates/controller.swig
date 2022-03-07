@@ -29,7 +29,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
     async show(ctx, id) {
         //显示单项
         const {{ document }} = await getDBObjByID(this.{{ model_object }}, id, ctx);
-        this.authorize(ctx, 'show', {{ document }});
+        await this.authorize(ctx, 'show', {{ document }});
         ctx.body = {{ document }};
         this.emitter.emit('show', { ctx, id });
     }
@@ -58,7 +58,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
     async update(ctx, id) {
         //authorize权限检测 统一检测权限规范方便统一调整
         const {{ document }} = await getDBObjByID(this.{{ model_object }}, id);
-        this.authorize(ctx, 'edit', {{ document }});
+        await this.authorize(ctx, 'edit', {{ document }});
         const old_info = {{ document }}.toJSON();
 
         // ctx.all_params.user_id = ctx.auth.id();
@@ -77,7 +77,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
     async destroy(ctx, id) {
         //authorize权限检测 统一检测权限规范方便统一调整
         const {{ document }} = await getDBObjByID(this.{{ model_object }}, id);
-        this.authorize(ctx, 'delete', {{ document }});
+        await this.authorize(ctx, 'delete', {{ document }});
         const old_info = {{ document }}.toJSON();
         try {
             await {{ document }}.delete();
