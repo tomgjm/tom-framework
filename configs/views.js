@@ -5,5 +5,5 @@ module.exports = {
     path: join(appDir, (process.env.VIEWS_PATH || 'views')), //视图模板目录
     extension: process.env.VIEWS_PATH || 'swig',
     options: {},
-    map: {'swig':'swig'},
+    map: {'swig':'twig'},
 };
