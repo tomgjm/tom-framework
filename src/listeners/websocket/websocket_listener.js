@@ -4,8 +4,8 @@ const BaseListener = require2('tomjs/listener/base_listener');
 const log4js = require2('tomjs/handlers/log4js');
 const { getUserIDByCTX } = require2('tomjs/handlers/listener_tools');
 let Log = console;
-if (system_cfg.log4js_error_category) {
-    Log = log4js.getLogger(system_cfg.log4js_error_category);
+if (system_cfg.log4js_websocket_category) {
+    Log = log4js.getLogger(system_cfg.log4js_websocket_category);
 }
 
 class WebsocketListener extends BaseListener {

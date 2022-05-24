@@ -34,7 +34,8 @@ module.exports = {
     lang_cookie_key: 'lang',
 
     log4js_category: process.env.APP_LOG_CATEGORY ||"app",
-
+    log4js_websocket_category: process.env.WEBSOCKET_LOG_CATEGORY ||"websocket",
     log4js_error_category: process.env.ERROR_LOG_CATEGORY || "error",
+    
     all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW || false),
 }

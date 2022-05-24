@@ -25,6 +25,12 @@ module.exports = {
                 "pattern": "_yyyyMMdd.log",
                 "alwaysIncludePattern": true,
             },
+            "websocket": {
+                "type": "dateFile",
+                "filename": process.env.LOG_WEBSOCKET_FILE || (LOG_PATH + "/websocket"),
+                "pattern": "_yyyyMMdd.log",
+                "alwaysIncludePattern": true,
+            },
             "sms": {
                 "type": "dateFile",
                 "filename": process.env.LOG_SMS_FILE || (LOG_PATH + "/sms"),
@@ -59,6 +65,7 @@ module.exports = {
         "categories": {
             "default": { "appenders": ["out", "default",], "level": process.env.LOG_DEFAULT_LEVEL||"debug" },
             "app": { "appenders": ["out", "app",], "level": process.env.LOG_APP_LEVEL||"debug" },
+            "websocket": { "appenders": ["out", "websocket",], "level": process.env.LOG_WEBSOCKET_LEVEL||"debug" },
             "sms": { "appenders": ["out", "sms",], "level": process.env.LOG_SMS_LEVEL||"debug" },
             "error": { "appenders": ["out","error",], "level": process.env.LOG_ERROR_LEVEL||"debug" },
             "user": { "appenders": ["user",], "level": process.env.LOG_USER_LEVEL||"debug" },
