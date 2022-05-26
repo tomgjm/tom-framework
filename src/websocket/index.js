@@ -5,10 +5,33 @@ const validator = require2('tomjs/handlers/validator');//表单验证 validator(
 const { login, retoken, decode_token, logout } = require2('tomjs/handlers/login_out');//提供用户登录，登出，生成新的token，解读token等功能
 const ratelimit = require2('tomjs/middleware/ratelimit');//访问限制器
 
+const opt = require2('tomjs/auth/router_jwt_opt');
+const jwt = require('jsonwebtoken');
+
+const URL = require('url');
+
 module.exports = async function (server_ws, isWSS) {
     // server_ws.server.on('upgrade', function (request, socket, head) {
-    //     console.log('upgrade '+(isWSS?'wss':'ws'));
     //     //此处可以做 链接websocket验证操作
+    //     socket.pause();//要先暂停socket工作等待jwt验证
+    //     request.upgrade = false;
+    //     const params = URL.parse(request.url, true);
+    //     const parts = params.query.Authorization.split(' ');
+    //     if (parts.length === 2) {
+    //         const scheme = parts[0];
+    //         const credentials = parts[1];
+    //         if (/^Bearer$/i.test(scheme)) {
+    //             try {
+    //                 jwt.verify(credentials, opt.secret,opt);
+    //                 request.upgrade = true;
+    //                 socket.resume();//继续socket工作
+    //             }
+    //             catch (error) {
+    //                 request.upgrade = false;
+    //                 socket.destroySoon();
+    //             }
+    //         }
+    //     }
     // });
     if (isWSS) {
         console.log('Now start wss on IP:' + SystemConfig.server_bind_ip + ':' + SystemConfig.server_https_port + '...');
