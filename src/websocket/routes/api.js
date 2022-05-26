@@ -5,9 +5,8 @@ const router_jwt = require2('tomjs/auth/router_jwt');
 
 let route = new WsRouter();
 
-route.path('/', 'api');
+route.path('/', 'api', true);////第三个参数为是否要jwt验证
 
-//route.use('/test/:id',router_jwt()); 开启jwt验证
 route.path('/test/:id', async function (ctx, next) {
     ctx.websocket.on_message = async function (data) {
         await ctx.websocket.send('on_message:' + JSON.stringify(data));
