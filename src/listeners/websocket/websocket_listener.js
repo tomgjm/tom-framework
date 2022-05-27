@@ -46,9 +46,14 @@ class WebsocketListener extends BaseListener {
         Log.info(`Websocket add_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
     }
 
-    add_max_user({ ctx, user_id, count } = {}) {
+    add_one_user_max({ ctx, user_id, count } = {}) {
         let socket_id = ctx.websocket.getID();
-        Log.info(`Websocket add_max_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
+        Log.info(`Websocket add_one_user_max ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
+    }
+
+    add_max_users({ ctx, user_id, count } = {}) {
+        let socket_id = ctx.websocket.getID();
+        Log.info(`Websocket add_max_users ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
     }
 
     delete_user({ ctx, user_id, count } = {}) {
