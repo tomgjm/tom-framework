@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const URL = require('url');
 
 module.exports = async function (server_ws, isWSS) {
+    // configs/websocket.js 中的 on_add_socket_fn 会优先于upgrade执行，下面代码意义不大
     // server_ws.server.on('upgrade', function (request, socket, head) {
     //     //此处可以做 链接websocket验证操作
     //     socket.pause();//要先暂停socket工作等待jwt验证
