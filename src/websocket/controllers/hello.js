@@ -47,7 +47,7 @@ module.exports = class HelloController extends BaseController {
         // ctx.websocket.createRoom(room_name, isAdmin = false)//新建房间
         // ctx.websocket.deleteRoom(room_name, force = false)//删除房间
         // ctx.websocket.changeRoomAdmin(room_name, new_ctx, force = false);//变更房间管理员
-        // ctx.websocket.joinRoom(room_name, isAdmin = false);//加入房间
+        // await ctx.websocket.joinRoom(room_name, isAdmin = false);//加入房间 需要用 await!!!
         // ctx.websocket.leaveRoom(room_name);//离开房间
         // ctx.websocket.forceLeaveRoom(ctx,room_name);//强制某用户离开房间
         // ctx.websocket.ws_server 提供 AllWSServers 对象实例
