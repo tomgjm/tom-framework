@@ -23,5 +23,8 @@ module.exports = {
     JSON_PARSE_ERROR:"json parse error",
     PQL_FILE_ERROR:"PQL file error",
     ONLY_PQL_FILE_ERROR:"Only allowed PQL file error",
+    WEB_SOCKET_ADD_MAX_SOCKET: "web socket add max",
+    WEB_SOCKET_ADD_MAX_USERS: "web socket add max users",
+    WEB_SOCKET_ADD_ONE_USER_MAX: "web socket add one user max",
     MOVE_USER_AVATAR_ERROR:"Move user avatar error",
 }

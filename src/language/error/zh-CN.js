@@ -23,5 +23,8 @@ module.exports = {
     JSON_PARSE_ERROR:"解析JSON错误",
     PQL_FILE_ERROR:"载入PQL文件错误或解析成json时发生错误",
     ONLY_PQL_FILE_ERROR:"PQL查询只允许使用PQL文件方式",
+    WEB_SOCKET_ADD_MAX_SOCKET: "WebSocket连接遇到最大Socket连接上限",
+    WEB_SOCKET_ADD_MAX_USERS: "WebSocket连接遇到最大用户连接上限",
+    WEB_SOCKET_ADD_ONE_USER_MAX: "WebSocket连接遇到单个用户(反复)连接上限",
     MOVE_USER_AVATAR_ERROR:"用户通上传头像后移动到指定文件夹时发生错误",
 }
