@@ -55,8 +55,10 @@ module.exports = class HelloController extends BaseController {
 
         //示例向房间内用户进行广播
         // const rooms = ctx.websocket.getRooms()
-        // rooms[room_name].users.forEach((client) => {
-        //     if ((all || client.websocket !== socket) && client.websocket.readyState === WebSocket.OPEN) {
+        // const users = Object.keys(rooms[room_name].users);
+        // users.forEach((user_id) => {
+        //     const websocket = users[user_id];
+        //     if ((all || user_id !== ctx.auth.id()) && websocket.readyState === WebSocket.OPEN) {
         //         client.websocket.send(ws_data);
         //         iCount++;
         //     }
