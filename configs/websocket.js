@@ -4,7 +4,6 @@ module.exports = {
     websocket_send_time_out: process.env.WEBSOCKET_SEND_TIME_OUT || 0,//单位毫秒
     websocket_id_head: process.env.WEBSOCKET_ID_HEAD || 's',
     auto_delete_empty_room: toBool(process.env.WEBSOCKET_AUTO_DELETE_EMPTY_ROOM || true),
-    create_room_auto_join: toBool(process.env.WEBSOCKET_CREATE_ROOM_AUTO_JOIN || true),
     max_users_connect: process.env.WEBSOCKET_MAX_USERS_CONNECT || 0,//最多多少个注册用户允许连接 0为不限制 晚于 on_add_user_socket_fn 执行判断
     one_user_max_connect: process.env.WEBSOCKET_ONE_USER_MAX_CONNECT || 1,//一个用户最多发起几个websocket连接数量 0为不限制 晚于 user_max_connect 执行判断
 
