@@ -8,7 +8,7 @@ if (system_cfg.log4js_websocket_category) {
     Log = log4js.getLogger(system_cfg.log4js_websocket_category);
 }
 
-class WebsocketListener extends BaseListener {
+module.exports = class WebsocketLogListener extends BaseListener {
     //函数名就是具体事件名称
     error({ error, ctx } = {}) {
         let user_id = getUserIDByCTX(ctx);
@@ -22,19 +22,30 @@ class WebsocketListener extends BaseListener {
         let user_id = getUserIDByCTX(ctx);
         Log.error(`Websocket error_not_send ip: ${ctx.ip}, user id:${user_id}, error:`, error);
     }
-    receive_error_reply({ error, ctx } = {}) {
+
+    error_add_max_socket({ ctx, socket_id } = {}) {
         let user_id = getUserIDByCTX(ctx);
-        Log.error(`Websocket receive_error_reply error ip: ${ctx.ip}, user id:${user_id}, error:`, error);
+        Log.info(`Websocket add_max_socket ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
+    }
+
+    error_add_one_user_max({ ctx, user_id, count } = {}) {
+        let socket_id = ctx.websocket.getID();
+        Log.info(`Websocket add_one_user_max ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
+    }
+
+    error_add_max_users({ ctx, user_id, count } = {}) {
+        let socket_id = ctx.websocket.getID();
+        Log.info(`Websocket add_max_users ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
+    }
+
+    error_receive_reply({ error, ctx } = {}) {
+        let user_id = getUserIDByCTX(ctx);
+        Log.error(`Websocket error_receive_reply error ip: ${ctx.ip}, user id:${user_id}, error:`, error);
     }
 
     add_socket({ ctx, socket_id } = {}) {
         let user_id = getUserIDByCTX(ctx);
         Log.info(`Websocket add_socket ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
-    }
-
-    error_add_max_socket({ ctx, socket_id } = {}) {
-        let user_id = getUserIDByCTX(ctx);
-        Log.info(`Websocket error add_max_socket ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
     }
 
     delete_socket({ ctx, socket_id, user_id } = {}) {
@@ -45,17 +56,7 @@ class WebsocketListener extends BaseListener {
         let socket_id = ctx.websocket.getID();
         Log.info(`Websocket add_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
     }
-
-    error_add_one_user_max({ ctx, user_id, count } = {}) {
-        let socket_id = ctx.websocket.getID();
-        Log.info(`Websocket error add_one_user_max ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
-    }
-
-    error_add_max_users({ ctx, user_id, count } = {}) {
-        let socket_id = ctx.websocket.getID();
-        Log.info(`Websocket error add_max_users ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
-    }
-
+    
     delete_user({ ctx, user_id, count } = {}) {
         let socket_id = ctx.websocket.getID();
         Log.info(`Websocket delete_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id} user socket count:${count}`);
@@ -111,4 +112,3 @@ class WebsocketListener extends BaseListener {
         Log.info(`Websocket leave_room room: ${room_name}, ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
     }
 }
-module.exports = WebsocketListener;

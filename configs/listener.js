@@ -14,5 +14,5 @@ module.exports = {
     "send_email": ["controllers/api/v1/send_email_listener"],
     "send_email_end": ["controllers/api/v1/send_email_end_listener"],
     "error": ["error_listener"],
-    "websocket": ["websocket/websocket_listener"],
+    "websocket": ["websocket/websocket_log_listener"],
 };
