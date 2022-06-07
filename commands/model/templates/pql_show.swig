@@ -1,3 +1,3 @@
 {
-    {{ pql_fields|safe }}
+    {{ pql_fields }}
 }

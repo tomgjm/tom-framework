@@ -20,6 +20,9 @@ const VIEW_NAME_RULE = "rule";
 const VIEW_NAME_LISTENER = "listener";
 const VIEW_NAME_ADMINBRO = "adminbro";
 const VIEW_NAME_PQL = "pql_";
+const VIEW_NAME_WEBSOCKET_CONTROLLER = "websocket_controller";
+const VIEW_NAME_WEBSOCKET_RULE = "websocket_rule";
+const VIEW_NAME_WEBSOCKET_LISTENER = "websocket_listener";
 const TEMPLATE_ROOT_PATH = path.join(AppDir, "../commands/model/templates/");
 
 const API_VERSION = "api_version";
@@ -99,24 +102,6 @@ class ModelCommand extends BaseCommand {
                 },
                 {
                     must: false,
-                    args: ["-i", "--apiversion"],
-                    para: API_VERSION,//变量名称
-                    show_help_tab_count: -1,//显示 说明、帮助 前面增加或减少 tab显示个数
-                    help: "set default api version",//说明、帮助
-                    default: API_VERSION_DEFAULT, //默认值
-                    action: "set_api_version" //默认方法 可是是函数也可以字符串 如果是字符串就是本类的函数名
-                },
-                {
-                    must: false,
-                    args: ["-f", "--fields"],
-                    para: "Fields",
-                    show_help_tab_count: -1,
-                    help: "Model fields definition",
-                    // default,
-                    action: "fields"
-                },
-                {
-                    must: false,
                     args: ["-h", "--help"],
                     // para,
                     show_help_tab_count: 0,
@@ -132,6 +117,33 @@ class ModelCommand extends BaseCommand {
                     help: "show this version message and exit",
                     // default,
                     action: "version"
+                },
+                {
+                    must: false,
+                    args: ["-f", "--fields"],
+                    para: "Fields",
+                    show_help_tab_count: -1,
+                    help: "Model fields definition",
+                    // default,
+                    action: "fields"
+                },
+                {
+                    must: false,
+                    args: ["-w", "--websocket"],
+                    para: "WebsocketPath",
+                    show_help_tab_count: -1,
+                    help: "set websocket path",
+                    // default: "websocket",
+                    action: "set_websocket_path"
+                },
+                {
+                    must: false,
+                    args: ["-i", "--apiversion"],
+                    para: API_VERSION,//变量名称
+                    show_help_tab_count: -1,//显示 说明、帮助 前面增加或减少 tab显示个数
+                    help: "set default api version",//说明、帮助
+                    default: API_VERSION_DEFAULT, //默认值
+                    action: "set_api_version" //默认方法 可是是函数也可以字符串 如果是字符串就是本类的函数名
                 },
                 {
                     must: false,
@@ -202,14 +214,14 @@ class ModelCommand extends BaseCommand {
                     para: "CollectionChineseName[,languages]",
                     show_help_tab_count: -1,
                     help: "create AdminBro Model files",
-                    default: "新表单,zh-CN|en",
+                    default: "新表单,zh-CN|en-US",
                     action: "create_adminbro"
                 },
             ],
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.1.7";
+        this.__version = "1.2.0";
         this.__fields_lang__ = {};
     }
 
@@ -420,11 +432,14 @@ class ModelCommand extends BaseCommand {
         const document = humps.decamelize(pluralize.singular(m_name));
         const locals = { file_name: m_name, model_name, model_object, controller, document };
         const file_name = pluralize.plural(m_name);
-        const write_file_controller = path.join(AppDir, './controllers/', ControllerPath + "/" + file_name + ".js");
+        const websocket_path = this.__paras["WebsocketPath"];
+        const write_file_controller = path.join(AppDir, '.' + (websocket_path ? '/' + websocket_path : '') + '/controllers/', ControllerPath + "/" + file_name + ".js");
 
         try {
             if (!fs.existsSync(write_file_controller)) {
-                const content = await render(VIEW_NAME_CONTROLLER, locals, undefined, TEMPLATE_ROOT_PATH);
+                mkdirsSync(path.dirname(write_file_controller));
+                const content = await render(websocket_path ? VIEW_NAME_WEBSOCKET_CONTROLLER : VIEW_NAME_CONTROLLER,
+                    locals, undefined, TEMPLATE_ROOT_PATH);
                 fs.writeFileSync(write_file_controller, content);
                 console.log(`Write file OK:${write_file_controller}`);
             }
@@ -438,8 +453,9 @@ class ModelCommand extends BaseCommand {
     }
 
     async add_route(info) {
-        let [file_name, var_name, ControllerPath] = info.split(",");
+        let [file_name, var_name, ControllerPath] = info.trim().split(",");
         ControllerPath = ControllerPath || this.__paras["ControllerPath"];
+        var_name = var_name || 'api_v1';
         if (!ControllerPath) {
             throw new Error("add route need argument:ControllerPath!")
         }
@@ -449,12 +465,14 @@ class ModelCommand extends BaseCommand {
         // const object_name = humps.pascalize(pluralize.plural(file_name));
         // const singular_name = humps.pascalize(pluralize.singular(file_name));
         // const locals = { file_name, model_name, collection_name, object_name, singular_name, };
+        const websocket_path = this.__paras["WebsocketPath"];
         const file_name_arr = file_name.split('.');
         if (file_name_arr.length == 1) { file_name += ".js"; }
-        const write_file_route = path.join(AppDir, './routes/' + file_name);
+        const write_file_route = path.join(AppDir, '.' + (websocket_path ? '/' + websocket_path : '') + '/routes/' + (websocket_path ? 'socket/' : '') + file_name);
 
         try {
             if (fs.existsSync(write_file_route)) {
+                mkdirsSync(path.dirname(write_file_route));
                 const content = fs.readFileSync(write_file_route, 'utf8');
                 const regx1 = new RegExp(".*?\\b" + var_name + "\\.(?!routes|allowedMethods).+?\\([\\s\\S]*?\\).*", "g");//
                 let finds = content.match(regx1);
@@ -472,7 +490,7 @@ class ModelCommand extends BaseCommand {
                         }
                         else { break; }
                     }
-                    prefix += `api_v1.resource('/${url_path_name}/', '${ControllerPath}/${url_path_name}', { name: '${url_path_name}' });`;
+                    prefix += `${var_name}.resource('/${url_path_name}/', '${ControllerPath}/${url_path_name}', { name: '${url_path_name}' });`;
 
                     const content_arr = content.split(splitStr);
                     const new_content = content_arr[0] + splitStr
@@ -502,11 +520,13 @@ class ModelCommand extends BaseCommand {
         const rule_str = this.__paras['Fields_rule_str'];
         const rule_attributes_str = this.__paras['Fields_rule_attributes_str'];
         const locals = { class_name, rule_str, rule_attributes_str };
-        const write_file_rule = path.join(AppDir, './rules/', RulePath + "/" + file_name + ".js");
+        const websocket_path = this.__paras["WebsocketPath"];
+        const write_file_rule = path.join(AppDir, '.' + (websocket_path ? '/' + websocket_path : '') + '/rules/', RulePath + "/" + file_name + ".js");
 
         try {
             if (!fs.existsSync(write_file_rule)) {
-                const content = await render(VIEW_NAME_RULE, locals, undefined, TEMPLATE_ROOT_PATH);
+                mkdirsSync(path.dirname(write_file_rule));
+                const content = await render(websocket_path ? VIEW_NAME_WEBSOCKET_RULE : VIEW_NAME_RULE, locals, undefined, TEMPLATE_ROOT_PATH);
                 fs.writeFileSync(write_file_rule, content);
                 console.log(`Write file OK:${write_file_rule}`);
             }
@@ -521,23 +541,26 @@ class ModelCommand extends BaseCommand {
 
     async create_listener(ListenerPath) {
         const m_name = this.__paras["model_name"];
-        const file_name = pluralize.plural(m_name);
-        const class_name = humps.pascalize(pluralize.singular(m_name));
+        const websocket_path = this.__paras["WebsocketPath"];
+        const file_name = pluralize.plural(m_name) + (websocket_path ? '_websocket' : '');
+        const class_name = humps.pascalize(pluralize.singular(m_name)) + (websocket_path ? 'WebSocket' : '');
         const locals = { class_name, };
-        const write_file_listener = path.join(AppDir, './listeners/', ListenerPath + "/" + file_name + "_log_listener.js");
+        const write_file_listener = path.join(AppDir, './listeners/', (websocket_path ? websocket_path + '/' : '') + ListenerPath + "/" + file_name + "_log_listener.js");
         const write_file_listener_cfg = path.join(AppDir, `../configs/listener.js`);
+        ListenerPath = (websocket_path ? websocket_path + '/' : '') + ListenerPath;
 
         try {
-            let write_file_listener_dir = './listeners';
-            ListenerPath.split("/").map((dir) => {
-                write_file_listener_dir += `/${dir}`;
-                const newDir = path.join(AppDir, write_file_listener_dir);
-                if (!fs.existsSync(newDir)) {
-                    fs.mkdirSync(newDir);
-                }
-            })
+            // let write_file_listener_dir = './listeners';
+            // ListenerPath.split("/").map((dir) => {
+            //     write_file_listener_dir += `/${dir}`;
+            //     const newDir = path.join(AppDir, write_file_listener_dir);
+            //     if (!fs.existsSync(newDir)) {
+            //         fs.mkdirSync(newDir);
+            //     }
+            // })
             if (!fs.existsSync(write_file_listener)) {
-                const content = await render(VIEW_NAME_LISTENER, locals, undefined, TEMPLATE_ROOT_PATH);
+                mkdirsSync(path.dirname(write_file_listener));
+                const content = await render(websocket_path ? VIEW_NAME_WEBSOCKET_LISTENER : VIEW_NAME_LISTENER, locals, undefined, TEMPLATE_ROOT_PATH);
                 fs.writeFileSync(write_file_listener, content);
                 console.log(`Write file OK:${write_file_listener}`);
             }
@@ -723,7 +746,7 @@ class ModelCommand extends BaseCommand {
     async all(AllPath) {
         // ControllerPath[, RouteFile, RouteVarName]
         try {
-            const allPathArr = AllPath.split(",");
+            const allPathArr = AllPath.trim().split(",");
             let ControllerPath = undefined;
             let RouteFile = undefined;
             let RouteVarName = undefined;
@@ -769,7 +792,7 @@ class ModelCommand extends BaseCommand {
     }
 
     async create_adminbro(chinese_collection_name_info) {
-        let [chinese_collection_name, languages] = chinese_collection_name_info.split(",");
+        let [chinese_collection_name, languages] = chinese_collection_name_info.trim().split(",");
         if (!languages) { languages = "zh-CN|en"; }
         const m_name = this.__paras["model_name"];
         const file_name = pluralize.plural(m_name);
@@ -898,6 +921,15 @@ class ModelCommand extends BaseCommand {
                     throw new Error("Error: not exists:" + write_file_language);
                 }
             }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    async set_websocket_path(WebsocketPath) {
+        try {
+            this.__paras["WebsocketPath"] = WebsocketPath ? WebsocketPath : 'websocket';
         }
         catch (error) {
             console.error(error);

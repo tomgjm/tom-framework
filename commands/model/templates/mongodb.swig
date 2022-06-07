@@ -14,7 +14,7 @@ class {{ model_name }} extends model {
         this.guarded = ['_id', 'created_at', 'updated_at', 'deleted', 'deleted_at',];//不会被在create中被填充字段
 
         this.Schema = {
-{{fields_str|safe}}
+{{fields_str}}
         };
 
         // mongodb 读写等级
@@ -40,7 +40,7 @@ class {{ model_name }} extends model {
 
         this.timestamps();
         // this.softDeletes();//开启支持软删除
-{{fields_ref_str|safe}}
+{{fields_ref_str}}
     }
     modelAfter(modelObj) {
         //console.log('modelAfter');

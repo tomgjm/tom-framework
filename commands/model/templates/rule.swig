@@ -11,10 +11,10 @@ module.exports = class {{ class_name }}Rules {
         //保存新建数据
         return {
             rules: {
-{{rule_str|safe}}
+{{rule_str}}
             },
             attributes: {
-{{rule_attributes_str|safe}}
+{{rule_attributes_str}}
             }
         }
     }
@@ -23,10 +23,10 @@ module.exports = class {{ class_name }}Rules {
         //保存更新数据
         return {
             rules: {
-{{rule_str|safe}}
+{{rule_str}}
             },
             attributes: {
-{{rule_attributes_str|safe}}
+{{rule_attributes_str}}
             }
         }
     }

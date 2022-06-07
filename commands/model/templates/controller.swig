@@ -7,7 +7,6 @@ const { getDBObjByID } = require2('tomjs/handlers/db_tools');
 const { filterCTXQuery, isObject } = require2('tomjs/handlers/tools');
 const {{ model_name }} = require(path.join(AppDir, './models/{{ file_name }}'));
 
-
 module.exports = class {{ controller }}Controller extends BaseController {
     constructor(EventName) {
         super(EventName);
