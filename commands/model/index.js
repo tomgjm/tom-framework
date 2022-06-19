@@ -2,7 +2,7 @@ const require2 = require('tomjs/handlers/require2');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const render = require2('tomjs/handlers/render');
-const { isString, isObject, camelize, mkdirsSync } = require2('tomjs/handlers/tools');
+const { isString, isObject, camelize, decamelize, mkdirsSync } = require2('tomjs/handlers/tools');
 const pluralize = require2('pluralize');
 const humps = require2('humps');
 const fs = require2("fs");
@@ -221,7 +221,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.2.0";
+        this.__version = "1.2.1";
         this.__fields_lang__ = {};
     }
 
@@ -684,9 +684,8 @@ class ModelCommand extends BaseCommand {
                         case "ref":
                             {
                                 if (key.toLowerCase().endsWith("_id")) {
-                                    const className = key.substring(0, key.length - 3);
-                                    ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${key.substring(0, key.length - 3)}');`
-                                    ruleArr[fKey] = `exists:${pluralize.plural(className)},_id`;
+                                    ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${key.substring(0, key.length - 3)}', { ref: "${field['ref']}", localField: "${key}" });`
+                                    ruleArr[fKey] = `exists:${decamelize(field['ref'],'Model')},_id`;
                                 }
                                 break;
                             }
