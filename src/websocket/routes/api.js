@@ -5,7 +5,7 @@ const router_jwt = require2('tomjs/auth/router_jwt');
 
 let route = new WsRouter();
 
-// route.use('/',router_jwt(true));//开启jwt验证
+route.use(router_jwt(true));//设置全局都要检验jwt 并是的之后ctx.auth可用(这个身份检验是在websocket刚刚连接后根据URL进行分配子路由的时候校验)
 route.path('/', 'api');
 
 route.path('/test/:id', async function (ctx, next) {
