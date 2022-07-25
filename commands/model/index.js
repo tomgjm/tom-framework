@@ -221,7 +221,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.2.1";
+        this.__version = "1.2.2";
         this.__fields_lang__ = {};
     }
 
@@ -685,7 +685,7 @@ class ModelCommand extends BaseCommand {
                             {
                                 if (key.toLowerCase().endsWith("_id")) {
                                     ref_str += (ref_str === "" ? "" : "\r\n") + " ".repeat(8) + `this.belongsTo('${key.substring(0, key.length - 3)}', { ref: "${field['ref']}", localField: "${key}" });`
-                                    ruleArr[fKey] = `exists:${decamelize(field['ref'],'Model')},_id`;
+                                    ruleArr[fKey] = `exists:${decamelize(field['ref'], 'Model')},_id`;
                                 }
                                 break;
                             }
@@ -801,6 +801,7 @@ class ModelCommand extends BaseCommand {
         const model_dir = path.join(AppDir, `./adminbro/resources/${model_class}`);
         const write_model_file = model_dir + "/index.js";
         const model_dir_index_file = path.join(AppDir, `./adminbro/resources/index.js`);
+        const Adminbro_operation_historyModel_file = path.join(AppDir, `./adminbro/resources/AdminbroOperationHistoryModel/index.js`);
 
         const { fields_str, fields_list_str } = this.adminbro_fields_str(model_class);
         const locals = { model_class, en_collection_name, object_name, m_name, fields_str, fields_list_str };
@@ -919,6 +920,42 @@ class ModelCommand extends BaseCommand {
                 else {
                     throw new Error("Error: not exists:" + write_file_language);
                 }
+            }
+
+            if (fs.existsSync(Adminbro_operation_historyModel_file)) {
+                const content = fs.readFileSync(Adminbro_operation_historyModel_file, 'utf8');
+                const regx1 = new RegExp(`\\s*?const\\s+allModelName\\s*?=\\s*?\\[\\s*?\\].*`);
+                let finds = content.match(regx1);
+                let prefix = "\r\n";
+                let splitStr = undefined;
+                let new_content = "";
+                if (finds && finds.length > 0) {
+                    splitStr = finds[finds.length - 1];
+                    for (let index = 0; index < splitStr.length; index++) {
+                        const element = splitStr[index];
+                        if (element === '\t' || element === ' ') {
+                            prefix += element;
+                        }
+                        else if (element === '\r' || element == '\n') {
+                            continue;
+                        }
+                        else { break; }
+                    }
+                    //allModelName.push({ value: "UserModel", label: __("adminbor.Users info") });
+                    prefix += `allModelName.push({ value: "${model_class}", label: __("adminbor.${en_collection_name}")});`;
+                    const content_arr = content.split(splitStr);
+                    new_content = content_arr[0] + splitStr
+                        + prefix
+                        + (content_arr[1] ? content_arr[1] : "");
+                    fs.writeFileSync(Adminbro_operation_historyModel_file, new_content);
+                    console.log(`Modify file OK:${Adminbro_operation_historyModel_file}`);
+                }
+                else {
+                    throw new Error("Error: not find 'allModelName = []'");
+                }
+            }
+            else {
+                throw new Error("Error: not exists:" + Adminbro_operation_historyModel_file);
             }
         }
         catch (error) {
