@@ -5,9 +5,9 @@ module.exports = {
         __v: false
     },
     mongoose_set: {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
+        // useNewUrlParser: true,
+        // useFindAndModify: false,
+        // useCreateIndex: true,
     },
     policies: {
         UserModel: './policies/user_policy',//此处是以src目录开始的文件名 

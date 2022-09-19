@@ -23,7 +23,7 @@ module.exports = {
             autoIndex: toBool(process.env.DB_AUTOINDEX),
             keepAlive: process.env.DB_KEEPALIVE,
             bufferCommands: toBool(process.env.DB_BUFFERCOMMANDS),
-            useNewUrlParser: toBool(process.env.DB_USENEWURLPARSER || true),
+            // useNewUrlParser: toBool(process.env.DB_USENEWURLPARSER || true),
             autoReconnect: toBool(process.env.DB_AUTORECONNECT),
             reconnectTries: process.env.DB_RECONNECTTRIES,
             reconnectInterval: process.env.DB_RECONNECTINTERVAL,
