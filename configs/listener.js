@@ -13,6 +13,7 @@ module.exports = {
     "send_sms": ["controllers/api/v1/send_sms_listener"],
     "send_email": ["controllers/api/v1/send_email_listener"],
     "send_email_end": ["controllers/api/v1/send_email_end_listener"],
+    "UserController": ["controllers/api/v1/users_log_listener.js"],
     "error": ["error_listener"],
     "websocket": ["websocket/websocket_log_listener"],
 };

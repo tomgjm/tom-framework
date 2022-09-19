@@ -3,82 +3,37 @@ const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
 const ApiError = require(path.join(AppDir, './error/api_error'));
 const UsersHandler = require(path.join(AppDir, './handlers/users_handler'));
-const Password = require2('tomjs/password');
+// const Password = require2('tomjs/password');
 const BaseUser = require2('tomjs/controllers/base_user');
-const { isObject } = require2('tomjs/handlers/base_tools');
+const { filterCTXQuery, isObject } = require2('tomjs/handlers/tools');
 const { getDBObjByID } = require2('tomjs/handlers/db_tools');
+const auth_cfg = require2('tomjs/configs')().auth;
+const UserModel = require2(auth_cfg.auth_model);
+
 class User extends BaseUser {
+
+    constructor(EventName) {
+        super(EventName);
+        this.users = UserModel.Model();
+    }
 
     async index(ctx) {
         //显示列表
-        //throw new ApiError(ApiError.DB_NOT_FOUND, { message: 'test message' });
-        let MainRoutes = require2('tomjs/router/main-router');
-        ctx.body = {
-            result: 'index',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-            m: MainRoutes.url('users.show', 3),
-        }
-        console.log('index');
+        ctx.body = (await this.users.findAll(filterCTXQuery(ctx)).pql(ctx).paginate(ctx)).getValues();
     }
 
     async show(ctx, id) {
         //显示单项
-        let user = await getDBObjByID(this.users, id);
-        this.authorize(ctx, 'show', user);
-        //let token = getToken(ctx) //获取头部提交过来的token原文
-        //let verify_obj = await verify(token) //验证并解析出token中内容，示例一下
-        //let decode_obj = decode(token) //不验证直接解析出token中内容，示例一下
+        const user = await getDBObjByID(this.users, id);
+        await this.authorize(ctx, 'show', user);
         ctx.body = user;
-    }
-
-    async create(ctx) {
-        //显示新建页面
-        ctx.body = {
-            result: 'create',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-        }
-
-    }
-
-    async store(ctx) {
-        //保存新建数据
-        let cr = undefined;
-        try {
-            cr = await this.users.create({
-                name: ctx.request.body.name,
-                password: await Password.hash(ctx.request.body.password)
-            });
-        } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, { all_params: ctx.all_params });
-        }
-        ctx.body = {
-            result: 'store',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-            cr: cr,
-        }
-    }
-
-    async edit(ctx, id) {
-        //显示编辑页面
-        ctx.body = {
-            result: 'edit',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-            id: id
-        }
+        this.emitter.emit('show', { ctx, id });
     }
 
     async update(ctx, id) {
         //authorize权限检测 统一检测权限规范方便统一调整
         let user = await getDBObjByID(this.users, id);
-        this.authorize(ctx, 'edit', user);
+        await this.authorize(ctx, 'edit', user);
         let old_info = user.toJSON();
 
         //保存编辑数据
@@ -92,24 +47,24 @@ class User extends BaseUser {
             await user.save();
             this.emitter.emit('update', { user_id: id, old_info, new_info: user.toJSON() });
         } catch (e) {
-            throw new ApiError(ApiError.DB_ERROR, e.message, { id: id, all_params: ctx.all_params });
+            throw new ApiError(BaseApiError.DB_ERROR, e.message, { id: id, all_params: ctx.all_params });
         }
 
         ctx.body = user;
     }
 
-    async destroy(ctx, id) {
-        //删除数据
-        let user = await getDBObjByID(this.users, id);
-        this.authorize(ctx, 'delete', user);
-        ctx.body = {
-            result: 'destroy',
-            path: ctx.request.path,
-            name: ctx.params.id,
-            para: ctx.query,
-            id: id
-        }
-    }
+    // async destroy(ctx, id) {
+    //     //删除数据
+    //     let user = await getDBObjByID(this.users, id);
+    //     this.authorize(ctx, 'delete', user);
+    //     ctx.body = {
+    //         result: 'destroy',
+    //         path: ctx.request.path,
+    //         name: ctx.params.id,
+    //         para: ctx.query,
+    //         id: id
+    //     }
+    // }
 
 }
 module.exports = User

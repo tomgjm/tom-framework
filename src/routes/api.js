@@ -9,7 +9,7 @@ api_v1.auth();//api_v1对象所有路径默认开启jwt验证 想要不用某个
 api_v1.authRoutes('api/v1/auth');
 api_v1.get('/users/lang/', 'api/v1/users@getLang');
 api_v1.get('/users/lang/:lang', 'api/v1/users@setLang');
-api_v1.resource('/users/', 'api/v1/users', { name: 'users' });
+api_v1.resource('/users/', 'api/v1/users', { name: 'users', except: "destroy,store" });
 
 // const api_v2 = new MainRouter();
 // api_v2.resource('/users/', 'api/v2/users', {'only': 'index,show'});
