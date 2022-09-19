@@ -1,8 +1,5 @@
 const { toBool } = require('tomjs/handlers/base_tools')
 module.exports = {
-    models: {
-        UserModel: './models/user',
-    },
     defaultHidden: {
         _id: false,
         __v: false
