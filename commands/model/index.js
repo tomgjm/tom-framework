@@ -221,7 +221,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.2.2";
+        this.__version = "1.2.3";
         this.__fields_lang__ = {};
     }
 
