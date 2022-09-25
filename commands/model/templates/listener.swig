@@ -4,7 +4,7 @@ const { getClassFuncName, isObject } = require2('tomjs/handlers/base_tools');
 const log4js = require2('tomjs/handlers/log4js');
 const Log = log4js.getLogger("app");
 
-module.exports = class {{ class_name }}Listener extends BaseListener {
+module.exports = class {{ class_name }}LogListener extends BaseListener {
     //函数名就是具体事件名称
     show({ ctx, id } = {}) {
         const fn_name = getClassFuncName();
