@@ -26,7 +26,7 @@ class {{ model_name }} extends model {
             writeConcern: {
                 w: 'majority',
                 j: true,
-                wtimeout: 1000,
+                wtimeout: database_cfg.mongodb_wtimeout,
             }
         });
 
