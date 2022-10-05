@@ -2,6 +2,13 @@ const require2 = require('tomjs/handlers/require2');
 const __ = require2('tomjs/handlers/__');
 const path = require2('path');
 const AppDir = require2('tomjs/handlers/dir')();
+
+// const uploadFeature = require('@admin-bro/upload');
+// const configs = require2('tomjs/configs')();
+// const SystemConfig = configs.system;
+// const adminbro_cfg = configs.adminbro;
+// const UploadLocalProvider = require(path.join(AppDir, './adminbro/providers/upload_local'));
+
 const admin_roles = require(path.join(AppDir, './adminbro/handlers/roles'));
 const after_emit = require(path.join(AppDir, './adminbro/handlers/after_emit'));
 const {{ model_class }} = require2(path.join(AppDir, './models/{{ m_name }}'));
@@ -71,5 +78,23 @@ module.exports = (parent) => {
             label: __('adminbor.{{ en_collection_name }}'),
             properties,
         },
+        // features: [
+        //     uploadFeature({
+        //         provider: new UploadLocalProvider(SystemConfig.local_storage_bucket, path.join(AppDir, SystemConfig.local_storage_path)),
+        //         properties: {
+        //             key: 'file.file',
+        //             mimeType: 'file.mime_type',
+        //             bucket: 'file.bucket',
+        //             size: 'file.size',
+        //             file: 'file.filename',
+        //             filePath: `file.filePath`,
+        //             filesToDelete: `file.filesToDelete`,
+        //         },
+        //         validation: {
+        //             mimeTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'],
+        //             maxSize: adminbro_cfg.image_max_size,
+        //         },
+        //     }),
+        // ],
     };
 };
