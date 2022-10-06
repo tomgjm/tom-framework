@@ -95,6 +95,9 @@ module.exports = (parent) => {
         //             maxSize: adminbro_cfg.image_max_size,
         //         },
         //     }),
+        //    uploadPath: (record, filename) => (
+        //         `${record.id()}/file/${filename}`
+        //    ),
         // ],
     };
 };
