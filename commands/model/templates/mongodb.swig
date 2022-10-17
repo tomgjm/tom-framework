@@ -18,17 +18,18 @@ class {{ model_name }} extends model {
         };
 
         // mongodb 读写等级
-        this.SchemaOption = Object.assign({}, toObject(database_cfg.mongodb_schema_options) ||
-        {
-            readConcern: {
-                level: 'majority',
-            },
-            writeConcern: {
-                w: 'majority',
-                j: true,
-                wtimeout: database_cfg.mongodb_wtimeout,
-            }
-        });
+        this.SchemaOption = Object.assign({}, toObject(database_cfg.mongodb_schema_options)
+        //  ||{
+        //     readConcern: {
+        //         level: 'majority',
+        //     },
+        //     writeConcern: {
+        //         w: 'majority',
+        //         j: true,
+        //         wtimeout: database_cfg.mongodb_wtimeout,
+        //     }
+        // }
+        );
 
         // 字段枚举定义
         // this.defines = {
