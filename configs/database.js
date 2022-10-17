@@ -8,8 +8,8 @@ module.exports = {
         down_outtime: 5000,
     },
     mongodb_wtimeout: wtimeout,
-    mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": {"level": "majority" },"writeConcern": {"w": "majority","j": true , "wtimeout": ' + wtimeout + '}}'),
-    mongodb_schema_options: toObject(process.env.DB_SCHEMA_OPTIONS) || toObject('{"readConcern": {"level": "majority" },"writeConcern": {"w": "majority","j": true , "wtimeout": ' + wtimeout + '}}'),
+    mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": {"level": "majority" }}'),
+    mongodb_schema_options: toObject(process.env.DB_SCHEMA_OPTIONS) || toObject('{"readConcern": {"level": "majority" }}'),
     mongodb: {
         type: "mongodb",
         url: process.env.DB_URL,
