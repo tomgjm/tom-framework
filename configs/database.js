@@ -33,6 +33,7 @@ module.exports = {
             bufferMaxEntries: process.env.DB_BUFFERMAXENTRIES,
             readPreference: process.env.DB_READPREFERENCE,
             useUnifiedTopology: true,
+            strictQuery: true,
         },
         showConnInfo: toBool(process.env.DB_SHOW_CONN_INFO),
     },
