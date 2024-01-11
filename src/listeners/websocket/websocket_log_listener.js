@@ -48,6 +48,9 @@ module.exports = class WebsocketLogListener extends BaseListener {
         Log.info(`Websocket add_socket ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
     }
 
+    delete_socket_before({ ctx, socket_id, user_id } = {}) {
+        Log.info(`Websocket delete_socket_before  ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
+    }
     delete_socket({ ctx, socket_id, user_id } = {}) {
         Log.info(`Websocket delete_socket ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
     }
@@ -57,6 +60,11 @@ module.exports = class WebsocketLogListener extends BaseListener {
         Log.info(`Websocket add_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}, user socket count:${count}`);
     }
     
+    delete_user_before({ ctx, user_id, count } = {}) {
+        let socket_id = ctx.websocket.getID();
+        Log.info(`Websocket delete_user_before ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id} user socket count:${count}`);
+    }
+
     delete_user({ ctx, user_id, count } = {}) {
         let socket_id = ctx.websocket.getID();
         Log.info(`Websocket delete_user ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id} user socket count:${count}`);
@@ -72,7 +80,19 @@ module.exports = class WebsocketLogListener extends BaseListener {
         }
     }
 
-    delete_room({ ctx, room_name, auto } = {}) {
+    delete_room_before({ ctx, room_name, force, auto } = {}) {
+        if (ctx) {
+            let sAuto = auto ? 'auto_' : 'user ';
+            let user_id = getUserIDByCTX(ctx);
+            Log.info(`Websocket ${sAuto}delete_room_before: ${room_name}, ip: ${ctx.ip}, user id:${user_id}`);
+        }
+        else {
+            let sAuto = auto ? 'auto_' : '';
+            Log.info(`Websocket system ${sAuto}delete_room_before: ${room_name}`);
+        }
+    }
+
+    delete_room({ ctx, room_name, force, auto } = {}) {
         if (ctx) {
             let sAuto = auto ? 'auto_' : 'user ';
             let user_id = getUserIDByCTX(ctx);
@@ -82,6 +102,22 @@ module.exports = class WebsocketLogListener extends BaseListener {
             let sAuto = auto ? 'auto_' : '';
             Log.info(`Websocket system ${sAuto}delete_room: ${room_name}`);
         }
+    }
+
+    change_room_admin_before({ ctx, room_name, new_ctx } = {}) {
+        let user_id = undefined;
+        let ip = undefined;
+        let new_user_id = undefined;
+        let new_ip = undefined;
+        if (ctx) {
+            ip = ctx.ip;
+            user_id = getUserIDByCTX(ctx);
+        }
+        if (new_ctx) {
+            new_ip = ctx.ip;
+            new_user_id = getUserIDByCTX(new_ctx);
+        }
+        Log.info(`Websocket change_room_admin_before: ${room_name}, old user id:${user_id}, ip: ${ip},change to new user id:${new_user_id}, ip: ${new_ip}`);
     }
 
     change_room_admin({ ctx, room_name, new_ctx } = {}) {
@@ -104,6 +140,12 @@ module.exports = class WebsocketLogListener extends BaseListener {
         let user_id = getUserIDByCTX(ctx);
         let socket_id = ctx.websocket.getID();
         Log.info(`Websocket join_room room: ${room_name}, ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
+    }
+
+    leave_room_before({ ctx, room_name } = {}) {
+        let user_id = getUserIDByCTX(ctx);
+        let socket_id = ctx.websocket.getID();
+        Log.info(`Websocket leave_room_before room: ${room_name}, ip: ${ctx.ip}, user id:${user_id}, socket id: ${socket_id}`);
     }
 
     leave_room({ ctx, room_name } = {}) {
