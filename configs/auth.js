@@ -28,7 +28,7 @@ module.exports = {
 
     auth_routes_use_ratelimit: toBool(process.env.AUTH_ROUTES_USE_RATELIMIT || true),
 
-    password_tpye: 'pbkdf2',// 可以是 pbkdf2 或 bcrypt,需要npm 安装 bcrypt ,切换密码加密方式不会影响解密，密码解密会自动判断解密方式
+    password_type: 'pbkdf2',// 可以是 pbkdf2 或 bcrypt,需要npm 安装 bcrypt ,切换密码加密方式不会影响解密，密码解密会自动判断解密方式
     password_salt_length: 8,
     password_digest: 'sha512',
 
