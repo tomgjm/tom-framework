@@ -27,7 +27,14 @@ module.exports = {
         pql_public_path: (process.env.PQL_PUBLIC_PATH || 'pql/public'),
         only_pql_file_mode: toBool(process.env.ONLY_PQL_FILE || false),
         auto_pql_file: toBool(process.env.AUTO_PQL_FILE || false),
-        auto_pql_file_function: ctx => ctx._matchedRoute + '/' + ctx.routerName.replace('.','/'),//自动生成默认pql文件名函数
+        auto_pql_file_function: (ctx) => {
+            if(isString(ctx.routerName)){
+                return ctx._matchedRoute + '/' + ctx.routerName.replace('.','/');
+            }
+            else{
+                return ctx.path.slice(0, -1);
+            }
+        },//自动生成默认pql文件名函数
         pql_file_in_memory: toBool(process.env.PQL_FILE_IN_MEMORY || false),
         options: {
             max_deep: 3,
