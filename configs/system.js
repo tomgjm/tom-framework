@@ -38,4 +38,6 @@ module.exports = {
     log4js_error_category: process.env.ERROR_LOG_CATEGORY || "error",
     
     all_error_web_show:toBool(process.env.ALL_ERROR_WEB_SHOW || false),
+
+    web_conditional_get: true,//开启后让静态文件只有被修改后才会重新从服务器上获取
 }
