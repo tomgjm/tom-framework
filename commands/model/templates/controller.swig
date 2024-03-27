@@ -79,7 +79,7 @@ module.exports = class {{ controller }}Controller extends BaseController {
         await this.authorize(ctx, 'delete', {{ document }});
         const old_info = {{ document }}.toJSON();
         try {
-            await {{ document }}.delete();
+            await {{ document }}.deleteOne();
             this.emitter.emit('delete', { ctx, id, info: old_info });
         } catch (e) {
             throw new ApiError(ApiError.DB_ERROR, { id: id, all_params: ctx.all_params });
