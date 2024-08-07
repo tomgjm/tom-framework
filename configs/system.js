@@ -8,6 +8,7 @@ module.exports = {
     server_run_type: process.env.SERVER_RUN_TYPE || 'http', // "http", "https", "http and https", "http force https"
     server_url_type: process.env.SERVER_URL_TYPE || 'http://', // 服务器协议类型,包含"http://"或"https://"
     server_host: process.env.SERVER_HOST || 'localhost', // 服务器暴露的域名地址,如果没有以"http"开头表示根据server_url_type server_host server_http_port 或 server_https_port动态生成url 否则就直接使用本变量的值
+    fn_server_access_control_allow_origin: null,//async (ctx) => {if (ctx.request.header.origin) { return ctx.request.header.origin; }}, //主要处理多域名访问问题
     server_access_control_allow_origin: process.env.SERVER_ACCESS_CONTROL_ALLOW_ORIGIN,//允许跨域配置，如果不允许就不要填写任何内
     server_http_port: process.env.SERVER_HTTP_PORT || '80', // 服务器监听的http端口号
     server_https_port: process.env.SERVER_HTTPS_PORT || '443', // 服务器监听的https端口号
