@@ -30,6 +30,6 @@
   "dependencies": {
     "migrate": "^1.7.0",
     "nodemon": "^2.0.4",
-    "tomjs": "^0.9.200"
+    "tomjs": "^0.9.202"
   }
 }
