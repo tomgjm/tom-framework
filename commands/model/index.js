@@ -14,6 +14,7 @@ const BaseCommand = require(path.join(AppDir, '../commands/base_command'));
 const VIEW_NAME_MAIN = "main";
 const VIEW_NAME_MONGODB = "mongodb";
 const VIEW_NAME_MIGRATE = "migrate";
+const VIEW_NAME_ADD_MIGRATE = "add_migrate";
 const VIEW_NAME_POLICY = "policy";
 const VIEW_NAME_CONTROLLER = "controller";
 const VIEW_NAME_RULE = "rule";
@@ -201,6 +202,15 @@ class ModelCommand extends BaseCommand {
                 },
                 {
                     must: false,
+                    args: ["-m", "--migration"],
+                    para: "DataName",
+                    show_help_tab_count: -1,
+                    help: "add Data Migration file",
+                    // default: `../migrations`,
+                    action: "migration"
+                },
+                {
+                    must: false,
                     args: ["-a", "--all"],
                     para: "ControllerPath[,RouteFile,RouteVarName]",
                     show_help_tab_count: 0,
@@ -221,7 +231,7 @@ class ModelCommand extends BaseCommand {
             cmd_help_version_keys: ['h', 'help', 'v', 'version'],
             default_show_tab_count: 6,
         });
-        this.__version = "1.2.4";
+        this.__version = "1.2.5";
         this.__fields_lang__ = {};
     }
 
@@ -966,6 +976,31 @@ class ModelCommand extends BaseCommand {
     async set_websocket_path(WebsocketPath) {
         try {
             this.__paras["WebsocketPath"] = WebsocketPath ? WebsocketPath : 'websocket';
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    async migration(DataName) {
+        const file_name = this.__paras["model_name"];
+        const model_name = camelize(file_name) + "Model";
+        const object_name = humps.pascalize(pluralize.plural(file_name));
+        const locals = { data_name: DataName, file_name, model_name, object_name };
+        const write_file_migrate = path.join(AppDir, `../migrations/${new Date().getTime()}-add_${file_name}.js`);
+        const migrations_files_dir = path.join(AppDir, `../migrations_files/${new Date().getTime()}-add_${file_name}`);
+        try {
+            if (!fs.existsSync(write_file_migrate)) {
+                const content = await render(VIEW_NAME_ADD_MIGRATE, locals, undefined, TEMPLATE_ROOT_PATH);
+                fs.writeFileSync(write_file_migrate, content);
+                console.log(`Write file OK:${write_file_migrate}`);
+            }
+            else {
+                throw new Error("Error: file exists:" + write_file_migrate);
+            }
+            if (!fs.existsSync(migrations_files_dir)) {
+                fs.mkdirSync(migrations_files_dir);
+            }
         }
         catch (error) {
             console.error(error);

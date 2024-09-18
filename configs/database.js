@@ -5,7 +5,9 @@ module.exports = {
     await: toBool(process.env.DB_AWAIT || true),
     migrate: {
         up_outtime: 5000,
+        up_outtime_short: 10,
         down_outtime: 5000,
+        down_outtime_short: 10,
     },
     mongodb_wtimeout: wtimeout,
     mongodb_session_options: toObject(process.env.DB_SESSION_OPTIONS) || toObject('{"readConcern": {"level": "majority" },"writeConcern": {"w": "majority","j": true , "wtimeout": ' + wtimeout + '}}'),
